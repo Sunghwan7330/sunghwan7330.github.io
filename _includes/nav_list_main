@@ -17,7 +17,7 @@
             <ul>
                 {% for category in site.categories %}
                     {% if category[0] == "임베디드 C프로그래밍 최적화" %}
-                        <li><a href="/categories/book_study" class="">임베디드 C프로그래밍 최적화 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/embedded_c_optimization" class="">임베디드 C프로그래밍 최적화 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
