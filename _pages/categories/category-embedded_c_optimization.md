@@ -12,7 +12,7 @@ sidebar_main: true
 
 {% endfor %}
 
-{% assign posts = site.categories['임베디드 C 프로그래밍 최적화']%}
+{% assign posts = site.categories['embedded_c_optimization']%}
 <a> {{posts}} </a>
 {% for post in posts %} 
   <a> {{post}} </a>
