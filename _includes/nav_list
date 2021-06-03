@@ -1,10 +1,19 @@
 {% assign navigation = site.data.navigation[include.nav] %}
 
+<!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+{% assign sum = site.posts | size %}
+
 <nav class="nav__list">
   {% if page.sidebar.title %}<h3 class="nav__title" style="padding-left: 0;">{{ page.sidebar.title }}</h3>{% endif %}
   <input id="ac-toc" name="accordion-toc" type="checkbox" />
   <label for="ac-toc">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle Menu" }}</label>
   <ul class="nav__items">
+    <!--전체 글 수-->
+    <li>
+      📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글 수</style> <span style="font-family:'Coming Soon';">{{sum}}</style> <span style="font-family:'Cafe24Oneprettynight';">개</style> 
+    </li>
+
+
     {% for nav in navigation %}
       <li>
         {% if nav.url %}
