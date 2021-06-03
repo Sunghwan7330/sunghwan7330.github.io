@@ -16,9 +16,3 @@ docs:
     children:
       - title: "임베디드 C프로그래밍 최적화"
         url: /categories/embedded_c_optimization
-      - title: "Structure"
-        url: /docs/structure/
-      - title: "Installation"
-        url: /docs/installation/
-      - title: "Upgrading"
-        url: /docs/upgrading/
