@@ -282,4 +282,3 @@ defaults:
       related: true
       sidebar:
         nav: "docs"
-      sidebar_main: true

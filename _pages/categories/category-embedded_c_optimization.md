@@ -3,7 +3,8 @@ title: "임베디드 C 프로그래밍 최적화"
 layout: archive
 permalink: categories/embedded_c_optimization
 author_profile: true
-sidebar_main: true
+sidebar:
+  nav: "docs"
 ---
 
 {% assign posts = site.categories['embedded_c_optimization']%}
