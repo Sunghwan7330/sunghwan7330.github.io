@@ -35,7 +35,7 @@ OS 설치는 raspberry pi imager을 사용하였습니다.
 * https://www.raspberrypi.org/software/
 
 설치 후 실행하면 아래와 같은 화면이 나타납니다. 
-![](https://images.velog.io/images/jjump/post/25bab0ac-fa6d-45b6-a659-cc7289cf4d34/raspberrypi_imager.png)
+![raspberrypi_imager](https://user-images.githubusercontent.com/35713051/120826609-9b39fd80-c595-11eb-81f8-51fc1d29cd59.png)
 
 이 화면만 보셔도 벌써 감이 오실껍니다...만
 모르시는 분들도 계실 수 있으니 간단하게 설명해드리도록 하겠습니다. 
@@ -48,11 +48,12 @@ OS 설치는 raspberry pi imager을 사용하였습니다.
 참고로 이 글을 작성할때는 이미 OS 설치 후 라즈베리파이를 구동한 상태이기 때문에 sd 카드는 PC가 아닌 라즈베리파이에 들어있습니다. 따라서 sd 카드 관련 부분은 글로만 설명드리도록 하겠습니다. (다음부터 주의할께요 ㅠㅠ)
 
 CHOOSE OS 버튼을 누르면 아래의 화면이 나타납니다. 
-![](https://images.velog.io/images/jjump/post/d8bfb825-70d4-493b-8e83-2addfa58f798/%EC%9D%B4%EB%AF%B8%EC%A7%80%EC%84%A0%ED%83%9D.png)
+![이미지선택](https://user-images.githubusercontent.com/35713051/120826679-a9881980-c595-11eb-8837-f8e255c95b32.png)
 OS의 종류가 다양하지만, 저는 기본적인 raspberry pi OS를 선택하였습니다. 
 
 다음으로 CHOOSE STORAGE 버튼을 누르면 아래의 화면이 나타납니다. 
-![](https://images.velog.io/images/jjump/post/c9687fa8-5118-4f21-8212-ff7636b81854/%EB%94%94%EC%8A%A4%ED%81%AC%20%EC%84%A0%ED%83%9D.png)
+![디스크 선택](https://user-images.githubusercontent.com/35713051/120826698-ae4ccd80-c595-11eb-8e31-7cb939226f4e.png)
+
 말씀드렸다시피 sd카드가 pi에 들어있습니다 ㅠㅠ
 PC에 sd카드를 연결하면 위의 리스트에 나타나게 됩니다. 
 나타나셨다면 sd카드를 선택해주시면 됩니다. 
@@ -69,7 +70,7 @@ PC에 sd카드를 연결하면 위의 리스트에 나타나게 됩니다.
 
 sd 카드에 OS write 후 최상위 경로에 파일명이 'ssh'인 파일을 생성하시면 됩니다. 
 (파일만 생성하면 됩니다.)
-![](https://images.velog.io/images/jjump/post/6a98f295-5613-42f7-b0f8-9f2bd0099de6/image.png)
+![image](https://user-images.githubusercontent.com/35713051/120826743-b86ecc00-c595-11eb-802c-ae7a4ea3bbd2.png)
 
 ## wifi 설정 
 
@@ -93,7 +94,7 @@ ssid 에는 wifi 명을 입력하고, psk 에는 wifi 비밀번호를 입력하�
 저는 putty를 사용하여 ssh를 접속합니다. 
 다른 프로그램을 사용하신다면 해당 터미널 프로그램으로 하셔도 됩니다. 
 
-![](https://images.velog.io/images/jjump/post/73001776-8569-46cd-8bb1-8dac3023b8e7/image.png)
+![putty](https://user-images.githubusercontent.com/35713051/120826786-c3296100-c595-11eb-9159-18589bccf16f.png)
 
 putty를 실행하면 위와 같은 화면이 나타납니다. 
 Host Name에 라즈베리파이의 IP를 입력한 뒤 하단의 Open 버튼을 클릭합니다. 
@@ -104,8 +105,8 @@ Host Name에 라즈베리파이의 IP를 입력한 뒤 하단의 Open 버튼을 
 * passwd : raspberry
 
 ssh 접속 후 위의 접속정보를 입력하면 터미널에 접근이 가능합니다. 
+![terminal](https://user-images.githubusercontent.com/35713051/120826934-e6eca700-c595-11eb-8df4-26307355cd3f.png)
 
-![](https://images.velog.io/images/jjump/post/fd10b79a-c3ff-4545-a01d-5b5b3d712fb0/image.png)
 
 # 비밀번호 변경
 
@@ -123,8 +124,8 @@ pi@raspberrypi:~ $ passwd
 * Retype new password: 비밀번호 확인
 
 올바르게 입력하였다면 'password updated successfully' 메시지가 출력되면서 비밀번호가 변경됩니다. 
+![terminal_passwd](https://user-images.githubusercontent.com/35713051/120826853-d50b0400-c595-11eb-983d-162afd644a1f.png)
 
-![](https://images.velog.io/images/jjump/post/25bbb987-9c35-44df-832c-f7ad3e3a3dd2/image.png)
 
 # VNC 활성화 
 
@@ -137,24 +138,28 @@ pi@raspberrypi:~ $ sudo raspi-config
 
 그럼 아래와 같은 설정 화면이 나타납니다. 
 방향키를 눌러 '3 Interface Options' 를 선택한 뒤 엔터를 누릅시다
-![](https://images.velog.io/images/jjump/post/89013c06-b652-4120-9ace-4b698ccb733c/image.png)
+![terminal_raspi_config_1](https://user-images.githubusercontent.com/35713051/120826976-eeac4b80-c595-11eb-8e03-701b75558d8f.png)
+
 
 이후 'P3 VNC' 를 선택한 뒤 엔터를 누릅니다. 
-![](https://images.velog.io/images/jjump/post/e506eaf5-a9b6-4a4f-b59f-d3cb732ecffa/image.png)
+![terminal_raspi_config_2](https://user-images.githubusercontent.com/35713051/120826988-f23fd280-c595-11eb-9633-4c6daf715fa6.png)
+
 
 Yes를 눌러 활성화해줍니다. 
-![](https://images.velog.io/images/jjump/post/77079d4b-0de3-4c43-8f97-9d53034edd73/image.png)
+![terminal_raspi_config_3](https://user-images.githubusercontent.com/35713051/120827002-f53ac300-c595-11eb-8622-96f702b1dc0f.png)
+
 
 VNC 서버 활성화 완료!
-![](https://images.velog.io/images/jjump/post/68e67565-175b-4915-8fda-75e2d7e11e93/image.png)
+![terminal_raspi_config_4](https://user-images.githubusercontent.com/35713051/120827013-f835b380-c595-11eb-9572-b17869e2fd21.png)
+
 
 VNC 해상도 설정도 해줍시다. 
 vi를 이용하여 아래의 경로의 파일을 열어줍니다. 
 ```
 pi@raspberrypi:~ $ vi /boot/config.txt
 ```
+![vnc_config](https://user-images.githubusercontent.com/35713051/120827027-fcfa6780-c595-11eb-927b-78554a621d55.png)
 
-![](https://images.velog.io/images/jjump/post/3a67185a-5b38-41e2-b4d1-85cdfe08b404/image.png)
 
 아래의 옵션에 주석을 해제하고 희망하는 해상도를 입력해줍니다. 
 ```
@@ -170,8 +175,8 @@ framebuffer_height=720
 ```
 pi@raspberrypi:~ $ netstat -ant
 ```
+![netstat](https://user-images.githubusercontent.com/35713051/120827055-01268500-c596-11eb-93a9-e9aa6298f92a.png)
 
-![](https://images.velog.io/images/jjump/post/9db33e3a-93df-4be4-a01f-5d71822c10d6/image.png)
 
 TCP 5900 포트가 LISTEN 상태인 것을 확인할 수 있습니다. 
 이제 VNC viewer 를 이용하여 접속해보도록 합시다. 
@@ -182,15 +187,19 @@ TCP 5900 포트가 LISTEN 상태인 것을 확인할 수 있습니다.
 만약 설치판을 받으신분은 설치 후 viewer를 실행해주세요.
 (설치는 각자 알아서!!)
 실행 후 상단에 '{IP주소}:5900' 을 입력해줍니다. 
-![](https://images.velog.io/images/jjump/post/ebb5370d-89c7-4c8b-87dc-dc47fe37fc10/image.png)
+![vnc_addr](https://user-images.githubusercontent.com/35713051/120827077-07b4fc80-c596-11eb-929a-360da47f4de7.png)
+
 
 접속에 성공하면 아래와 같은 화면이 나타납니다. 
 contiune를 클릭해줍니다. 
-![](https://images.velog.io/images/jjump/post/d5395f19-546a-488d-b3a4-4f650d1fce0f/image.png)
+![vnc_connect](https://user-images.githubusercontent.com/35713051/120827088-0b488380-c596-11eb-991d-045fdaca7f68.png)
+
 
 로그인 화면이 나타납니다. 
 ssh 접속정보와 같이 username과 password를 입력해줍니다. 
-![](https://images.velog.io/images/jjump/post/da87072f-26a3-413e-94ff-6d6f862a27da/image.png)
+![vnc_login](https://user-images.githubusercontent.com/35713051/120827097-0daadd80-c596-11eb-9c48-6e701ca281d5.png)
+
 
 접속에 성공하면 라즈베리파이의 바탕화면이 나타나게 됩니다! 
-![](https://images.velog.io/images/jjump/post/a906e558-c4c1-443a-87fc-81ba9fcc445b/image.png)
+![mainscreen](https://user-images.githubusercontent.com/35713051/120827124-126f9180-c596-11eb-8e7f-5e4a38f61485.png)
+
