@@ -21,6 +21,35 @@ sidebar:
 | 2018.04 ~ Current | WINS | IPS Developer | 
 | 2015.03 ~ 2015.11 | Gigalane | Android Application Developer | 
 
+# Project
+
+<table>
+    <tr>
+        <th> Title </th>
+        <th> Company </th>
+        <th> Skills </th>
+        <th> Time </th>
+    </tr>
+    {% for portfolio in site.portfolio reversed %}
+
+    {% if portfolio.categories contains "project" and portfolio.categories.size == 1 %}
+    <tr>
+        <td>
+            {% assign content = portfolio.content | strip_newlines %}
+            {% if content != ""  or portfolio.redirect_to %}
+                <a href="{{ portfolio.url }}">{{ portfolio.title }}</a>
+            {% else %}
+                {{ portfolio.title }}
+            {% endif %}
+        </td>
+        <td>{{ portfolio.company }}</td>
+        <td>{{ portfolio.skills | join: ", " }}</td>
+        <td>{{ portfolio.time }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+
 # Publication
 
 <table>
@@ -28,7 +57,7 @@ sidebar:
         <b>[Master Thesis]</b>
         <a href="http://www.riss.kr/link?id=T14740899">A Study for the Data Security and Transmission Efficiency Enhancement method on the Cloud and Multi Device Environment</a>
         Master Thesis. University of Gachon, GyeoungGi, South Korea, (2018)
-    </td></tr>
+    </td></tr>교
     <tr><td>
         <b>Sunghwan Jo</b>*,  and Gitae Han,
         <a href="https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002318584">"Secure Certificates Duplication Method Among Multiple Devices Based on BLE and TCP"</a>
