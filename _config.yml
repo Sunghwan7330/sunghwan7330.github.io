@@ -266,6 +266,11 @@ compress_html:
   ignore:
     envs: development
 
+collections:
+  portfolio:
+    output: true
+    permalink: /:collection/:path/
+    title: Portfolio
 
 # Defaults
 defaults:

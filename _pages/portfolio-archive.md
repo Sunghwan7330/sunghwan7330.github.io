@@ -57,7 +57,7 @@ sidebar:
         <b>[Master Thesis]</b>
         <a href="http://www.riss.kr/link?id=T14740899">A Study for the Data Security and Transmission Efficiency Enhancement method on the Cloud and Multi Device Environment</a>
         Master Thesis. University of Gachon, GyeoungGi, South Korea, (2018)
-    </td></tr>교
+    </td></tr>
     <tr><td>
         <b>Sunghwan Jo</b>*,  and Gitae Han,
         <a href="https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002318584">"Secure Certificates Duplication Method Among Multiple Devices Based on BLE and TCP"</a>
