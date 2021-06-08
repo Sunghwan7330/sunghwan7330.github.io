@@ -5,6 +5,6 @@ title: "비콘 기반 전력관리 플랫폼"
 skills: [c, BlueZ, BLE]
 description: ""
 image: ""
-company: "기가레인"
+company: "Gigalane"
 categories: [project]
 ---

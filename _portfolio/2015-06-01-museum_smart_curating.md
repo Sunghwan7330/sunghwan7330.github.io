@@ -5,6 +5,6 @@ title: "경기도박물관 스마트 큐레이팅"
 skills: [Android, BLE]
 description: ""
 image: ""
-company: "기가레인"
+company: "Gigalane"
 categories: [project]
 ---

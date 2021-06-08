@@ -5,6 +5,6 @@ title: "다중 카메라 제어릉 통한 원거리 얼굴인식 및 출입관�
 skills: [JavaFX, Andriod]
 description: ""
 image: ""
-company: "가천대학교"
+company: "Gachon Univ"
 categories: [project]
 ---
