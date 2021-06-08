@@ -84,3 +84,27 @@ sidebar:
         <i>2014년 한국컴퓨터정보학회 하계학술대회 논문집</i>, vol. 22, pp.71-74 2014.
     </td></tr>
 </table>
+
+# Awards 
+<table>
+    <tr>
+        <th> Title </th>
+        <th> Time </th>
+    </tr>
+    {% for portfolio in site.portfolio reversed %}
+        {% if portfolio.categories contains "award" %}
+        <tr>
+            <td>
+                {% assign content = portfolio.content | strip_newlines %}
+                {% if content != ""  or portfolio.redirect_to %}
+                    <a href="{{ portfolio.url }}">{{ portfolio.title }}</a>
+                {% else %}
+                    {{ portfolio.title }}
+                {% endif %}
+            </td>
+            <td>{{ portfolio.time }}</td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+</table>
+
