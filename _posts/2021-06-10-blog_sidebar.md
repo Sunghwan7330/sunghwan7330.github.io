@@ -61,11 +61,12 @@ permalink: categories/embedded_c_optimization
 author_profile: true
 types: posts
 ---
-
+{% raw %}
 {% assign posts = site.categories['embedded_c_optimization']%}
 {% for post in posts %}
   {% include archive-single.html type=page.entries_layout %}
 {% endfor %}
+{% endraw %}
 
 ```
 
