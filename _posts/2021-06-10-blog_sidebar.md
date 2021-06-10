@@ -102,3 +102,6 @@ defaults:
 
 수정이 완료되었다면 수정항목을 commit한 뒤 push 하도록 하자 
 
+![image](https://user-images.githubusercontent.com/35713051/121539433-a501ac00-ca40-11eb-9feb-e74204027322.png)
+
+좌측 사이드바에 카테고리가 추가되었다!
