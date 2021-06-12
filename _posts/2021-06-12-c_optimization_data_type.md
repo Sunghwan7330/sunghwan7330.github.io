@@ -19,7 +19,8 @@ last_modified_at: 2021-06-12
 
 # 개요
 
-(내용 정리중)
+해당 내용은 '임베디드 프로그래밍 C코드 최적화' 책의 story 12에내용을 정리하 였습니다.
+변수 타입을 어떻게 활용해야 프로그램을 최적화할 수 있는지에 대해 알아보려 합니다. 
 
 # 변수 데이터 타입의 사용 규칙
 
@@ -52,6 +53,7 @@ last_modified_at: 2021-06-12
 함수나 루프에서 전역 변수를 써야 한다면, 지역 변수에 복사하여 사용하는 것이 좋다.
 
 * sample code
+
 ```c
 int global var;
 
@@ -82,4 +84,63 @@ void f1 () {
 소스코드만 보았을때는 최적화 전의 코드가 더 짧고 효율적으로 보인다. 
 하지만 루프 안에서 전역변수를 사용하므로 외부 메모리 엑세스가 반복적으로 일어나기 때문에 컴퓨팅 시간이 오래걸린다. 
 반면 최적화된 코드는 전역변수의 값을 지역변수로 복사하여 연산하기 때문에 레지스터를 사용하므로 속도를 높일 수 있다.
+
+# 지역변수 최적화 
+
+지역 변수는 스택이나 레지스터에 저장된다. 
+함수의 인자는 마이크로프로세서에서 지정한 개수만큼 레지스터에 저장되거나 스택에 저장된다. 
+ARM 프로세서는 지역 변수를 4개(1 바이트 이하의 경우)까지 레지스터에 저장하고 나머지는 스택에 저장한다.
+그러므로 지역 변수나 함수 인자의 데이터 타입은 4바이트보다 작은 데이터를 사용한 다고 하더라도 속도를 높여야 할 경우에는 char, short보다는 int형으로 하는 것이 바람직하다. 
+레지스터와 크기가 맞지 않으면 데이터 처리 중에 자동으로 형 변환이 발생하여 쉬프트나 마스킹 연산이 발생하기 때문이다.
+
+* sample code
+
+```c
+char f1 (char a) {
+  return a + 1;
+}
+
+short f2 (short b) {
+  return b + 1;
+}
+
+int f3 (int c) {
+  return c + 1;
+}
+
+void main() {
+  char a;
+  short b;
+  int c;
+
+  a = f1(1);
+  b = f2(2);
+  c = f3(3);
+}
+```
+
+* 각 함수에 대한 disassamble (gdb 이용)
+```
+(gdb) disassemble f1
+Dump of assembler code for function f1:
+   0x000103d0 <+0>:     add     r0, r0, #1
+   0x000103d4 <+4>:     uxtb    r0, r0
+   0x000103d8 <+8>:     bx      lr
+End of assembler dump.
+(gdb) disassemble f2
+Dump of assembler code for function f2:
+   0x000103dc <+0>:     add     r0, r0, #1
+   0x000103e0 <+4>:     sxth    r0, r0
+   0x000103e4 <+8>:     bx      lr
+End of assembler dump.
+(gdb) disassemble f3
+Dump of assembler code for function f3:
+   0x000103e8 <+0>:     add     r0, r0, #1
+   0x000103ec <+4>:     bx      lr
+End of assembler dump.
+```
+
+위의 테스트는 라즈베리파이4에서 테스트하였습니다. 
+uxtb 는 8비트 값을 32비트로 확장하는 인스트럭션이며, sxth는 16비트를 32비트로 확장하는 인스트럭션이다. 
+f1함수와 f2함수 호출시에는 레지스터 크기에 맞게 32비트로 형변환 작업이 이뤄지는 것을 확인할 수 있다. 
 
