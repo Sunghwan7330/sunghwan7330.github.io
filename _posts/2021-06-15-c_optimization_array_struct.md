@@ -16,7 +16,7 @@ toc: true
 toc_sticky: true
 
 date: 2021-06-15
-last_modified_at: 2021-06-15
+last_modified_at: 2021-06-17
 ---
 
 # 개요 
@@ -166,5 +166,6 @@ Test2 size : 12
 예를 들어 32비트의 마이크로프로세서는 4의배수로만 주소 접근이 가능합니다. 
 그렇기때문에 컴파일시 워드 정렬을 하여 구조체가 형성되게 됩니다. 
 
-(예시 그림 필요)
+Test1 과 Test2 의 구조체의 데이터가 저장되는 형태는 다음과 같다. 
 
+![image](https://user-images.githubusercontent.com/35713051/122319760-0a333100-cf5c-11eb-8a87-514a06aa5a5a.png)
