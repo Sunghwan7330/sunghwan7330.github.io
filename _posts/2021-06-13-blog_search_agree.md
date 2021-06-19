@@ -13,7 +13,7 @@ toc: true
 toc_sticky: true
 
 date: 2021-06-13
-last_modified_at: 2021-06-13
+last_modified_at: 2021-06-19
 ---
 
 # 개요 
@@ -111,6 +111,25 @@ Sitemap: http://jinyongjeong.github.io/sitemap.xml
 ```
 
 # 사이트 등록
+
+## google 검색 허용 작업
+
+[Google Search Console](https://search.google.com/search-console/welcome) 에 접속합니다. 
+
+![image](https://user-images.githubusercontent.com/35713051/122642916-d157af80-d147-11eb-960e-e9aff4a563f8.png)
+
+위 이미지와 같이 URL 접두어에 자신의 블로그 주소를 입력해줍니다. 
+그러면 다음과 같은 소유권 확인 다이얼로그가 나타납니다. 
+
+![image](https://user-images.githubusercontent.com/35713051/122642958-fc420380-d147-11eb-94d2-f0ee97ab9bca.png)
+
+다이얼로그에 포함된 html 파일을 다운로드합니다. 
+이후 해당 파일을 블로그 레퍼지토리의 최상단 경로에 업로드한 후 push해줍니다.
+
+이 작읍은 도메인에 대한 소유권을 인증하는 작업이라고 합니다. 사이트의 소유자만이 구글 검색에 대한 허가를 해줄 수 있기 때문입니다. 
+
+
+
 
 (진행중)
 
