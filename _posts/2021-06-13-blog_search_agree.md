@@ -13,7 +13,7 @@ toc: true
 toc_sticky: true
 
 date: 2021-06-13
-last_modified_at: 2021-06-19
+last_modified_at: 2021-06-24
 ---
 
 # 개요 
@@ -136,4 +136,19 @@ Sitemap: http://jinyongjeong.github.io/sitemap.xml
 
 
 (진행중)
+
+
+## naver 검색 허용 작업 
+
+[네이버 웹마스터 도구](https://searchadvisor.naver.com/) 에 접속한 뒤 로그인해줍니다. 
+이후 우측 상단에 웹마스터 도구를 클릭합니다. 
+
+![image](https://user-images.githubusercontent.com/35713051/123256491-fe330a80-d52b-11eb-93c3-1a9baf08ff08.png)
+
+사이트 등록하는 화면에서 자신의 블로그 주소를 입력해줍니다. 
+
+![image](https://user-images.githubusercontent.com/35713051/123256589-199e1580-d52c-11eb-8265-9dc6a1bd39af.png)
+
+그러면 위의 구글 검색 작업했던것과 같이 소유권 증명을 해달라고 합니다. 
+구글에서 햇던것과 같이 `1. HTML 확인 파일을 다운로드합니다.` 의 확인 파일을 받은 뒤 자신의 블로그 레퍼지토리 최상단 루트에 업로드해줍니다. 
 
