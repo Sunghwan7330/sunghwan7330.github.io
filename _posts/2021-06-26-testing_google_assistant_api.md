@@ -131,3 +131,4 @@ Google Cloud Platform 에서 OAuth2.0 ID의 키를 다운받습니다.
 
 * https://e3jake.tistory.com/53
 * https://m.blog.naver.com/chandong83/221081942490
+* https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=love_tolty&logNo=221782726024
