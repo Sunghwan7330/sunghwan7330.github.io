@@ -288,6 +288,8 @@ defaults:
       related: true
       sidebar:
         nav: "docs"
+      toc: true
+      toc_sticky: true
   - scope:
       path: ""
       type: pages
