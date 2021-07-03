@@ -95,7 +95,7 @@ analytics:
 # Site Author
 author:
   name             : "점쁘"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/assets/images/profile.jpg"
   bio              : "점쁘의 삽질일기 ㅇㅁㅇ"
   #location         : "Somewhere"
   email            :
