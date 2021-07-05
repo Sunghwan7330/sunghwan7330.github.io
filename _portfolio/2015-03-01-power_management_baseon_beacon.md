@@ -15,13 +15,15 @@ categories: [project]
 
 ## 기술 
 
-* C, BlueZ, BLE
+* C / RaspberryPI / WiringPI / BLE / Beacon / BlueZ
 
 ## 업무
 
 * Raspberry Pi 기반 Socket 서버 구현
 * Raspberry Pi를 이용한 센서 제어 모듈 구현 (온습도, 조도, Gyro, PIR 등)
+* 센서 값 보정 및 정형화 작업 및 이상 감지 알람기능 구현 
 * BLE Gatt 통신을 통한 Beacon 상태 제어 모듈 구현
+* Beacon 기반의 제품 스케쥴링 기능 구현 
 
 ## 소개 
 

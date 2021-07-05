@@ -16,7 +16,7 @@ categories: [project]
 
 ## 기술 
 
-* Java, Android, BLE
+* Java / Android / BLE / Beacon
 
 ## 업무
 
@@ -25,6 +25,7 @@ categories: [project]
 * BLE 기반 거리 측정 모듈 구현
 * Android 기반 Https 통신 모듈 구현
 * Android 기반 박물관 소개 UI/UX 구현
+* Google play store 어플리케이션 배포 업무 수행
 
 ## 소개 
 

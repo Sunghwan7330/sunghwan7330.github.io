@@ -15,7 +15,7 @@ categories: [project]
 
 ## 기술 
 
-* Jquery, Android NDK, ECC
+* Java / JSP / ECC / Google Drive API / Android NDK / MySQL
 
 ## 업무
 

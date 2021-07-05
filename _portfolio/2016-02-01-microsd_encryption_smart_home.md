@@ -16,7 +16,7 @@ categories: [project]
 
 ## 기술 
 
-* JavaFX, JNI, MySQL
+* Java / JavaFX / Raspberry PI / Wiring PI / JNI
 
 ## 업무
 

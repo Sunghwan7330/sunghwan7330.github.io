@@ -15,7 +15,7 @@ categories: [project]
 
 ## 기술 
 
-* Java, Android
+* Java / JavaFX / Android / Jcodec / Google Map API
 
 ## 업무
 
