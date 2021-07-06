@@ -24,11 +24,15 @@ docs:
     children:
       - title: "임베디드 C프로그래밍 최적화"
         url: /categories/embedded_c_optimization
+        category: "embedded_c_optimization"
   - title: 내용 정리
     children:
       - title: "라즈베리파이"
         url: /categories/raspberry_pi
+        category: "raspberry_pi"
       - title: "gdb"
         url: /categories/gdb
+        category: "gdb"
       - title: "Blog dev"
         url: /categories/blog
+        category: "blog"
