@@ -36,3 +36,6 @@ docs:
       - title: "Blog dev"
         url: /categories/blog
         category: "blog"
+      - title: "정보공유"
+        url: /categories/infomation
+        category: "infomation"
