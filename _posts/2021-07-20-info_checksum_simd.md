@@ -7,9 +7,10 @@ categories:
 tags:
   - SIMD
   - checksum
+  - sse
 
 date: 2021-07-20
-last_modified_at: 2021-07-22
+last_modified_at: 2021-07-23
 ---
 
 # 개요 
@@ -202,7 +203,30 @@ SIMD를 사용할수도, 하지 않을수도 있기 때문에 두 가지의 방�
 
 SIMD 인스트럭션을 사용하기 위해서는 컴파일시 sse 옵션을 주어야 합니다. 
 
-(내용 추가 필요함)
+그 전에 현재 사용하고 있는 CPU가 sse를 지원하는지 확인해야 합니다. 
+
+```
+$ cat /proc/cpuinfo | grep sse
+
+...
+
+flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm ida arat epb pln pts dtherm tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm xsaveopt cqm_llc cqm_occup_llc
+....
+```
+
+제가 테스트한 CPU에서는 sse, sse2, sse3, sse4_1, sse4_2를 지원하고 있습니다. 
+
+CPU에서 sse를 지원한다면 컴파일시에 sse 옵션을 주어 컴파일할 수 있습니다. 
+저는 gcc 4.8.5 를 사용했으며, 아래의 옵션을 주어 컴파일하였습니다. 
+
+`gcc -g -msse4.2 -O3 -o sse_test sse_test.c`
+
+* -g : 디버깅을 위해 추가 (생략해도 됨)
+* -msse4.2 : SIMD 인스트럭션을 사용하기위해 추가
+* -O3 : 최적화 옵션, 해당 옵션을 넣어야 SIMD로 최적화를 수행함
+
+컴파일 후 sum  함수의 어셈블리를 확인하면 코드가 길어지며 xmm 레지스터를 사용하는 SIMD 인스트럭션을 사용하는것을 확인할 수 있습니다. 
+
 
 # segfault를 막기 위해서...
 
