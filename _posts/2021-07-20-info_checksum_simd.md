@@ -9,7 +9,7 @@ tags:
   - checksum
 
 date: 2021-07-20
-last_modified_at: 2021-07-20
+last_modified_at: 2021-07-22
 ---
 
 # 개요 
@@ -189,9 +189,135 @@ for loop를 수행하기 때문에 루프를 한번 돌때마다 아래의 동�
 movdua 명령어를 통해 xmm 레지스터로 값을 이동시킨 후 paddq 로 한번에 값을 더할 수 있습니다. 
 128bit(16byte) 의 값을 2바이트 단위로 더하기 때문에 for loop 를 8번 반복한 결과와 동일하게 됩니다. 
 
+많은 값의 덧셈을 한번에 수행하기 때문에 길이가 짧으면 SIMD 를 사용할 수 없습니다. 
+sum 함수의 어셈블리의 양이 길어지는 이유도 이 때문입니다. 
+sum 하는 값이 적으면 SIMD 인스트럭션을 사용할 수 없기 때문에 일반적인 덧셈연산을 하는 부분으로 jump하게 됩니다. 
+SIMD를 사용할수도, 하지 않을수도 있기 때문에 두 가지의 방법을 모두 사용해야하기 때문에 어셈블리의 양이 길어지게 됩니다. 
+
+# SIMD 인스트럭션 사용 
+
+이 글을 정성스럽게 다 읽고있는분이 계실지는 모르겠지만,,, 
+
+위의 예제 코드를 컴파일하였을 때 SIMD 인스트럭션을 사용하지 않았을 것입니다. 
+
+SIMD 인스트럭션을 사용하기 위해서는 컴파일시 sse 옵션을 주어야 합니다. 
+
+(내용 추가 필요함)
+
+# segfault를 막기 위해서...
+
+SIMD를 설명하느라 잠시 본 목적을 잊고있었습니다. 
+
+컴파일러가 checksum 함수에 SIMD를 적용하는 바람에 정상적인 로직에서 segfault 가 발생하게 되었습니다. 
+segfault를 막기 위해서는 어떠한 방법을 써야할까요?
+
+성능 최적화를 위해 다른 부분에는 SIMD 를 적용해야 하지만 checksum 함수에서는 segfault 가 발생하지 않게 처리해야합니다. 
+
+## sse 비활성화하기 
+
+`__attribute__` 을 통해 지정한 함수만 sse를 비활성화할 수 있습니다. 
+이렇게하면 SIMD를 사용하면서 원하는 함수만 sse를 비활성화 할 수 있습니다. 
+
+```c
+#if defined (__GNUC__) && (defined (__x86_64__) || defined (__i386__))
+__attribute__ ((target ("no-sse")))
+#endif
+uint64_t sum (const uint32_t * p, size_t nwords)
+{
+    uint64_t res = 0;
+    size_t i;
+    for (i = 0; i < nwords; i++) res += p [i];
+    return res;
+}
+```
+이러면 sum 함수만 sse가 적용되지 않습니다. 
+
+## memcpy 사용하기
+
+memcpy를 이용하여 더할 대상을 각각 복사하여 더하는 방식입니다. 
+로직이 비효율적으로 보일 수 있습니다. 이럴바에는 차라리 sse를 비활성화하는것이 더 좋아보일수도 있습니다. 
+하지만 이 방법은 보이는것처럼 비효율적이지는 않습니다. 
+
+```c
+uint64_t sum2 (const char * p, size_t nwords)
+{
+    uint64_t res = 0;
+    size_t i;
+    uint32_t temp;
+    for (i = 0; i < nwords; i++) {
+        memcpy (&temp, p + i * sizeof (uint32_t), sizeof (temp));
+        res += temp;
+    }
+    return res;
+}
+```
+
+위의 소스를 컴파일해보면 `movdua` 대신 `movdqu` 인스트럭션을 사용하는것을 볼 수 있습니다. 
+`movdqu`는 `Move Double Quadword Unaligned` 입니다. 
+즉 정렬되지 않은 데이터를 `xmm` 레지스터로 move 하게됩니다. 
+
+`movdua` 보다 `movdqu` 연산 속도가 더 느리긴 하지만 SIMD 인스트럭션을 사용할 수 있다는 장점이 있습니다. 
+
+## 결합하여 해결하기 
+
+```c
+#if defined (__GNUC__) && (defined (__x86_64__) || defined (__i386__))
+__attribute__ ((target ("no-sse")))
+#endif
+uint64_t sum3 (const char * p, size_t nwords)
+{
+    uint64_t res = 0;
+    size_t i;
+    uint32_t temp;
+    for (i = 0; i < nwords; i++) {
+        memcpy (&temp, p + i * sizeof (uint32_t), sizeof (temp));
+        res += temp;
+    }
+    return res;
+}
+```
+
+위의 코드는 gcc/intel 에서는 sse가 적용되지 않으며, 다른 아키텍쳐에서는 정상적으로 동작하게 할 수 있습니다. 
 
 
-(To be continue...)
+## checksum 함수 해결하기 
+
+```c
+#if defined (__GNUC__) && (defined (__x86_64__) || defined (__i386__))
+__attribute__ ((target ("no-sse")))
+#endif
+_Bool check_ip_header_sum (const char * p, size_t size)
+{
+    uint32_t temp;
+    uint64_t sum = 0;
+
+    memcpy (&temp, p, 4); sum += temp;
+    memcpy (&temp, p + 4, 4); sum += temp;
+    memcpy (&temp, p + 8, 4); sum += temp;
+    memcpy (&temp, p + 12, 4); sum += temp;
+    memcpy (&temp, p + 16, 4); sum += temp;
+
+    for (size_t i = 20; i < size; i+= 4) {
+        memcpy (&temp, p + i, 4);
+        sum += temp;
+    }
+
+    do {
+        sum = (sum & 0xFFFF) + (sum >> 16);
+    } while (sum & ~0xFFFFL);
+
+    return sum == 0xFFFF;
+}
+```
+
+`__attribute__`를 사용하여 gcc/intel 에서는 sse가 적용되지 않게 하고, 그 외의 아키텍쳐에서는 정상적으로 동작하도록 변경하였습니다. 
+
+
+# 정리
+
+checksum 이 무엇인지, segfault가 발생한 원인이 뭔지, SIMD가 무엇인지, 그리고 해결 방법에 대해서 알아보았습니다. 
+간단하게 정리하려고 했지만 글을 쓰면 쓸수록 점점 길어지는 느낌이 들었고, 점점 더 대충(?) 작성한 느낌이 있긴 하지만.... 그래도 내용 이해에는 문제가 없을것으로 생각됩니다. 
+더 자세한 내용은 아래의 참고페이지를 확인해주세요~!
 
 # 참고 
 
