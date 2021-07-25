@@ -4,6 +4,9 @@ excerpt: "라즈베리파이의 저장소에 쉽게 접근하기 위해 samba �
 
 categories:
   - 'raspberry_pi'
+tags:
+  - raspberry_pi
+  - samba
 
 date: 2021-07-11
 last_modified_at: 2021-07-11
