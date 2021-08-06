@@ -25,6 +25,12 @@ docs:
       - title: "임베디드 C프로그래밍 최적화"
         url: /categories/embedded_c_optimization
         category: "embedded_c_optimization"
+  - title: Algorithm
+    children:
+      - title: "2021 카카오 신입공채 코딩테스트"
+        url: /categories/2021_kakao_coding_test
+        category: "2021_kakao_coding_test"
+
   - title: 내용 정리
     children:
       - title: "라즈베리파이"
