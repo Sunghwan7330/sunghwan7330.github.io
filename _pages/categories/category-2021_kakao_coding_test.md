@@ -1,7 +1,7 @@
 ---
 title: "2021 카카오 신입공채 1차 코딩테스트"
 layout: archive
-permalink: categories/blog
+permalink: categories/2021_kakao_coding_test
 author_profile: true
 types: posts
 ---
