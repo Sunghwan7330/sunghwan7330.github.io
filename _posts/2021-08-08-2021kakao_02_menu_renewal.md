@@ -183,6 +183,73 @@ if __name__ == '__main__':
     main()
 ```
 
+
+# 소스코드 풀이 
+
+전체적인 로직의 흐름을 작성한 solution 함수에 대해 살펴보겠습니다. 
+
+```python
+    for order in orders:
+        process_course(order)
+```
+저는 손님이 주문한 메뉴들을 process_course 함수에서 모든 경우의 수를 찾도록 하였습니다. 
+DFS를 이용하여 완전탐색하고, 메뉴 두개 이상 조합되는 모든 메뉴를 딕셔너리에 넣었습니다. 
+
+만약 ABCD 를 주문한 손님이 있다면 모든 경우의 수는 아래와 같습니다. 
+
+* AB
+* AC
+* AD
+* BC
+* BD
+* CD
+* ABC
+* ABD
+* BCD
+* ABCD
+
+위의 경우의 수를 딕셔너리의 key로 하고, value는 1씩 증가하도록 하였습니다. 
+이렇게 모든 사람의 메뉴에 대해 모든 경우의 수를 탐색하여 딕셔너리에 넣게 되면 모든 사람들의 모든 메뉴 경우의 수의 합산이 입력되게 됩니다. 
+
+
+```python
+    max_cource_arr = [0 for i in range(11)]
+    for key, value in course_dic.items():
+        if value >= 2:
+            key_len = len(key)
+            if key_len in course and max_cource_arr[key_len] < value:
+                max_cource_arr[key_len] = value
+```
+다음은 `course`의 최대값을 구하는 로직입니다. 
+`course`가 `[2, 3]` 라면, 메뉴 2개 조합 중 가장 많은수와 메뉴 3개 조합 중 가장 많은 수를 코스로 만들어야 합니다. 
+`max_cource_arr`는 그 최대치를 저장하기 위한 배열입니다. 
+
+이후 `course_dic` 의 모든 item을 확인하여 각 코스에서 가장 많이 주문한 수를 `max_cource_arr`에 저장하게 됩니다. 
+(지금 생각해보니 `max_cource_arr`는 `course` 와 같은 크기로 해도 됫네요)
+
+위 로직을 수행하게 되면 사람들이 주문한 메뉴의 조합으로 각 코스에서 많이 겹치는 최대값을 알 수 있습니다. 
+만약 `max_cource_arr[2]` 의 값이 3 이라면, 메뉴 2개 조합의 코스는 3명의 사람과 겹친다는 것을 알 수 있습니다. 
+
+```python
+    for key, value in course_dic.items():
+        if value >= 2:
+            key_len = len(key)
+            if value == max_cource_arr[key_len]:
+                answer.append(key)
+	answer.sort()
+```
+마지막으로 정답을 구하는 부분입니다. 
+`course_dic` 의 모든 item을 확인하여 `max_cource_arr` 에 저장된 최대값과 같은 코스를 `answer`에 저장합니다. 
+이후 `sort()`함수를 통해 정답을 정렬해주면 됩니다. 
+
+# 마무리 
+
+처음 생각한대로 코드를 짜고 제출하여 통과하였습니다. 
+그리고 포스팅을 작성하는데 뭔가 아쉬운 부분이 조금씩 보이네요. 
+
+혹시나 이 포스팅을 참고하시는 분들은 좀 더 개선된 코드를 작성해보시기 바랍니다. :)
+
+
 # 참고 
 
 * https://tech.kakao.com/2021/01/25/2021-kakao-recruitment-round-1/
