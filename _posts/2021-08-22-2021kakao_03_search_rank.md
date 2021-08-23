@@ -105,6 +105,168 @@ last_modified_at: 2021-08-22
 * `"- and - and - and chicken 100"` : 소울푸드로 chicken을 선택한 지원자 중 코딩테스트 점수를 100점 이상을 받은 지원자는 2명 입니다.
 * `"- and - and - and - 150"` : 코딩테스트 점수를 150점 이상 받은 지원자는 4명 입니다.
 
+# 1차시도 - 효율성 실패 
+
+## 소스코드 
+
+정답은 다 맞았지만 효율성에서 실패한 코드입니다. 
+
+```python
+info_dic = {
+    "cpp" : 1,
+    "java" : 2,
+    "python" : 4,
+    "backend" : 8,
+    "frontend" : 16,
+    "junior" : 32,
+    "senior" : 64,
+    "chicken" : 128,
+    "pizza" : 256
+}
+DEV_LANG_LIST = [info_dic["cpp"], info_dic["java"], info_dic["python"]]
+JOB_LIST = [info_dic["backend"], info_dic["frontend"]]
+CAREER_LIST = [info_dic["junior"], info_dic["senior"]]
+SOULFOOD_LIST = [info_dic["chicken"], info_dic["pizza"]]
+LIST_ARR = [DEV_LANG_LIST, JOB_LIST, CAREER_LIST, SOULFOOD_LIST]
+LIST_SUM_ARR = [sum(arr) for arr in LIST_ARR]
+
+
+def convert_info_to_bit(info_arr):
+    info_bit = 0
+    for i in range(len(LIST_ARR)):
+        if info_arr[i] == '-':
+            info_bit += LIST_SUM_ARR[i]
+        else:
+            info_bit += info_dic[info_arr[i]]
+
+    return info_bit
+
+
+def decode_applicant_info(applicant_info):
+    info_arr = applicant_info.split()
+    info_bit = convert_info_to_bit(info_arr)
+
+    return [info_bit, int(info_arr[-1])]
+
+def solution(info, query_list):
+    answer = []
+    appl_info_arr = []
+
+    for applicant_info in info:
+        appl_info_arr.append(decode_applicant_info(applicant_info))
+    #print(appl_info_arr)
+
+    for query in query_list:
+        query = query.replace(" and ", " ")
+        items = query.split(" ")
+        bit_val = convert_info_to_bit(items)
+        score = int(items[-1])
+
+        #print(query)
+        #print(bit_val, score)
+
+        total = 0
+        for appl_info in appl_info_arr:
+            if appl_info[0] & bit_val == appl_info[0] and  appl_info[1] >= score:
+                total += 1
+        answer.append(total)
+
+    #print(answer)
+    return answer
+
+def main():
+    testcases = [
+        ["java backend junior pizza 150","python frontend senior chicken 210","python frontend senior chicken 150","cpp backend senior pizza 260","java backend junior chicken 80","python backend senior chicken 50"],
+        ["java and backend and junior and pizza 100", "python and frontend and senior and chicken 200",
+         "cpp and - and senior and pizza 250", "- and backend and senior and - 150", "- and - and - and chicken 100",
+         "- and - and - and - 150"],
+        [1, 1, 1, 1, 2, 4]
+    ]
+
+    num = 1
+    print("* %d." % num)
+    ret = solution(testcases[0],testcases[1])
+    res = 1
+    for i in range(len(testcases[2])):
+        if not ret[i] == testcases[2][i]:
+            res = 0
+            break
+    if res == 1:
+        print("  - success")
+    else:
+        print("  - fail")
+    num += 1
+
+if __name__ == '__main__':
+    main()
+```
+
+## 해설 
+
+쿼리에 이용되는 각 item을 비트로 변경하여 비교하는 방식을 사용하였습니다. 
+
+* cpp : 1,
+* java : 2,
+* python : 4,
+* backend : 8,
+* frontend : 16,
+* junior : 32,
+* senior : 64,
+* chicken : 128,
+* pizza : 256
+
+만약 `cpp and backend and junior and pizza` 를 선택한 지원자라면, `1 + 8 + 32 + 256` 이 지원자의 key 가 됩니다. 
+이를 바이너리로 표현한다면 `100101001` 이 되겠네요.
+
+쿼리도 동일한 방식으로 바꿔줍니다. 이때 `-` 가 있다면 해당 type에 들어갈 수 있는 모든 값을 더합니다. 
+
+만약 쿼리가 `- and backend and junior and pizza` 라면, `1 + 2 + 4 + 8 + 32 + 256` 이 됩니다.
+이를 바이너리로 표현한다면 `100101111` 이 되겠네요.
+
+지원자가 쿼리에 포함하는지를 확인하려면 이 둘을 and 연산을 하면 됩니다. 
+지원자가 쿼리의 조건을 만족한다면 and 연산하였을 때 지원자의 key가 나옵니다. 
+위에서 예시를 들었던 `cpp and backend and junior and pizza` 참가자는 `- and backend and junior and pizza` 쿼리를 만족합니다. 
+이 둘의 key를 서로 and 해보도록 합시다. 
+
+```
+     100101001
+and  100101111
+---------------
+     100101001
+```
+
+한번 더 해보겠습니다. 
+`cpp and backend and junior and pizza` 참가자가 `- and - and - and -` 쿼리를 만족하는지 확인하기 위해 and 연산을 해봅시다.
+
+```
+     100101001
+and  111111111
+---------------
+     100101001
+```
+
+and 연산을 하면 역시 지원자의 값과 같은 값이 나옵니다. 
+
+쿼리를 만족하지 않으면 어떻게 될까요?
+`cpp and backend and junior and pizza` 참가자가 `java and backend and junior and pizza` 쿼리를 만족하는지 확인하기 위해 and 연산을 해봅시다.
+
+```
+     100101001
+and  100101010
+---------------
+     100101000
+```
+
+이제 확실히 차이가 보이실겁니다. 
+지원자의 값과 쿼리의 값은 뒷부분의 비트만 다르게 됩니다. 
+그렇기때문에 이를 and 연산하면 0으로 계산되여 지원자의 값이랑 다르게 되는 것입니다. 
+각각의 아이템을 bit로 계산하였기 때문에 이와같이 and 연산으로 필터링이 가능해집니다. 
+
+하지만 이 코드는 효율성 검사에서 떨어지게 됩니다. 
+이 코드의 단점은 지원자 많을때 한 쿼리에 대해서 모든 지원자를 전부 and 연산해줘야한다는 점입니다. 
+지원자가 많으면 많을수록 쿼리 하나를 수행하는데 걸리는 시간은 점점 늘어나게 될 것입니다. 
+
+
 
 
 # 참고 
