@@ -270,12 +270,187 @@ and  100101010
 
 ## 소스코드
 
-```
+```python
+import bisect
+from itertools import combinations
+
+def solution(info, query_list):
+    answer = []
+    appl_info_arr = []
+    alllicant_info_dic = {}
+
+    for applicant_info in info:
+        info_arr = applicant_info.split()
+        info_key_arr = info_arr[:-1]
+        info_val = int(info_arr[-1])
+
+        for i in range(5):
+            for c in combinations(info_key_arr, i):
+                key = ''.join(c)
+                #print(key)
+                if key in alllicant_info_dic:
+                    alllicant_info_dic[key].append(info_val)
+                else:
+                    alllicant_info_dic[key] = [info_val]
+
+    for key, arr in alllicant_info_dic.items():
+        arr.sort()
+
+    #print(alllicant_info_dic)
+
+    for q in query_list:
+        q = q.split(" ")
+        score = int(q[-1])
+        q = q[:-1]
+        
+        for i in range(3):
+            q.remove("and")
+        while "-" in q:
+            q.remove("-")
+            
+        key = ''.join(q)
+        #print(key)
+
+        if key in alllicant_info_dic:
+            arr = alllicant_info_dic[key]
+            all_len = len(arr)
+            index = bisect.bisect_left(arr, score, lo=0, hi=all_len)
+            answer.append(all_len - index)
+        else:
+            answer.append(0)
+        
+    #print(answer)
+    return answer
+
+def main():
+    testcases = [
+        ["java backend junior pizza 150","python frontend senior chicken 210","python frontend senior chicken 150","cpp backend senior pizza 260","java backend junior chicken 80","python backend senior chicken 50"],
+        ["java and backend and junior and pizza 100", "python and frontend and senior and chicken 200",
+         "cpp and - and senior and pizza 250", "- and backend and senior and - 150", "- and - and - and chicken 100",
+         "- and - and - and - 150"],
+        [1, 1, 1, 1, 2, 4]
+    ]
+
+    num = 1
+    print("* %d." % num)
+    ret = solution(testcases[0],testcases[1])
+    res = 1
+    for i in range(len(testcases[2])):
+        if not ret[i] == testcases[2][i]:
+            res = 0
+            break
+    if res == 1:
+        print("  - success")
+    else:
+        print("  - fail")
+    num += 1
+
+if __name__ == '__main__':
+    main()
 ```
 
 ## 해설
 
+먼저, 별도의 함수를 선언하지 않고 inline 화하였습니다. 
+간단한 함수라고 하더라도 함수 호출시 스택 메모리에 필요한 정보를 올리고, return 시 이를 정리하는데 부하가 있습니다. 
+그렇기때문에 제귀함수와 같이 함수를 많이 호출하는 로직의 경우 효율성이 좋지 않습니다. 
 
+그럼 어떻게 효율성을 올릴 수 있을까요?
+이에 대해서 많은 고민을 해보았습니다. 
+
+위에 1차시도에서는 지원자가 많을 때 복잡도가 높아지는 문제가 있었습니다. 
+이러한 문제를 해결하기 가장 좋은 방법은 hash map을 사용하는 것입니다. 
+
+hash map 은 key와 value로 구성된 자료구조이며, key에 해당하는 value를 빠르게 찾을 수 있다는 장점이 있습니다. 
+python 에서는 딜셔너리라는 이름으로 hash map 자료구조를 제공합니다. 
+
+`cpp and backend and junior and pizza 150` 참가자가 있다고 합시다. 
+key를 `cpp backend junior pizza` 로 하고, value를 `[150]`으로 딕셔너리에 등록합니다. 
+이와 같은 방법으로 모든 참가자의 정보를 딕셔너리에 입력할 수 있습니다. 
+만약 같은 조건을 가진 참가자가 있다면 키는 같게하며, value의 배열에 점수를 추가해주는 식으로 입력합니다. 
+이렇게하면 쿼리가 입력되었을 때 해당 쿼리를 key로 변환하여 딕셔너리에 입력하면 해당 조건을 만족하는 참가자들의 점수를 바로 알 수 있게됩니다. 
+
+하지만 위와같이 한다면 쿼리에서 `-`가 입력되었을 때 결과를 얻을 수 없습니다.  
+`-` 를 처리하기 위해서는 어떤 방법을 사용해야할까요?
+
+정보가 `cpp and backend and junior and pizza 150` 인 참가자가 있다고 합시다. 
+이 참가자는 아래의 16가지 쿼리를 만족할 수 있습니다. 
+
+* `- - - - -`
+* `cpp - - - -`
+* `- backend - -`
+* `- -junior -`
+* `- - - pizza`
+* `cpp backend - -`
+* `cpp - junior -`
+* `cpp - - pizza`
+* `- backend junior -`
+* `- backend - pizza`
+* `- - junior pizza`
+* `cpp backend junior -`
+* `cpp backend - pizza`
+* `cpp - junior pizza`
+* `- backend junior pizza`
+* `cpp backend junior pizza`
+
+그러면 위의 모든 정보를 key로 입력하면 `-`에 대한 쿼리를 만족할 수 있습니다. 
+
+이제 소스코드를 확인해보겠습니다. 
+
+```python
+    for applicant_info in info:
+        info_arr = applicant_info.split()
+        info_key_arr = info_arr[:-1]
+        info_val = int(info_arr[-1])
+
+        for i in range(5):
+            for c in combinations(info_key_arr, i):
+                key = ''.join(c)
+                #print(key)
+                if key in alllicant_info_dic:
+                    alllicant_info_dic[key].append(info_val)
+                else:
+                    alllicant_info_dic[key] = [info_val]
+
+    for key, arr in alllicant_info_dic.items():
+        arr.sort()
+```
+
+먼저 `for`문을 통해 모든 참가자들의 정보를 반복합니다. 
+
+이후 `combinations` 을 통해 참가자가 생성할 수 있는 모든 조합을 생성합니다. 
+이때 `key = ''.join(c)` 으로 key를 생성합니다. 
+즉 `-`은 그냥 공백으로 처리하여 키를 만들도록 하였습니다. 
+
+이후 딕셔너리의 모든 value 에 있는 배열을 sorting합니다. 
+
+이제 쿼리에 대한 결과를 찾으면 됩니다. 
+
+```python
+    for q in query_list:
+        q = q.split(" ")
+        score = int(q[-1])
+        q = q[:-1]
+        
+        for i in range(3):
+            q.remove("and")
+        while "-" in q:
+            q.remove("-")
+            
+        key = ''.join(q)
+        #print(key)
+
+        if key in alllicant_info_dic:
+            arr = alllicant_info_dic[key]
+            all_len = len(arr)
+            index = bisect.bisect_left(arr, score, lo=0, hi=all_len)
+            answer.append(all_len - index)
+        else:
+            answer.append(0)
+        
+    #print(answer)
+    return answer
+```
 
 # 참고 
 
