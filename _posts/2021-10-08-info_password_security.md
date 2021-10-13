@@ -114,6 +114,31 @@ SHA-1 로 변환된 `39dfa55283318d31afe5a3ff4a0e3253e2045e43` 라는 해시값�
 만약 컴퓨팅 성능이 좋아진다면, 키 스트래칭 시 반복수를 더 늘리면 됩니다. 
 
 
+# Adaptive Key Derivation Functions
+
+Adaptive Key Derivation Functions 는 위의 보완 방법인 솔팅과 키스트레칭 외에 다른 요소들을 추가하여 공격자가 비밀번호를 유추하기 어렵도록 하는 방법입니다. 
+
+이러한 함수들은 GPU와 같은 장비에서 병렬화를 하기 어렵게 제공한다고 합니다. 
+
+## PBKDF2
+
+Adaptive Key Derivation Functions 중 가장 많이 사용되는 방법이 PBKDF2 방식입니다. 
+PBKDF2 방식은 아래와 같은 파라메타를 요구합니다. 
+
+```
+digest = PBKDF2(PRF, passwd, salt, c, Dlen)
+```
+
+* PRF : 난수
+* passwd : 패스워드 
+* salt : 솔트값
+* c : iteration 반복 카운트 
+* DLen : digest 길이 
+
+PBKDF2 는 미국 NIST에 의해 승인된 알고리즘이며, 미국 정부 시스템에서도 해당 방법을 사용한다고 합니다. 
+
+
+
 # 참고 
 
 * https://d2.naver.com/helloworld/318732
