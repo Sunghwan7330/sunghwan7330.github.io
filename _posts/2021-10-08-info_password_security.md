@@ -137,6 +137,21 @@ digest = PBKDF2(PRF, passwd, salt, c, Dlen)
 
 PBKDF2 는 미국 NIST에 의해 승인된 알고리즘이며, 미국 정부 시스템에서도 해당 방법을 사용한다고 합니다. 
 
+# bcrypt
+
+bcrypt는 패스워드를 저장할 목적으로 설계된 알고리즘입니다. 
+OpenBSD에서 기본 암호 인증 매커니즘으로 사용되고 있으며, 미래에 PBKDF2보다 더 경쟁력이 있다고 여겨진다. 
+
+bcrypt 알고리즘은 Blowfish 라는 암호화 알고리즘을 여러번 수행하여 다이제스트를 생성하는 방식을 사용한다. 
+그리고 bcrypt 알고리즘은 항상 72byte의 character 크기를 사용하여야 한다.
+
+입력값으로는 패스워드와 salt 값이 요구된다. 
+
+```java
+// In java
+String hashed = BCrypt.hashpw(password, BCrypt.gensalt(11));
+
+```
 
 
 # 참고 
