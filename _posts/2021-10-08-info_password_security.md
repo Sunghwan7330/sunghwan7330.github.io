@@ -137,7 +137,7 @@ digest = PBKDF2(PRF, passwd, salt, c, Dlen)
 
 PBKDF2 는 미국 NIST에 의해 승인된 알고리즘이며, 미국 정부 시스템에서도 해당 방법을 사용한다고 합니다. 
 
-# bcrypt
+## bcrypt
 
 bcrypt는 패스워드를 저장할 목적으로 설계된 알고리즘입니다. 
 OpenBSD에서 기본 암호 인증 매커니즘으로 사용되고 있으며, 미래에 PBKDF2보다 더 경쟁력이 있다고 여겨진다. 
@@ -153,6 +153,30 @@ String hashed = BCrypt.hashpw(password, BCrypt.gensalt(11));
 
 ```
 
+## scrypt
+
+scrypt는PKKDF2와 유사한 adptive key derivation function입니다. 
+scrypt는 다이제스트를 생성할 때 메모리 오버헤드를 갖도록 설계되어 있습니다. 
+그렇기 때문에 무작위 대입공격(brute-force attack) 시 병렬처리가 매우 어렵다는 특징이 있습니다. 
+
+다음은 scrypt의 사용 예시입니다. 
+
+```
+DIGEST = scrypt(Password, Salt, N, r, p, DLen)  
+```
+
+* Password : 패스워드 
+* Salt : 솔트값
+* N : CPU 비용 
+* r : 메모리 비용
+* p : 병렬화 (parallelization)
+* DLen : 다이제스트 길이값
+
+# 마무리 
+
+쉽게 풀어쓰려고 했는데 그냥 생각없이 설명한 감이 있네요. 
+특히 scrypt에 대한 자료는 따로 더 찾아봐야 할 듯 합니다. 내용이 많이 부실하네요 ㅠㅠ
+시간이 되면 내용을 더 보강해보도록 하겠습니다. 
 
 # 참고 
 
