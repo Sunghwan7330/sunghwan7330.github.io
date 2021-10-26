@@ -25,7 +25,7 @@ docs:
       - title: "임베디드 C프로그래밍 최적화"
         url: /categories/embedded_c_optimization
         category: "embedded_c_optimization"
-      - title: "밑바닥부텉 만드는 컴퓨팅 시스템"
+      - title: "밑바닥부터 만드는 컴퓨팅 시스템"
         url: categories/make_computing_system
         category: "make_computing_system"
 
