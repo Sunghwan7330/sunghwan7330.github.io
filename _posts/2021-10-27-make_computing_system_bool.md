@@ -218,6 +218,7 @@ Xor은 두 입력값이 다를때 1을 반환하고 그 외에는 0을 반환합
 출력: out
 기능: If sel=0 then outca else out=b.
 ```
+![image](https://user-images.githubusercontent.com/35713051/140077728-6c174c6d-5278-4802-9afd-42c75081a05f.png)
 
 ### 2.1.7 디멀티플렉서
 
@@ -235,6 +236,8 @@ Xor은 두 입력값이 다를때 1을 반환하고 그 외에는 0을 반환합
 | --- | --- | --- |
 | 0 | in | 0 | 
 | 1 | 0 | in |
+
+![image](https://user-images.githubusercontent.com/35713051/140077762-8eb64097-0c60-436c-9e6f-0b053e5bde16.png)
 
 ## 2.3 기본 게이트의 멀티비트 버전
 
