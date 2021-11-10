@@ -10,7 +10,7 @@ tags:
   - 진리
 
 toc: true
-toc_stic표ky: true
+toc_sticky: true
 
 date: 2021-10-27
 last_modified_at: 2021-10-27
