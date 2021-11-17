@@ -25,6 +25,8 @@ last_modified_at: 2021-11-16
 
 # 게이트 제작 
 
+## Not 게이트 제작
+
 처음에는 Nand 게이트만 지원합니다. 
 Nand게이트의 진리표는 아래와 같습니다. (And의 반대입니다)
 
@@ -97,4 +99,61 @@ CHIP Not {
 Nand의 입력인 `a`와 `b`에는 `in`을 입력하고, 출력인 `out`에는 `out`을 입력해줍니다. 
 마지막의 `out=out` 이조금 햇갈릴 수 있는데, `=`을 기준으로 왼쪽의`out`은 Nand에서 출력하기 위해 입력받는 부분이고, 
 오른쪽의 `out`은 출력된 값을 저장하는 변수입니다. 
+
+이제 제작한 게이트를 프로그램을 통해 로드한 후 테스트를 해보도록 합시다.
+
+## And 게이트 제작
+
+Not게이트를 제작하였으니 이제 And 게이트를 만들어보겠습니다. 
+And게이트는 Nand게이트에 출력값을 Not으로 반전시켜주면 되겠습니다. 
+
+```
+CHIP And {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    // Put your code here:
+    Nand(a=a, b=b, out=c);
+    Not(in=c, out=out);
+}
+```
+
+먼저 Nand에 `a`와 `b`를 입력하고 출력을 `c`에 저장합니다. 
+이후 Not게이뭉트에 `c`를 입력하고 `out`에 출력하면 And 게이트가 완성됩니다. 
+
+이와 같은 방식으로 모든 게이트를 완성해나가면 됩니다. 
+
+## And16 게이트 제작 
+
+hdl 작성 및 프로그램 구동법에 대해서는 위에서 설명하였으니, 해당 절 부터는 간단한 설명 후 완성된 코드만 공개하겠습니다. 
+ 
+And16은 16비트의 값 `a`와 `b`를 and 연산하여 출력하는 게이트입니다. 
+hdl에서 배열의 값들 입력해주어야하는데, 코드를 보면 어렵지 않습니다. 
+
+```
+CHIP And16 {
+    IN a[16], b[16];
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+    And(a=a[0], b=b[0], out=out[0]);
+    And(a=a[1], b=b[1], out=out[1]);
+    And(a=a[2], b=b[2], out=out[2]);
+    And(a=a[3], b=b[3], out=out[3]);
+    And(a=a[4], b=b[4], out=out[4]);
+    And(a=a[5], b=b[5], out=out[5]);
+    And(a=a[6], b=b[6], out=out[6]);
+    And(a=a[7], b=b[7], out=out[7]);
+    And(a=a[8], b=b[8], out=out[8]);
+    And(a=a[9], b=b[9], out=out[9]);
+    And(a=a[10], b=b[10], out=out[10]);
+    And(a=a[11], b=b[11], out=out[11]);
+    And(a=a[12], b=b[12], out=out[12]);
+    And(a=a[13], b=b[13], out=out[13]);
+    And(a=a[14], b=b[14], out=out[14]);
+    And(a=a[15], b=b[15], out=out[15]);    
+}
+```
 
