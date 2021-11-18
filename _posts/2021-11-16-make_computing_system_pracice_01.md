@@ -220,6 +220,28 @@ CHIP Or {
 }
 ```
 
+## Or 8way
+
+Or 8way 는 8개의 비트를 모두 or 연산을 하면 됩니다. 
+입력된 비트 중 하나라도 1이라면 1이 출력되겠습니다. 
+
+```
+CHIP Or8Way {
+    IN in[8];
+    OUT out;
+
+    PARTS:
+    // Put your code here:
+    Or(a=in[0], b=in[1], out=out0); 
+    Or(a=out0, b=in[2], out=out1);
+    Or(a=out1, b=in[3], out=out2);
+    Or(a=out2, b=in[4], out=out3);
+    Or(a=out3, b=in[5], out=out4);
+    Or(a=out4, b=in[6], out=out5);
+    Or(a=out5, b=in[7], out=out);
+}
+```
+
 ## Or16 게이트 
 
 Or16 게이트는 16비트의 두 값을 or 연산을 합니다. 
@@ -248,5 +270,93 @@ CHIP Or16 {
     Or(a=a[13], b=b[13], out=out[13]);
     Or(a=a[14], b=b[14], out=out[14]);
     Or(a=a[15], b=b[15], out=out[15]);
+}
+```
+
+## Xor 게이트 
+
+Xor은 입력받은 두 비트가 같으면 0, 다르면 1을 출력하는 게이트입니다. 
+위에서 제작한 And, Or, Not을 모두 사용하여 구현하였습니다. 
+
+```
+CHIP Xor {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    // Put your code here:
+    Not(in=b, out=notb);
+    And(a=a, b=notb, out=anotb);
+	
+    Not(in=a, out=nota);
+    And(a=nota, b=b, out=bnota);
+	
+    Or(a=anotb, b=bnota, out=out);
+}
+```
+
+## Mux 게이트 
+
+멀티플렉서는 a, b, sel을 입력받고, sel의 값에 따라 a 또는 b를 출력하는 게이트입니다. 
+
+```
+CHIP Mux {
+    IN a, b, sel;
+    OUT out;
+
+    PARTS:
+    // Put your code here:
+    Not(in=sel, out=notsel);
+    And(a=a, b=notsel, out=out1);
+    And(a=sel, b=b, out=out2);
+    Or(a=out1, b=out2, out=out);
+}
+```
+
+## Mux16 게이트 
+
+Mux16 게이트는 16비트의 a, b 와 sel을 입력받고, sel의 값에 따라 a 또는 b를 출력하는 게이트입니다. 
+마찬가지로 앞에서 구현한 Mux 게이트를 이용해 쉽게 구현할 수 있습니다. 
+
+```
+CHIP Mux16 {
+    IN a[16], b[16], sel;
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+    Mux(a=a[0], b=b[0], sel=sel, out=out[0]);
+    Mux(a=a[1], b=b[1], sel=sel, out=out[1]);
+    Mux(a=a[2], b=b[2], sel=sel, out=out[2]);
+    Mux(a=a[3], b=b[3], sel=sel, out=out[3]);
+    Mux(a=a[4], b=b[4], sel=sel, out=out[4]);	
+    Mux(a=a[5], b=b[5], sel=sel, out=out[5]);	
+    Mux(a=a[6], b=b[6], sel=sel, out=out[6]);	
+    Mux(a=a[7], b=b[7], sel=sel, out=out[7]);	
+    Mux(a=a[8], b=b[8], sel=sel, out=out[8]);	
+    Mux(a=a[9], b=b[9], sel=sel, out=out[9]);	
+    Mux(a=a[10], b=b[10], sel=sel, out=out[10]);	
+    Mux(a=a[11], b=b[11], sel=sel, out=out[11]);	
+    Mux(a=a[12], b=b[12], sel=sel, out=out[12]);	
+    Mux(a=a[13], b=b[13], sel=sel, out=out[13]);	
+    Mux(a=a[14], b=b[14], sel=sel, out=out[14]);
+    Mux(a=a[15], b=b[15], sel=sel, out=out[15]);
+}
+```
+
+## DMux 게이트 
+
+디멀티플렉서는 in과 sel 을 입력받고, sel의 값에 따라  in의 값을 a 또는 b로 출력하는 게이트입니다. 
+
+```
+CHIP DMux {
+    IN in, sel;
+    OUT a, b;
+
+    PARTS:
+    // Put your code here:
+    Not(in=sel, out=notsel);
+    And(a=in, b=notsel, out=a);
+    And(a=in, b=sel, out=b);
 }
 ```
