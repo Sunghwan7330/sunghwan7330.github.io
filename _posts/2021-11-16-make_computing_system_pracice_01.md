@@ -157,3 +157,96 @@ CHIP And16 {
 }
 ```
 
+## Not 게이트 
+
+Not 게이트는 Nand 게이트의 입력을 같게 넣어주면 됩니다. 
+
+```
+CHIP Not {
+    IN in;
+    OUT out;
+
+    PARTS:
+    // Put your code here:
+    Nand(a=in, b=in, out=out);
+}
+```
+
+## Not16 게이트 
+
+Not16 게이트는 16비트의 데이터를 반전시키는 게이트입니다. 
+앞에서 구현한 Not게이트를 이용하여 쉽게 구현이 가능합니다. 
+
+```
+CHIP Not16 {
+    IN in[16];
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+    Not(in=in[0], out=out[0]);
+    Not(in=in[1], out=out[1]);
+    Not(in=in[2], out=out[2]);
+    Not(in=in[3], out=out[3]);
+    Not(in=in[4], out=out[4]);
+    Not(in=in[5], out=out[5]);
+    Not(in=in[6], out=out[6]);
+    Not(in=in[7], out=out[7]);
+    Not(in=in[8], out=out[8]);
+    Not(in=in[9], out=out[9]);
+    Not(in=in[10], out=out[10]);
+    Not(in=in[11], out=out[11]);
+    Not(in=in[12], out=out[12]);
+    Not(in=in[13], out=out[13]);
+    Not(in=in[14], out=out[14]);
+    Not(in=in[15], out=out[15]);
+}
+```
+
+## Or 게이트 
+
+Or 게이트는 Nand와 Not 게이트로 구현이 가능합니다. 
+
+```
+CHIP Or {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    // Put your code here:
+    Not(in=a, out=aa);
+    Not(in=b, out=bb);
+    Nand(a=aa, b=bb, out=out);
+}
+```
+
+## Or16 게이트 
+
+Or16 게이트는 16비트의 두 값을 or 연산을 합니다. 
+앞에서 구현한 or 게이트로 쉽게 제작할 수 있습니다. 
+
+```
+CHIP Or16 {
+    IN a[16], b[16];
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+    Or(a=a[0], b=b[0], out=out[0]);
+    Or(a=a[1], b=b[1], out=out[1]);
+    Or(a=a[2], b=b[2], out=out[2]);
+    Or(a=a[3], b=b[3], out=out[3]);
+    Or(a=a[4], b=b[4], out=out[4]);
+    Or(a=a[5], b=b[5], out=out[5]);
+    Or(a=a[6], b=b[6], out=out[6]);
+    Or(a=a[7], b=b[7], out=out[7]);
+    Or(a=a[8], b=b[8], out=out[8]);
+    Or(a=a[9], b=b[9], out=out[9]);
+    Or(a=a[10], b=b[10], out=out[10]);
+    Or(a=a[11], b=b[11], out=out[11]);
+    Or(a=a[12], b=b[12], out=out[12]);
+    Or(a=a[13], b=b[13], out=out[13]);
+    Or(a=a[14], b=b[14], out=out[14]);
+    Or(a=a[15], b=b[15], out=out[15]);
+}
+```
