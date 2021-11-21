@@ -23,6 +23,14 @@ last_modified_at: 2021-11-16
 
 다운받은 프로그램에서 `HardwareSimulator.bat` 를 실행해줍니다. 
 
+![image](https://user-images.githubusercontent.com/35713051/142761388-9d8c0dc9-0cfb-4c4e-bdde-8b2fc20c87d3.png)
+
+UI에서 보이는 화면 중 각 표시한 버튼은 아래와 같습니다. 
+
+* ① : hdl 파일을 로드합니다. 
+* ② : 스크립트를 실행합니다. 
+* ③ : 스크립트를 로드합니다. 
+
 # 게이트 제작 
 
 ## Not 게이트 제작
@@ -101,6 +109,23 @@ Nand의 입력인 `a`와 `b`에는 `in`을 입력하고, 출력인 `out`에는 `
 오른쪽의 `out`은 출력된 값을 저장하는 변수입니다. 
 
 이제 제작한 게이트를 프로그램을 통해 로드한 후 테스트를 해보도록 합시다.
+
+UI에서 hdl 로드 및 스크립트를 로드합니다. 
+
+`Not.hdl` 파일과 `Not.tst` 파일을 로드하면 아래와 같은 화면이 됩니다. 
+
+![image](https://user-images.githubusercontent.com/35713051/142761471-5fe8fa35-d784-4a6a-a1c7-206c8a5fb9dd.png)
+
+좌측 하단의 HDL 항목에는 로드한 hdl 파일이 나타나고, 우측에는 테스트를 위한 스크립트가 나타납니다. 
+이제 run버튼을 눌러 스크립트를 실행합니다. 
+또는 single step 버튼을 눌러 단계별로 실행할 수 있습니다. 
+
+실행 후 hdl 파일이 있는 경로로 가면 out 파일이 있습니다. 
+위에서 실행한 스크립트를 통해 출력된 결과가 기록되어 있습니다. 
+![image](https://user-images.githubusercontent.com/35713051/142761592-73826538-59d8-48ac-a700-fea1887850cc.png)
+
+출력된 out 파일과 cmp 파일을 비교해보면 같은 결과가 나타날 것입니다. 
+우리가 올바르게 게이트를 만들었다는 것입니다. 
 
 ## And 게이트 제작
 
