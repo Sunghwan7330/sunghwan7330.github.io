@@ -54,5 +54,26 @@ CHIP HalfAdder {
     Xor(a=a, b=b, out=sum);
     And(a=a, b=b, out=carry);
 }
+```
 
+# 전가산기 제작 
+
+전가산기는 세개의 비트 `a`, `b`, `c` 를 입력받아 더하여 `sum` 과 `carry` 를 계산하는 연산장치입니다. 
+세 개의 비트를 모두 더했을 때의 최대값은 3이므로 `sum` 과 `carry`를 통해 모든 값을 편할 수 있습니다. 
+
+전가산기는 위에서 제작한 반가산기를 이용하여 쉽게 구현할 수 있습니다. 
+전가산기를 이용하여 `a`와 `b`를 계산하고, 출력되는 `sum` 과 `c`를 반가산기로 더하여 나온 결과를 `sum`으로 출력합니다. 
+이때 발생하는 `carry`들은 반가산기 구현할때와 같이 `Xor` 게이트를 이용하여 연산합니다. 
+```
+CHIP FullAdder {
+    IN a, b, c;  // 1-bit inputs
+    OUT sum,     // Right bit of a + b + c
+        carry;   // Left bit of a + b + c
+
+    PARTS:
+    // Put you code here:
+    HalfAdder(a=a, b=b, sum=sumab, carry=carryab);
+    HalfAdder(a=sumab, b=c, sum=sum, carry=carryabc);
+	Xor(a=carryabc, b=carryab, out=carry);
+}
 ```
