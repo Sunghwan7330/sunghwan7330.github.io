@@ -143,3 +143,56 @@ CHIP Add16 {
    FullAdder(a=a[15], b=b[15], c=c14, sum=out[15], carry=c15);
 }
 ```
+
+# ALU 제작
+
+ALU는 제 머리로 도저히 안되서 인터넷을 참조하여 제작하였습니다. 
+나중에 기회가 될 때 hdl를 참조하여 게이트 그려보며 이해해봐야겠습니다. 
+
+```
+CHIP ALU {
+    IN  
+        x[16], y[16],  // 16-bit inputs        
+        zx, // zero the x input?
+        nx, // negate the x input?
+        zy, // zero the y input?
+        ny, // negate the y input?
+        f,  // compute out = x + y (if 1) or x & y (if 0)
+        no; // negate the out output?
+
+    OUT 
+        out[16], // 16-bit output
+        zr, // 1 if (out == 0), 0 otherwise
+        ng; // 1 if (out < 0),  0 otherwise
+
+    PARTS:
+    // Put you code here:
+    // 16-bit constant 0
+    Mux16(a=x, b=false, sel=zx, out=zxout);
+    Mux16(a=y, b=false, sel=zy, out=zyout);
+
+    // bitwise not
+    Not16(in=zxout, out=notx);
+    Mux16(a=zxout, b=notx, sel=nx, out=nxout);
+
+    Not16(in=zyout, out=noty);
+    Mux16(a=zyout, b=noty, sel=ny, out=nyout);
+
+    // f == 0: compute out = x & y
+    And16(a=nxout, b=nyout, out=andxy);
+    // f == 1: compute out = x + y
+    Add16(a=nxout, b=nyout, out=addxy);
+
+    Mux16(a=andxy, b=addxy, sel=f, out=fout);
+
+    // negate
+    Not16(in=fout, out=nfout);
+    Mux16(a=fout, b=nfout, sel=no, out=out, out[0..7]=outlow, out[8..15]=outhigh, out[15]=ng); // Also, return ng (check whether out is less than zero)
+
+    // Check whether out is zero
+    Or8Way(in=outlow, out=or8waylow);
+    Or8Way(in=outhigh, out=or8wayhigh);
+    Or(a=or8waylow, b=or8wayhigh, out=nzr);
+    Not(in=nzr, out=zr);
+}
+```
