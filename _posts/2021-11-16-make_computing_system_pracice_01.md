@@ -107,6 +107,9 @@ CHIP Not {
 Nand의 입력인 `a`와 `b`에는 `in`을 입력하고, 출력인 `out`에는 `out`을 입력해줍니다. 
 마지막의 `out=out` 이조금 햇갈릴 수 있는데, `=`을 기준으로 왼쪽의`out`은 Nand에서 출력하기 위해 입력받는 부분이고, 
 오른쪽의 `out`은 출력된 값을 저장하는 변수입니다. 
+위의 HDL을 게이트 회로로 표현하면 다음과 같습니다. 
+
+![image](https://user-images.githubusercontent.com/35713051/145411927-05a4449b-717f-4e04-a679-6110cad5ab5e.png)
 
 이제 제작한 게이트를 프로그램을 통해 로드한 후 테스트를 해보도록 합시다.
 
@@ -145,7 +148,10 @@ CHIP And {
 ```
 
 먼저 Nand에 `a`와 `b`를 입력하고 출력을 `c`에 저장합니다. 
-이후 Not게이뭉트에 `c`를 입력하고 `out`에 출력하면 And 게이트가 완성됩니다. 
+이후 Not게이트에 `c`를 입력하고 `out`에 출력하면 And 게이트가 완성됩니다. 
+
+위 hdl의 게이트 회로는 다음과 같습니다. 
+![image](https://user-images.githubusercontent.com/35713051/145412864-9f39f032-d6c1-4d88-9b71-4b26dea87b6a.png)
 
 이와 같은 방식으로 모든 게이트를 완성해나가면 됩니다. 
 
@@ -181,6 +187,7 @@ CHIP And16 {
     And(a=a[15], b=b[15], out=out[15]);    
 }
 ```
+![image](https://user-images.githubusercontent.com/35713051/145413757-c61bc873-11e7-4bf0-93e0-750b4ac47667.png)
 
 ## Not 게이트 
 
@@ -196,6 +203,9 @@ CHIP Not {
     Nand(a=in, b=in, out=out);
 }
 ```
+
+![image](https://user-images.githubusercontent.com/35713051/145411927-05a4449b-717f-4e04-a679-6110cad5ab5e.png)
+
 
 ## Not16 게이트 
 
