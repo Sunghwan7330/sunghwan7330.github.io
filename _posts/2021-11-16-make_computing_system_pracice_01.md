@@ -237,6 +237,8 @@ CHIP Not16 {
     Not(in=in[15], out=out[15]);
 }
 ```
+![image](https://user-images.githubusercontent.com/35713051/145678437-ac574dd4-e91b-4930-b794-d5ec6726f44b.png
+
 
 ## Or 게이트 
 
@@ -254,6 +256,9 @@ CHIP Or {
     Nand(a=aa, b=bb, out=out);
 }
 ```
+
+![image](https://user-images.githubusercontent.com/35713051/145678448-c9246ab6-bbb1-4712-b58b-0dbb1a3b087d.png)
+
 
 ## Or 8way
 
