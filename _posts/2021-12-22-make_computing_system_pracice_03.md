@@ -43,8 +43,9 @@ CHIP Bit {
     DFF(in=muxOut, out=dffOut);
     Or(a=false, b=dffOut, out=out); /*A limitation of HDL*/
 }
-
 ```
+
+![image](https://user-images.githubusercontent.com/35713051/147379460-0b8d4f87-6c4e-425c-bd83-840217fe5a91.png)
 
 bit는 1비트 레지스터입니다. 
 이전 포스팅에서 설명한바와 같이 Mux와 DFF를 이용하였습니다. 
@@ -54,4 +55,4 @@ load가 1이라면 Mux에서 입력된 값인 in이 출력됩니다.
 이후 출력된 값이 DFF에 입력됩니다. 
 다음 클럭에서 load가 0이라면 이전에 입력된 값이 Mux 로 입력되어 다시 출력됩니다. 
 그렇기 때문에 load가 1이 입력되기 전까지는 이전에 입력된 값이 계속 유지되게 됩니다. 
-
+(OR은 무시하셔도 됩니다.)
