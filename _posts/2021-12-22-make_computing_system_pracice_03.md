@@ -89,4 +89,39 @@ CHIP Register {
 위에서 Bit를 제작하였습니다. 
 이를 16개 연결하면 16비트의 레지스터를 만들 수 있습니다. 
 레지스터는 bit와 같지만 값을 16비트 단위로 저장할 수 있다는 차이만 있습니다. 
+ 
+# RAM8 제작
+
+
+```
+CHIP RAM8 {
+    IN in[16], load, address[3];
+    OUT out[16];
+
+    PARTS:
+    DMux8Way(in=load, sel=address, a=sel0, b=sel1, c=sel2, d=sel3, e=sel4, f=sel5, g=sel6, h=sel7);
+    Register(in=in, load=sel0, out=r0);
+    Register(in=in, load=sel1, out=r1);
+    Register(in=in, load=sel2, out=r2);
+    Register(in=in, load=sel3, out=r3);
+    Register(in=in, load=sel4, out=r4);
+    Register(in=in, load=sel5, out=r5);
+    Register(in=in, load=sel6, out=r6);
+    Register(in=in, load=sel7, out=r7);
+    Mux8Way16(a=r0, b=r1, c=r2, d=r3, e=r4, f=r5, g=r6, h=r7, sel=address, out=out);
+}
+```
+
+DMux 는 in에 입력된 값을 sel을 보고 해당 위치로 출력하는 게이트입니다. 
+sel이 1이면 in에 입력된 값을 a에 출력하고, sel이 7이라면 in에 입력된 값을 h에 출력합니다. 
+
+우선 모든 레지스터에 in의 값을 입력합니다.
+이후 Dmux에 load 값을 입력하여 특정 Register에만 load 값이 전달되도록 합니다. 
+그렇게 되면 여러 레지스터 중 하나의 레지스터에만 load 값이 전달되어 in 값이 입력됩니다. 
+
+이후 모든 레지스터에서 출력된 값을 Mux를 이용하여 출력합니다. 
+Mux의 sel에 address를 입력하여 원하는 레지스터의 값만 받아옵니다. 
+
+위와 같이 하였을 때 특정 주소의 레지스터에 값을 입력하거나 출력할 수 있게 됩니다. 
+
 
