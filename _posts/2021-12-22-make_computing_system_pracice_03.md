@@ -124,4 +124,31 @@ Mux의 sel에 address를 입력하여 원하는 레지스터의 값만 받아옵
 
 위와 같이 하였을 때 특정 주소의 레지스터에 값을 입력하거나 출력할 수 있게 됩니다. 
 
+# RAM 64 제작
 
+```
+CHIP RAM64 {
+    IN in[16], load, address[6];
+    OUT out[16];
+
+    PARTS:
+    DMux8Way(in=load, sel=address[3..5],a=sel0,b=sel1,c=sel2,d=sel3,e=sel4,f=sel5,g=sel6,h=sel7);
+    RAM8(in=in, load=sel0, address=address[0..2], out=r0);
+    RAM8(in=in, load=sel1, address=address[0..2], out=r1);
+    RAM8(in=in, load=sel2, address=address[0..2], out=r2);
+    RAM8(in=in, load=sel3, address=address[0..2], out=r3);
+    RAM8(in=in, load=sel4, address=address[0..2], out=r4);
+    RAM8(in=in, load=sel5, address=address[0..2], out=r5);
+    RAM8(in=in, load=sel6, address=address[0..2], out=r6);
+    RAM8(in=in, load=sel7, address=address[0..2], out=r7);
+    Mux8Way16(a=r0, b=r1, c=r2, d=r3, e=r4, f=r5, g=r6, h=r7, sel=address[3..5], out=out);
+}
+```
+
+RAM 64는 RAM8을 8개 연결하여 제작합니다. 
+address 가 6비트이기 때문에 주소는 0 ~ 63까지 입력이 가능합니다. 
+
+앞에서 제작한 RAM8은 3비트의 arrress인  0~7까지 입력이 가능합니다. 
+따라서 DMux8Way 에 주소값 3비트를 입력하여 어느 RAM8에 입력할 지를 결정합니다. 
+이후 나머지 주소의 3비트를 RAM8에 입력하여 올바른 주소의 레지스터에 작성될 수 있도록 합니다. 
+마지막으로 레지스터로부터 나온 RAM8의 출력을 Mux8Way16 에 의해 분류되어 출력될 수 있도록 합니다. 
