@@ -89,6 +89,30 @@ CHIP Register {
 위에서 Bit를 제작하였습니다. 
 이를 16개 연결하면 16비트의 레지스터를 만들 수 있습니다. 
 레지스터는 bit와 같지만 값을 16비트 단위로 저장할 수 있다는 차이만 있습니다. 
+
+# PC 제작 
+
+```
+CHIP PC {
+    IN in[16],load,inc,reset;
+    OUT out[16];
+
+    PARTS:
+    Inc16(in=regOutput, out=regOutputInc);    
+    Mux16(a=regOutput, b=regOutputInc, sel=inc, out=out1);
+    Mux16(a=out1, b=in, sel=load, out=out2);
+    Mux16(a=out2, b=false, sel=reset, out=regInput);
+    
+    // load == load OR inc OR reset !!!
+    Or(a=load, b=inc, out=loadOrInc);
+    Or(a=loadOrInc, b=reset, out=loadOrIncOrReset);
+    
+    Register(in=regInput, load=loadOrIncOrReset, out=regOutput);    
+    
+    Or16(a=false, b=regOutput, out=out); // dummy OR gate for output
+}
+```
+
  
 # RAM8 제작
 
@@ -152,3 +176,7 @@ address 가 6비트이기 때문에 주소는 0 ~ 63까지 입력이 가능합�
 따라서 DMux8Way 에 주소값 3비트를 입력하여 어느 RAM8에 입력할 지를 결정합니다. 
 이후 나머지 주소의 3비트를 RAM8에 입력하여 올바른 주소의 레지스터에 작성될 수 있도록 합니다. 
 마지막으로 레지스터로부터 나온 RAM8의 출력을 Mux8Way16 에 의해 분류되어 출력될 수 있도록 합니다. 
+
+# 참고 
+
+* https://github.com/simulacre7/nand2tetris
