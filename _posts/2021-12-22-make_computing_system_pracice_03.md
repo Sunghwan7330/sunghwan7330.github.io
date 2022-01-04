@@ -113,6 +113,7 @@ CHIP PC {
 }
 ```
 
+![image](https://user-images.githubusercontent.com/35713051/148063685-92eb0bcc-eea5-49fb-908e-20cb3cf57698.png)
  
 # RAM8 제작
 
