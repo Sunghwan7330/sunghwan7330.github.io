@@ -164,4 +164,81 @@ while(true) {
 더 심플하게 작성할 수도 있지만 최대한 위의 어셈블리와 비슷하게 작성해보았습니다. 
 참고용으로 봐주시면 되겠습니다. 
 
+# fill 어셈블리 작성 
+
+다음으로 fill.asm 파일을 열어 어셈블리를 작성하시면 됩니다. 
+이번에도 역시 파일을 열어 작성되어 있는 주석 메시지를 확인해보도록 하겠습니다. (번역기의 힘을 빌려...!)
+
+```
+Runs an infinite loop that listens to the keyboard input.
+When a key is pressed (any key), the program blackens the screen,
+i.e. writes "black" in every pixel;
+the screen should remain fully black as long as the key is pressed. 
+When no key is pressed, the program clears the screen, i.e. writes
+"white" in every pixel;
+the screen should remain fully clear as long as no key is pressed.
+
+------------------------------------------------------------------
+
+키보드 입력을 수신하는 무한 루프를 실행합니다. 
+키를 누르면 (아무 키나) 프로그램의 화면 을 검게, 즉 모든 픽셀을 검정색으로 씁니다. 
+키를 누르고 있는 동안은 완전히 검은색으로 유지되어야 합니다. 
+아무 키도 누르지 않으면 프로그램이 화면을 깨끗하게, 즉 모든 픽셀을 흰색으로 씁니다. 
+아무키도 누르지 않는 한 화면은 완전히 깨끗한 상태를 유지해야 합니다. 
+```
+
+이번 프로그램은 무한루프를 반복하는 프로그램입니다. 
+키보드에 값이 입력되었다면 모든 픽셀의 값을 검정색으로 쓰고, 값이 입력되지 않았다면 흰색 값으로 쓰면 됩니다. 
+
+전체 코드는 다음과 같습니다. 
+
+```
+@color         // declare color variable
+M=0            // by default is white
+
+(loop)
+    @SCREEN    // RAM address 16384
+    D=A
+
+    @pixels 
+    M=D       // pixel address (starting point: 16384, max: 16384+8192=24576)
+
+    @KBD      // D = ascii code of a keyboard input
+    D=M
+
+    @black
+    D;JGT     // if(keyboard > 0) goto black
+
+    @color
+    M=0       // otherwise white
+    
+    @color_screen
+    0;JMP     // jump to subroutine that actually changes the color of screen
+
+    (black)
+        @color
+        M=-1  // set to black
+
+    (color_screen)
+        @color
+        D=M
+        @pixels
+        A=M
+        M=D   // M[pixels] = @color
+
+        @pixels
+        M=M+1
+        D=M
+
+        @24576 // loop until end of pixels
+        D=D-A
+        @color_screen
+        D;JLT
+
+@loop
+0;JMP         // infinite loop
+```
+
+
+
 (이어서 계속..)
