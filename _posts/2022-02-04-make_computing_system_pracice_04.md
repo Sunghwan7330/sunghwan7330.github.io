@@ -239,6 +239,61 @@ M=0            // by default is white
 0;JMP         // infinite loop
 ```
 
+이번에도 라인 단위로 살펴보도록 하겠습니다. 
+
+```
+@color         // declare color variable
+M=0            // by default is white
+```
+
+`@color` 입력하여 메모리 주소를 이동한 메모리 위치의 값을 0으로 설정합니다. 
+
+다음의 `@LOOP` 는 jump하기 위한 주소를 가르킨다고 보시면 됩니다. 
+
+```
+    @SCREEN    // RAM address 16384
+    D=A
+	
+	@pixels 
+    M=D       // pixel address (starting point: 16384, max: 16384+8192=24576)
+```
+
+먼저 `@SCREEN` 의 주소를 `D`레지스터에 입력합니다. 
+이후 `@pixels`의 메모리 주소에 `D`레지스터의 값을 입력합니다. 
+이렇게 되면 `@pixels` 에 메모리에 `@SEREEN` 의 주소값이 저장되게 됩니다. 
+
+```
+    @KBD      // D = ascii code of a keyboard input
+    D=M
+	
+    @black
+    D;JGT     // if(keyboard > 0) goto black
+```
+
+`@KBD`는 키보드 입력 값이 기록되는 메모리 주소입니다. 
+키보드에 입력된 값을 `D` 레지스터에 저장합니다. 
+
+이후 `D` 의 값이 0이라면 `(black)` 부분으로 jump를 합니다. 
+키보드의 입력이 없다면 메모리 주소에 0이 입력되고, 아니라면 키보드의 아스키코드 값이 입력됩니다. 
+즉, D의 값이 0이 아니라면  `(black)` 부분으로 jump를 하고, 아니라면 아래로 이동하게 됩니다. 
+
+```
+    @color
+    M=0       // otherwise white
+    
+    @color_screen
+    0;JMP     // jump to subroutine that actually changes the color of screen
+```
+이 전 확인한 코드에서 키보드 입력이 없었다면 jump를 하지 않기 때문에 위에 보이는 코드로 이동하게 됩니다. 
+`@color` 부분의 메모리 값을 0으로 변경한 뒤 `@color_screen` 의 주소로 jump 하게 됩니다. 
+
+```
+    (black)
+        @color
+        M=-1  // set to black
+```
+
+
 
 
 (이어서 계속..)
