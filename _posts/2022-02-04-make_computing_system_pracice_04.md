@@ -293,7 +293,46 @@ M=0            // by default is white
         M=-1  // set to black
 ```
 
+다음으로는 이전의 코드에서 키보드 입력이 되었을 때 jump하여 이동되는 부분입니다. 
+이 코드에서는 `@color` 메모리의 값을 -1로 변경하게 됩니다. 
 
+```
+    (color_screen)
+        @color
+        D=M
+        @pixels
+        A=M
+        M=D   // M[pixels] = @color
 
+        @pixels
+        M=M+1
+        D=M
 
-(이어서 계속..)
+        @24576 // loop until end of pixels
+        D=D-A
+        @color_screen
+        D;JLT
+```
+
+다음으로는 `@color_screen` 의 메모리 주소 부분입니다. 
+해당 부분에서는 위에서 설정된 `@color`의 값으로 화면을 체우는 부분입니다. 
+`@color`의 값은 키보드가 입력된 상태라면 `-1`이고 아니라면 `0` 으로 설정되어 있을것입니다. 
+
+먼저 `@color` 메모리 주소의 값을 읽어 `D`레지스터에 저장합니다. 
+
+다음으로 `@pixels`에는 위에서 `@SCREEN` 의 주소가 저장되어 있습니다. 
+`@pixels` 의 값을  `A=M` 로 입력하면 `@pixels`의 값에 저장된 메모리 주소로 이동하게 됩니다. 
+이후 `M=D` 입력시 해당 주소 값에 `D`의 값, 즉 `@color` 의 값이 입력됩니다. 
+
+다음으로 `@pixels` 에 저장된 값을 1 증가시킨 후 `D`레지스터에 그 값을 입력합니다. 
+
+24576 은 스크린 메모리의 마지막 주소를 뜻합니다. 
+`D` 레지스터와 24576 의 값을 빼줍니다. 
+이때 값이 0이 아니라면 `@color_screen` 으로 이동합니다. 
+
+`@color_screen` 의 부분은 스크린 메모리 주소의 값을 1씩 증가시키면서 해당 메모리의 값을 `@color` 값으로 입력하여 화면을 체워나가게 됩니다. 
+
+# 참고
+
+* https://github.com/simulacre7/nand2tetris
+
