@@ -178,3 +178,91 @@ jack 언어는 9장에서 설명합니다.
 다음으로는 VM 번역기가 VM 파일들이 있는 디렉토리에 적용되어 하나의 어셈블리 프로그램이 생성됩니다. 
 
 번역된 어셈블리 코드는 어셈블러에 의해 2진 코드로 번역되어 실행 가능한 프로그램으로 변경합니다. 
+
+## 2.6 VM 프로그래밍 예제
+
+해당 절에서는 일반적인 프로그래밍 작업들이 어떻게 VM 추상화로 표현할 수 있는지를 설명합닏닫. 
+
+### 2.6.1 일반적인 산술 작업 
+
+* C 언어
+```c
+int mult(int x, int y) {
+  int sum;
+  sum = 0;
+  for(int j = y; j != 0; j--)
+    sum += x; // 514
+  return sum;
+}
+```
+
+* 1차 근사 
+```
+function mult
+  args x, y
+  vars sum, j
+  sum = 0
+  j = y
+loop:
+  if j = 0 goto end
+  sum = sum + X
+  j = j - 1
+  goto loop
+end:
+  return sum
+```
+
+* 의사 VM 코드 
+```
+function mult(x,y)
+  push 0
+  pop sum
+  push y
+  pop j
+label loop
+  push 0
+  push j
+  eq
+  if-goto end
+  push sum
+  push x
+  add
+  pop sum
+  push j
+  push 1
+  sub
+  pop j
+  goto loop
+label end
+  push sum
+  return
+```
+
+* 최종 VM 코드
+```
+function mult 2  // 2개의 지역 변수
+  push constant 0
+  pop local 0 // sum=0
+  push argument 1
+  pop local 1 // j=y
+label loop
+  push constanta
+  push local 1
+  Eq
+  if-goto end // if j=0 goto end
+  push local 0
+  push argumento
+  Add
+  pop local 0 // SUM=SUM+X
+  push local 1
+  push constant 1
+  Sub
+  pop local 1 1/ j=j-1
+  goto loop
+label end
+  push local 0
+  return // return sum
+
+```
+
+[그림]
