@@ -44,3 +44,49 @@ last_modified_at: 2022-03-12
 * 호출자 코드에서 이전에 점프했던 지점 바로 다음 코드를 실행하기 위해 점프
 
 이러한 작업들은 고수준 언어를 해석하는 컴퍼일러에서 해결해줍니다. 
+
+## 1.1 프로그램 흐름 제어 
+
+컴퓨터 프로그램은 기본적으로 한 명령씩 순차적으로 실행합니다. 
+이러한 순차적 흐름은 가끔씩 분기 병령으로 끊기게 됩니다. (if, switch 등에 의한 분기)
+저수준 프로그래밍에서는 분기 논리가 있을 때 goto destination 명령으로 프로그램의 특정 위치부터 실행을 지속하도록 하게 합니다. 
+위치 설정의 경우 여러가지 방법이 있지만,  일반적으로는 다음에 실행할 명령어의 물리적 주소를 지정하는 것이 일반적입니다. 
+
+다음은 if 문과 while 문의 제어 흐름 구조와 이를 의사 VM으로 변환한 코드입니다. 
+
+* if 문 제어 흐름 구조 
+```
+if (cond)
+  s1
+else
+  s2
+...
+```
+* 의사 VM 코드 
+```
+  VM code for computing ~(cond)
+  if-goto L1
+  VM code for executing s1
+  goto L2
+label L1
+  VM code for executing s2
+label L2
+...
+```
+* while 제어 흐름 구조 
+```
+while(cond)
+s1 
+...
+```
+* while 의사 VM 코드 
+```
+label L1
+  M code for computing ~(cond)
+  if-goto L2
+  VM code for executing s1
+  goto L1
+label L2
+...
+```
+
