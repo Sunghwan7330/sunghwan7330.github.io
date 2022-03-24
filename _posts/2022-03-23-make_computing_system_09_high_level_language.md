@@ -20,3 +20,23 @@ last_modified_at: 2022-03-23
 자바나 C# 같은 언어와 비슷하지만 문법이 더 단순하며, 상속을 지원하지 않습니다. 
 
 10장과 11장에서는 잭 프로그램을 VM 코드로 변역하는 컴파일러를 만들고, 12장에서는 잭/핵 플랫폼의 간단한 운영체제를 작성할 예정입니다. 
+
+# 1. 배경 
+
+## 1.1 예제 1: Hello world
+
+잭 언어는 Main.main 함수에서 시작됩니다. 
+Main이라는 클래스 안에 main이라는 메서드가 있어야 합니다. 
+
+```
+/* Hello World 프로그램 */ 
+class Main { 
+  function void main() { 
+    /* 표준 라이브러리를 이용해서 텍스트를 출력한다. */ 
+    do Output.printString("Hello World"); 
+    do Output.println(); // 새 라인 
+    return; 
+  } 
+}
+```
+
