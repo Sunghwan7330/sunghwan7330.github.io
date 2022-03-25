@@ -39,4 +39,35 @@ class Main {
   } 
 }
 ```
+## 1.2 절차적 프로그래밍과 배열 처리 
+
+```
+/* 정수열의 평균을 계산한다. */ 
+class Main { 
+  function void main() { 
+    var Array a; 
+    var int length; 
+    var int i, sum; 
+
+    let length = Keyboard. readInt("How many numbers? "); 
+    let a = Array.new(length); // 배열을 구성한다. 
+    let i = 0; 
+
+    while (i < length) { 
+      let a[i] = Keyboard. readInt("Enter the next number: "); 
+      let sum = sum + a[i]; 
+      let i = i + 1; 
+    } 
+
+    do Output.printString("The average is: "); 
+    do Output.printInt(sum / length); 
+    do Output.println(); 
+    return; 
+  } 
+}
+```
+
+잭 프로그램은 표준 라이브러리에 내장된 Array 클래스를 통해 배열을 선언합니다. 
+잭 언어의 배열에는 타입이 없습니다. 
+정수, 객체 등등 어떤 것이라도 넣을 수 있습니다. 
 
