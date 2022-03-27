@@ -71,3 +71,24 @@ class Main {
 잭 언어의 배열에는 타입이 없습니다. 
 정수, 객체 등등 어떤 것이라도 넣을 수 있습니다. 
 
+## 1.3 예제 3: 추상 데이터 타입 
+
+프로그래밍 언어는 기본 데이터 타입이 정해져 있는데, 잭은 int, char, boolean 세가지를 지원합니다. 
+추가로 필요한 경우 직접 클래스를 만들어 사용할 수 있습니다. 
+
+### 1.3.1 클래스 인터페이스 정의하기 
+
+이번 예시는 분수를 추상화하려 합니다. 
+
+```
+// Fraction은 n/m을 표현하는 객체다. (n, m은 정수) 
+field int numerator, denominator // Fraction 객체 속성 
+constructor Fraction new(int a, int b) // 새로운 Fraction 객체를 반환한다. 
+method int getNumerator() // 이 분수의 분자를 반환한다. 
+
+method int getDenominator() // 이 분수의 분모를 반환한다. 
+method Fraction plus (Fraction other) // 이 분수와 또 다른 분수의 합을 분수 객체로 반환한다. 
+method void print() // 이 분수를 "분자/분모"  형식으로 출력한다.  필요한 분수 관련 기능을 여기에 추가한다
+```
+
+잭에서 현재 객체 수준의 연산은 메서드로 표현되고, 클래스 수준의 연산은 함수로 표현됩니다. 
