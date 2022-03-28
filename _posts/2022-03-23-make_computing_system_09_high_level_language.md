@@ -92,3 +92,20 @@ method void print() // 이 분수를 "분자/분모"  형식으로 출력한다.
 ```
 
 잭에서 현재 객체 수준의 연산은 메서드로 표현되고, 클래스 수준의 연산은 함수로 표현됩니다. 
+
+### 1.3.2 클래스 사용하기 
+
+```
+// 2/3와 1/5를 더한다. 
+class Main { 
+  function void main() { 
+    var Fraction a, b, c; 
+    let a = Fraction. new(2,3); 
+    let b = Fraction. new(1,5); 
+    let c = a.plus(b); // c = a + b 24 
+    do c.print(); // "13/15"가 출력되어야 한다. 
+    return; 
+  } 
+}
+```
+
