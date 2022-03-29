@@ -109,3 +109,62 @@ class Main {
 }
 ```
 
+### 1.3.3 클래스 구현하기 
+
+```
+/* Fraction 타입 및 관련 기능을 제공한다. */ 
+class Fraction { 
+  field int numerator, denominator; 
+
+  /* 주어진 분자 및 분모에서 
+   * 새로운 (약분된) 분수를 생성한다. */ 
+  constructor Fraction new(int a, int b) { 
+    let numerator = a; 
+    let denominator = b; 
+    do reduce(); // a/b가 약분되지 않았으면 약분한다. 
+    return this;
+  }
+
+   /* 이 분수를 약분한다. */ 
+  method void reduce() {  
+    var int g;
+    let g = Fraction.gcd(numerator, denominator); 
+    if (g > 1) { 
+      let numerator = numerator / g;
+      let denominator = denominator / 9; 
+    } 
+    return; 
+  }
+
+  /** a와 b의 최대 공약수를 계산한다. */ 
+  function int gcd(int a, int b){ 
+    var int r; 
+    while (~(b = 0)) { // 유클리드 알고리즘을 적용한다. 
+      let r = a - (b * (a / b)); // rea/b의 나머지 
+      let a = b; 
+      let b = r; 
+    } 
+    return a; 
+  }
+
+  /** 접근자. */ 
+  method int getNumerator() { return numerator; } 
+  method int getDenominator() { return denominator; } 
+
+  /* 이 분수와 또 다른 분수의 합을 반환한다. */ 
+  method Fraction plus ( Fraction other){ 
+    var int sum; 
+    let sum = (numerator * other.getDenominator()) + (other.getNumerator() * denominator()); 
+    return Fraction.new(sum, denominator * other.getDenominator()); 
+  }
+  // 추가 분수 관련 메서드들; minus, times, div 등 
+
+  /* 이 분수를 출력한다. */ 
+  method void print() { 
+    do Output.printInt(numerator); 
+    do Output.printString("/"); 
+    do Output.printInt(denominator); 
+    return; 
+  } 
+}// Fraction 클래스
+```
