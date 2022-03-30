@@ -168,3 +168,35 @@ class Fraction {
   } 
 }// Fraction 클래스
 ```
+
+## 1.4 예제 4 : 연결 리스트 구현 
+
+```
+/** List 클래스는 연결 리스트 추상화를 제공한다. */ 
+class List { 
+  field int data; 
+  field List next; 
+
+  /* 새로운 List 객체를 생성한다. */ 
+  constructor List new(int car, List cdr) { 
+    let data = car; 
+    let next = cdr; 
+    return this; 
+  } 
+
+  /* 이 List를 리스트 꼬리부터 재귀적으로 제거한다. */ 
+  method void dispose() { 
+    if (~(next = null)) { 
+      do next.dispose(); 
+    } 
+    // OS 루틴을 이용해서 이 객체가 
+    // 점유했던 메모리를 재활용한다. 
+    do Memory.deAlloc(this); 
+    return; 
+  } 
+  // 추가적인 리스트 관련 메서드는 여기에 쓴다. } // List 클래스
+} List 클래스
+```
+
+이후 jack 언어에 대한 자세한 내용은 다루지 않겠습니다. 
+기본적으로 고수준 프로그래밍 언어를 다룰 줄 안다면 jack 언어를 사용하는데는 문제 없을것으로 생각됩니다. 
