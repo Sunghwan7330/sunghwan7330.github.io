@@ -48,3 +48,25 @@ last_modified_at: 2022-04-03
 | balance | int | field | 2 |
 | sum | int | argument | 0 |
 | status | Boolean | local | 0 |
+
+예시로 `balance=balancersum` 라는 명령문이 있다면 `valance`가 필드번호 2 이고, `sum`이 필드번호가 0이라는 정보를 알아내서 계산하게 됩니다. 
+
+식별자들은 식별자가 인식되는 영역을 뜻하는 범위(scpoe)를 가집니다. 
+일반적으로는 바깥쪽 범위에서 안쪽 범위의 정의는 접근할 수 없습니다. 
+
+```c
+int a = 1
+int main() {
+  int b = 2;
+  {
+    int c = 3;
+  }
+  printf(“a : %d\n”, a);
+  printf(“b : %d\n”, b); 
+  printf(“c : %d\n”, c);  //error
+  return 0;
+}
+```
+위의 예제 코드는 main 함수에서 안쪽에서 생성된 변수인 c에 접근시 에러가 발생함을 확인할 수 있는 예제입니다. 
+컴파일러에서는 식별자를 찾을 때 자신의 지역에서 찾고, 없으면 바깥쪽으로 이동하여 찾습니다. 
+따라서 식별자의 볌위도 테이블에 기록해야 합니다. 
