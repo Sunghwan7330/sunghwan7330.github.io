@@ -28,6 +28,9 @@ docs:
       - title: "밑바닥부터 만드는 컴퓨팅 시스템"
         url: categories/make_computing_system
         category: "make_computing_system"
+      - title: "임베디드 C를 위한 TDD"
+        url: categories/embedded_c_tdd
+        category: "embedded_c_tdd"
 
   - title: Algorithm
     children:
