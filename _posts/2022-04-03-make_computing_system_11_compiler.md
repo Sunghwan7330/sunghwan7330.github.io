@@ -90,7 +90,7 @@ int main() {
 보통 OS에서는 size 만큼의 크기를 갖는 가용 메모리 블록을 찾아서 그 시작 주소를 반환하는 malloc 간은 함수가 있습니다. 
 만약 `arr = new int[10]`  과 같은 명령문은 컴파일러에서 `arr = alloc(10)` 과 같은 저수준 코드로 번역하게 됩니다. 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/163662019-60d71733-692f-4858-8d63-ad8032657fe6.png)
 
 위의 그림은 `bar[k] = 19` 를 실횅한 직후의 샘플입니다. 
 `bar = new int [10];` 를 하여 `bar`에는 int 배열의 시작주소가 저장됩니다. 
@@ -109,7 +109,7 @@ int main() {
 
 객체들은 시작 주소를 가리키는 포인터 변수로 표현되며, 객체에 캡슐화된 데이터는 시작 주소에서 시작하는 인덱스를 통해 접근이 가능합니다. 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/163662051-4fba6d3b-3ec9-4cda-82eb-c74852916396.png)
 
 위 그림은 Complex 클래스와 이를 사용하는 함수가 메모리상에 어떻게 나타나는지에 대한 예시입니다. 
 
@@ -119,7 +119,7 @@ int main() {
 
 ### 1.2.1 표현식 평가하기 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/163662058-447dacd4-784c-4734-9cc3-a8a48a27f1b4.png)
 
 위 그림은 `x+g(2, y, -z) * 5` 라는 구문을 분석하는 방법입니다. 
 이와 같은 트리를 파스 트리라 합니다. 
@@ -132,4 +132,4 @@ int main() {
 고수준 프로그래밍 언어는 `if`, `while`, `for`, `switch` 와 같은 다양한 흐름 제어 구조를 갖추고 있습니다. 
 반면 저수준 언어는 일반적으로 조건에 따른 goto만을 제공합니다. 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/163662067-2b4d028d-a0c9-4cc1-a8d5-69fff034f6fb.png)
