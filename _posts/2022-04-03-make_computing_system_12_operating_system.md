@@ -36,7 +36,7 @@ last_modified_at: 2022-04-15
 
 ### 1.1.2 곱셈
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/166141460-be9d1fb7-5163-481c-b164-465dce105890.png)
 
 위 그림의 알고리즘은 n 비트 숫자에 O(n) 덧셈 연산을 수행합니다. 
 비트 표현을 왼쪽으로 한 칸 이동시키거나 shiftedX 를 자기 자신에 더하면 shifted * 2 를 효율적으로 얻을 수 있습니다. 
@@ -152,7 +152,7 @@ deAlloc(object):
 * 세그먼트의 길이 
 * 리스트에서 다음 세그먼트를 가리키는 포인터
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/166141478-dd32cc9e-9121-4f7d-9fb9-fd606fe1070d.png)
 
 ```
 
