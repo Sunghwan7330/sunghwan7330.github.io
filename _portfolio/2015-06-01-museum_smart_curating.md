@@ -9,6 +9,9 @@ company: "Gigalane"
 categories: [project]
 ---
 
+## 개요 
+
+* (주)기가레인 경기도박물관 스마트 큐레이팅 앱 개발 프로젝트
 
 ## 기간
 

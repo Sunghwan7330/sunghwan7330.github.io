@@ -9,6 +9,10 @@ company: "Gachon Univ"
 categories: [project]
 ---
 
+## 개요 
+
+* 2017 산학연협력 기술개발사업
+
 ## 기간
 
 * 2017.03 ~ 2017.11

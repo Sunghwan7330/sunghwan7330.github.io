@@ -9,6 +9,9 @@ company: "Gachon Univ"
 categories: [project]
 ---
 
+## 개요 
+
+* 2015 중소기업청 산학연협력 기술개발사업
 
 ## 기간
 

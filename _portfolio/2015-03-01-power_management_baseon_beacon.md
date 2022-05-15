@@ -9,6 +9,11 @@ company: "Gigalane"
 categories: [project]
 ---
 
+## 개요
+
+* (주)기가레인 비콘 기반 전력관리 플랫폼 프로젝트 
+* Beacon 기반 smart plug 및 제어 허브 SW 구현
+
 ## 기간
 
 * 2015.03 ~ 2015.06

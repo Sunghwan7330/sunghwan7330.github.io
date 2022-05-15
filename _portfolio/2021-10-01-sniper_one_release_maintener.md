@@ -12,6 +12,10 @@ sidebar:
   nav: "docs"
 ---
 
+## 개요 
+
+* (주)윈스 Sniper ONE 차기버전 개발 리드 / 소스 형상 관리
+
 ## 개발 기간
 
 * 2021.10 ~ Current

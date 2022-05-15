@@ -9,6 +9,9 @@ company: "Gachon Univ"
 categories: [project]
 ---
 
+## 개요 
+
+* 2014 가천대학교 인터랙티브미디어학과 졸업프로젝트 
 
 ## 기간
 

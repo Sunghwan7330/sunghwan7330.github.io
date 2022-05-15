@@ -9,6 +9,10 @@ company: "Gachon Univ"
 categories: [project]
 ---
 
+## 개요 
+
+* 2014 SW 융합채용연수사업 프로젝트
+
 ## 기간
 
 * 2014.12 ~ 2015.03

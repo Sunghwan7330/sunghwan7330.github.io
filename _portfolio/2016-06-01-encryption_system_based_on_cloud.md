@@ -9,6 +9,10 @@ company: "Gachon Univ"
 categories: [project]
 ---
 
+## 개요 
+
+* 2016년 (주)네오와인 위탁연구기술개발사업
+
 ## 기간
 
 * 2016.06 ~ 2016.11
