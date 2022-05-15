@@ -11,8 +11,12 @@ sidebar:
 
 * Programming language
   * C / C++ / Java / Python / ETC ...
-* OS 
-  * Windows / Linux / Android
+* Development tools
+  * gcc / gdb / valgrind / JDK / Android SDK, NDK / SQLite / cmake / VScode / VIM / ETC ...
+* SCM
+  * git / github / gitlab / Redmine
+* Development platform 
+  * Windows / Linux / Android / Raspberry pi / Arduino
 
 # Experience
 
