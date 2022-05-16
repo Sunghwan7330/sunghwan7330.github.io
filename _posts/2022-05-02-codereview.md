@@ -41,7 +41,7 @@ last_modified_at: 2021-10-08
 
 ## 출시별 개발 리소스 증가 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/168605841-a152d75b-79cf-41fa-b64b-f9d16fcb9547.png)
 
 * clean architeture 1장 내용
 * 제품 출시(배포)가 증가할수록 개발 리소스가 증가함 (엔지니어 수 증가)
@@ -49,26 +49,26 @@ last_modified_at: 2021-10-08
 
 ## 동일 기간별 생산성 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/168605948-17fefd67-3a1b-4d71-8f04-dd6a3f3c1b0a.png)
 
 * 제품이 출시(배포)할수록 생산성은 점점 증가하지 않음 (라인 수로 확인)
 
 ## 출시가 증가함에 따른 라인당 개발 비용 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/168605999-86774081-ddf7-4db2-a539-c92cdaa7ff54.png)
 
 * 제품이 출시(배포)할수록 이에 따른 라인당 개발 비용이 증가함 
 
 ## 출시별 생산성 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/168606081-af15fad5-5085-430e-9e11-81c5ad478470.png)
 
 * 기존에 있던거를 수정해나가기에 생산성이 줄어듦
 * 점점 기존 코드를 유지하는데 비용이 들어 코드 생산성이 떨어짐
 
 ## 개발 생산성 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/168606120-cfbcb1bd-83bb-435f-a1f9-18106cd6f1a8.png)
 
 * 위 그래프는 시간 대비 누적 생산량을 나타냄
 * 주황선은 좋은 설계일 때, 파란선은 나쁜 설계일 때임
@@ -122,7 +122,7 @@ last_modified_at: 2021-10-08
 
 # 코드리뷰의 절차 
 
-
+![image](https://user-images.githubusercontent.com/35713051/168606470-3fc44493-29b5-40fe-b27b-d4879b00c320.png)
 
 * 저자 (author)
   * 코드 작성, 리뷰 요청 
@@ -135,6 +135,7 @@ last_modified_at: 2021-10-08
 
 * 11번가 pull request 예시 
 
+![image](https://user-images.githubusercontent.com/35713051/168606523-f3e33e05-dade-444d-b09d-32db3ec852f6.png)
 
 # 왜 코드리뷰가 어려운가 
 
@@ -164,7 +165,7 @@ last_modified_at: 2021-10-08
 
 * 11번가 예시로 IntelliJ 옵션으로 사용하지 않는 import가 있으면 컴파일 에러가 나도록 처리함 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/168606679-cc588a53-70df-464b-9ec7-81b88e8ec7c9.png)
 
 ### 스타일 가이드를 통해 스타일 논쟁을 해소 
 
@@ -177,7 +178,10 @@ last_modified_at: 2021-10-08
 2. 리뷰어들을 위한 설명을 커멘트로 남김 
 3. 리뷰어들의 시간을 절약할 수 있도록 할 것 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/168606818-310496a0-d82c-4072-b2cf-a8622aa5c5af.png)
+
+
+
 
 ### 리뷰어에 모두를 포함하라 
 
@@ -186,7 +190,7 @@ last_modified_at: 2021-10-08
 
 ### 의미있는 커밋으로 분리 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/168607016-072a540c-d62f-40d4-ab50-ae4134b2cf36.png)
 
 
 * 위의 그림은 강사님의 커밋 예시임 
@@ -242,7 +246,7 @@ last_modified_at: 2021-10-08
 
 ### 리뷰의 범위를 존중하라 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/168607109-a763ba87-9d67-47df-9b1f-a4d814fa9cc0.png)
 
 * 수정 범위 외의 코드, 주변 코드도 같이 봐야 함
 
@@ -335,6 +339,8 @@ last_modified_at: 2021-10-08
 
 * 추천 서적
 
+![image](https://user-images.githubusercontent.com/35713051/168607342-5b4628ba-5ffc-47ad-a860-a1d47d4b6b58.png)
+
 
 * TDD와 연결된 리팩터링 
   * 돌아가는 코드를 만들고 설계를 하는 행위 
@@ -348,7 +354,11 @@ last_modified_at: 2021-10-08
 
 * 추천 서적
 
+![image](https://user-images.githubusercontent.com/35713051/168607386-b530545c-40f5-4e94-87ea-524ca058f924.png)
+
 
 ## Clean code & TDD
 
 * 추천 서적
+
+![image](https://user-images.githubusercontent.com/35713051/168607430-a02d7d15-c2f0-4887-b90f-7d947a6ef211.png)
