@@ -96,3 +96,69 @@ int main (void) {
 }
 
 ```
+
+먼저 setup, teardown 함수를 정의합니다. 
+setup는 테스트 시작 전 호출되는 함수이며, teardown 은 테스트 종료 후 호출되는 함수입니다. 
+tests 에서는 필요한 테스트 목록을 작성하기 위한 배열입니다. 
+
+가장 먼저 LedsOffAfterCreate 라는 함수를 테스트하려 합니다. 
+LedsOffAfterCreate 함수는 led가 초기화되서 전부 꺼지는지를 테스트하는 함수입니다. 
+함수에서는 가상의 LED 값을 설정하고 LedDriver_Create에 해당 주소를 넣었을 때 가상의 LED 가 모두 꺼지는지를 확인합니다. 
+이때 가상 LED의 값은 0이여야 합니다. 
+`assert_int_equal(0, virtualLeds);` 는 virtualLeds의 값이 0이여야 테스트가 통과함을 의미합니다. 
+
+
+이후 실제 LED 드라이버를 구현하는 코드를 작성해줍니다. 
+
+```c
+#include "led_driver.h"
+
+void LedDriver_Create(uint16_t * address) {
+}
+void LedDriver_Destroy(void) {
+}
+
+```
+
+위와 같이 작성 후 컴파일하여 테스트를 실행해보겠습니다. 
+
+```
+[==========] Running 1 test(s).
+CMocka setup
+[ RUN      ] LedsOffAfterCreate
+[  ERROR   ] --- 0 != 0xffff
+[   LINE   ] --- led_driver_test.c:25: error: Failure!
+[  FAILED  ] LedsOffAfterCreate
+CMocka teardown
+[==========] 1 test(s) run.
+[  PASSED  ] 0 test(s).
+[  FAILED  ] 1 test(s), listed below:
+[  FAILED  ] LedsOffAfterCreate
+
+ 1 FAILED TEST(S)
+
+```
+
+예상대로 테스트에 실패합니다. 
+이제 테스트가 실패하지 않도록 `LedDriver_Create` 함수를 작성해줍니다. 
+
+```c
+void LedDriver_Create(uint16_t * address) {
+  *address = 0;
+}
+```
+
+다시 컴파일한 뒤 테스트를 실행해보겠습니다. 
+
+```
+[==========] Running 1 test(s).
+CMocka setup
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+CMocka teardown
+[==========] 1 test(s) run.
+[  PASSED  ] 1 test(s).
+```
+
+테스트가 통과하였습니다. 
+`LedDriver_Create` 가 의도대로 동작하고 있음을 의미합니다. 
