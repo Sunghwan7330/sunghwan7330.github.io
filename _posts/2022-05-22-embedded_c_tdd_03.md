@@ -185,3 +185,113 @@ CMocka teardown
 테스트 주도 개발은 테스트를 성공하기 위해 개발을 하는 방법론입니다. 
 테스트를 먼저 작성합니다. 
 이후 이 실패한 테스트를 성공하기 위한 코드를 작성하는 것입니다. 
+
+# 먼저 인터페이스를 테스트 주도로 개발하기 
+
+잘 설계된 모듈은 훌륭한 인터페이스가 필수적입니다. 
+처음 몇 개의 테스트는 인터페이스 설계를 이끌어냅니다. 
+인터페이스에 집중한다는 것은 개발하는 코드를 바깥에서 안으로 만들어간다는 것을 의미합니다. 
+이는 사용자 관점에서 더 편리한 인터페이스를 얻을 수 있습니다. 
+
+인터페이스를 구현할 때는 우선 하드코딩된 값을 반환하는 것부터 시작합니다. 
+여기서 핵심은 테스트가 아니라 인터페이스 설계를 유도하고 간단한 경계값 테스트를 얻는 것입니다. 
+
+드라이버의 주요 목적은 LED 를 On / Off 하는 것입니다. 
+LED 마다 01부터 16까지 숫자가 붙어있습니다. 
+만약 1번 LED를 켜려면 드라이버가 0x0001을 LED의 메모리 매핑 주소에 쓰면 됩니다. 
+
+이제 LED를 켜는 테스트 코드를 작성하겠습니다. 
+
+```c
+void TurnOnLedOne(void ** state) {
+  uint16_t virtualLeds = 0xffff;
+  LedDriver_Create(&virtualLeds);
+  LedDriver_TurnOn(1);
+  assert_int_equal(1, virtualLeds);
+}
+```
+
+이와 같이 테스트를 작성하고 컴파일을 하면 컴파일 오류가 발생합니다. 
+LED 드라이버의 헤더에 함수 프로토타입을 작성하고 c파일에 뼈대만 입력해줍니다. 
+
+```c
+void LedDriver_TurnOn(int ledNumber) {
+}
+```
+
+이제 컴파일에 성공하게 될것입니다. 
+컴파일 후 테스트를 수행하면 결과가 실패하는 것을 알 수 있습니다. 
+
+```
+[==========] Running 2 test(s).
+CMocka setup
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[  ERROR   ] --- 0x1 != 0
+[   LINE   ] --- led_driver_test.c:32: error: Failure!
+[  FAILED  ] TurnOnLedOne
+CMocka teardown
+[==========] 2 test(s) run.
+[  PASSED  ] 1 test(s).
+[  FAILED  ] 1 test(s), listed below:
+[  FAILED  ] TurnOnLedOne
+
+ 1 FAILED TEST(S)
+```
+
+이 함수를 통과하기 위해서는 `LedDriver_TurnOn` 함수에서 LED 메모리의 주소를 1로 변경해야 합니다. 
+그러기 위해서는 먼저 `LedDriver_Create` 함수에서 입력되는 LED 메모리 주소의 값을 보관해야합니다. 
+
+```c
+uint16_t * ledsAddress;
+void LedDriver_Create(uint16_t * address) {
+  ledsAddress = address
+  *address = 0;
+}
+```
+이와 같이 전역변수로 LED 메모리 주소를 가지고 있으면 `LedDriver_TurnOn` 함수에서 
+LED 메모리주소의 값을 변경할 수 있습니다. 
+위의 테스트에서 가장 간단하게 해결할 수 있는 방법은 `LedDriver_TurnOn` 함수에서 LED 메모리의 값을 1로 변경하는 것입니다. 
+
+```c
+void LedDriver_TurnOn(int ledNumber){
+  *ledsAddress = 1;
+}
+```
+
+이제 테스트를 진행해보면 모두 통과하는 것을 볼 수 있습니다. 
+
+```
+[==========] Running 2 test(s).
+CMocka setup
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+CMocka teardown
+[==========] 2 test(s) run.
+[  PASSED  ] 2 test(s).
+```
+
+# 구현이 잘못 되었다!
+
+많은 개발자들이 하드코딩, 그것도 명확히 문제가 있는 코드를 보면 마음이 편치 않습니다. 
+최종 구현은 최하위 비트만 설정해야 합니다. 
+지금 테스트만 보았을 때는 구현이 의도대로는 되었습니다. 
+만약 TDD를 하고 있지 않다면 이 코드는 그대로 남겨둘 수 있습니다. 
+그렇게 되면 나중에 버그가 발견될 수 있습니다. 
+
+테스트 목록을 진행하면서 이러한 구현은 남겨지지 않게 될것읍니다. 
+만약 하드코딩을 했는데 해당 부분에 대한 테스트가 목록에 없다면 당장 추가해야 합니다. 
+
+# 테스트가 정답!
+
+위에서 작성한 테스트는 1번 LED를 켜는 테스트를 하였습니다. 
+현 시점에서 테스트는 통과하였습니다. 
+하지만 다른 LED를 켜게 되면 해당 테스트는 실패하게 됩니다. 
+그러면 이전에 작성한 하드코딩한 코드는 바로 수정하게 될 것입니다. 
+
+테스트에서 필요하기 전에 코드를 추가하면 복잡성이 높아집니다. 
+TDD는 개발 전에 올바른 테스트를 먼저 작성해야 합니다. 
+올바른 테스트가 만든 뒤에야 코드를 작성해야 합니다. 
