@@ -397,3 +397,69 @@ CMocka teardown
 [  PASSED  ] 2 test(s).
 
 ```
+# 점진적 진행
+
+## 속인 다음 제대로 만들기 
+
+LED 드라이버는 LED 주소에 하드코딩된 값을 써서 테스트를 속일 수 있었습니다. 
+테스트가 더 많아지면 속이기는 쉽지 않습니다. 
+이렇게 되면 제대로 구현하는 편이 더 간단할 것입니다. 
+
+만약 실제 구현을 하는 것 보다 속이는것이 더 어려워지면 실제 구현으로 들어가는 것입니다. 
+이는 추후 이해할 수 있게 됩니다. 
+
+## 테스트는 작고 초점이 맞도록 유지!
+
+1번 LED 를  off 시키는 것을 테스트하기 가장 쉬운 방법은 위와 같이 이전의 LED on 테스트 밑에 함수를 추가하는 것입니다. 
+이렇게 되면 테스트의 초점을 잃을 수 있습니다. 
+이렇게 되면 테스트가 실패할 수 있는 원인이 두가지 있습니다. 
+
+1. LedDriver_TurnOn 이 잘못되어서 실패하거나 LedDriver_TurnOff 이 잘못되어서 실패할 수 있습니다. 
+2. LedDriver_TurnOn 의 동작이 제대로 테스트되지 않습니다. 
+
+보통 TDD 초보들은 테스트 하나에 너무 많은 내용을 넣으려고 합니다. 
+하지만 이는 가독성을 떨어뜨리고 초점을 잃게 됩니다. 
+테스트는 읽기 쉽고, 크기가 작고, 초점을 맞춘 상태를 유지해야 합니다. 
+
+## 완전한 상태에서 리팩터링 하기 
+
+리팩터링을 안심하고 할 수 있는 유일한 때는 테스트가 모두 통과하는 때입니다. 
+테스트가 하나라도 통과하지 않으면 리팩터링을 하지 않는게 좋습니다. 
+테스트가 실패할 때는 코드의 동작을 고정시킬 수 없기 때문입니다. 
+(리팩터링은 12장에서 깊게 다룬다고 합니다)
+
+우리가 작성한 테스트 코드에도 냄새가 나기 시작했습니다. 
+테스트 케이스마다 vurtualLeds를 만들고 LedDriver_Create 를 호출합니다. 
+또한 LedsOffAfterCreate 는 특수한 경우를 다루므로 그대로 두어야 하며, 중복 테스트를 아래와 같이 테스트케이스 밖으로 꺼내야 합니다. 
+
+```
+uint16_t virtualLeds;
+
+int setup (void ** state) {
+  LedDriver_Create(&virtualLeds);
+  print_message("CMocka setup\n");
+  return 0;
+}
+
+int teardown (void ** state) {
+  print_message("CMocka teardown\n");
+  return 0;
+}
+
+void LedsOffAfterCreate(void ** state) {
+  virtualLeds = 0xffff;
+  LedDriver_Create(&virtualLeds);
+  assert_int_equal(0, virtualLeds);
+}
+
+void TurnOnLedOne(void ** state) {
+  LedDriver_TurnOn(1);
+  assert_int_equal(1, virtualLeds);
+}
+
+void TurnOnLedOff(void ** state) {
+  LedDriver_TurnOn(1);
+  LedDriver_TurnOff(1);
+  assert_int_equal(0, virtualLeds);
+}
+```
