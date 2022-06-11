@@ -336,67 +336,6 @@ CMocka teardown
 
 ```
 
-# 구현이 잘못 되었다!
-
-많은 개발자들이 하드코딩, 그것도 명확히 문제가 있는 코드를 보면 마음이 편치 않습니다. 
-최종 구현은 최하위 비트만 설정해야 합니다. 
-지금 테스트만 보았을 때는 구현이 의도대로는 되었습니다. 
-만약 TDD를 하고 있지 않다면 이 코드는 그대로 남겨둘 수 있습니다. 
-그렇게 되면 나중에 버그가 발견될 수 있습니다. 
-
-테스트 목록을 진행하면서 이러한 구현은 남겨지지 않게 될것읍니다. 
-만약 하드코딩을 했는데 해당 부분에 대한 테스트가 목록에 없다면 당장 추가해야 합니다. 
-
-# 테스트가 정답!
-
-위에서 작성한 테스트는 1번 LED를 켜는 테스트를 하였습니다. 
-현 시점에서 테스트는 통과하였습니다. 
-하지만 다른 LED를 켜게 되면 해당 테스트는 실패하게 됩니다. 
-그러면 이전에 작성한 하드코딩한 코드는 바로 수정하게 될 것입니다. 
-
-테스트에서 필요하기 전에 코드를 추가하면 복잡성이 높아집니다. 
-TDD는 개발 전에 올바른 테스트를 먼저 작성해야 합니다. 
-올바른 테스트가 만든 뒤에야 코드를 작성해야 합니다. 
-
-# 다음 테스트 선택하기 
-
-현재 개발중인 LED 드라이버에서 큰 그림을 얻을 수 있도록 인터페이스를 발전해야 합니다. 
-먼저 이전 테스트에서 LED를 끄는 테스트를 추가해보겠습니다. 
-켜기와 끄는 기능은 상호보완적 관계이며, 추후 LED 조작이 서로 간섭되지 않는것을 검증할 수 있습니다. 
-
-```c
-void TurnOnLedOne(void ** state) {
-  uint16_t virtualLeds = 0xffff;
-  LedDriver_Create(&virtualLeds);
-  LedDriver_TurnOn(1);
-  LedDriver_TurnOff(1);
-  assert_int_equal(0, virtualLeds);
-}
-```
-
-이후 테스트가 통과할 수 있는 코드를 작성합니다. 
-
-```c
-void LedDriver_TurnOff(int ledNumber)
-{
-  *ledsAddress = 0;
-}
-```
-
-이후 테스트를 실행하면 모든 테스트가 통과됩니다. 
-
-```
-[==========] Running 2 test(s).
-CMocka setup
-[ RUN      ] LedsOffAfterCreate
-[       OK ] LedsOffAfterCreate
-[ RUN      ] TurnOnLedOne
-[       OK ] TurnOnLedOne
-CMocka teardown
-[==========] 2 test(s) run.
-[  PASSED  ] 2 test(s).
-
-```
 # 점진적 진행
 
 ## 속인 다음 제대로 만들기 
