@@ -475,7 +475,7 @@ void TurnOnLedOff(void ** state) {
 테스트 실패를 확인하면 이제 테스트를 통과하도록 코드를 작성합니다. 
 테스트가 통과했다면 리팩터링을 통해 코드를 깔끔하게 만들어줍니다. 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/173188054-92b4245c-0b52-4a15-bb29-d2705657b944.png)
 
 
 # 테스트FIRST
