@@ -160,3 +160,104 @@ void LedDriver_TurnOn(int ledNumber){
 전역 네임스페이스에 추가되는 것을 피해기 위해 static 키워드를 사용했습니다. 
 `convertLedNumberToBit` 함수를 인라인이나 메크로로 처리하여 성능을 올릴 수 있지만, 컴파일러의 최적화라면 불필요한 작업입니다. 
 
+## 꾸준한 진행 
+
+하나하나의 테스트가 구현을 점차 완성시킵니다. 
+
+다양한 테스트를 추가하여 프로그램의 안정성을 올릴 수 있습니다. 
+다른 테스트 하나를 더 추가해보겠습니다 .
+
+```
+void TurnOffAnyLed (void ** state) {
+  LedDriver_TurnOn(9);
+  LedDriver_TurnOn(8);
+  LedDriver_TurnOff(8);
+  assert_int_equal(0x100, virtualLeds);
+}
+```
+
+이제 테스트를 돌려봅니다. 
+
+```
+[==========] Running 5 test(s).
+CMocka setup
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[  ERROR   ] --- 0x100 != 0
+[   LINE   ] --- led_driver_test.c:52: error: Failure!
+[  FAILED  ] TurnOffAnyLed
+CMocka teardown
+[==========] 5 test(s) run.
+[  PASSED  ] 4 test(s).
+[  FAILED  ] 1 test(s), listed below:
+[  FAILED  ] TurnOffAnyLed
+
+ 1 FAILED TEST(S)
+```
+
+예상했던대로 테스트는 실패합니다. 
+앞에서 작성한 `TurnOnLedOff` 함수는 모든 LED를 끄기 때문입니다. 
+`TurnOnLedOff`를 비트 마스크 처리하는 코드로 작성 후 테스트 하려면 다른 LED를 미리 ON 상태로 만들어줘야 합니다. 
+
+이를 위해 모두켜는 함수를 만들려 합니다. 
+먼저 테스트를 추가하겠습니다. 
+
+```c
+void AllOn (void ** state) {
+  LedDriver_TurnAllOn();
+  assert_int_equal(0xffff, virtualLeds);
+}
+```
+
+```c
+enum {ALL_LEDS_ON = ~0, ALL_LEDS_OFF = ~ALL_LEDS_ON};
+
+void LedDriver_TurnAllOn(void) {
+  *ledsAddress = ALL_LEDS_ON;
+}
+```
+
+위와 같이 모든 LED를 켤 수 있는 기능이 추가되었습니다. 
+이제 특정 LED를 끄는 테스트를 수정합니다. 
+
+```c
+void TurnOffAnyLed (void ** state) {
+  LedDriver_TurnAllOn();
+  LedDriver_TurnOff(8);
+  assert_int_equal(0xff7f, virtualLeds);
+}
+```
+
+```c
+void LedDriver_TurnOff(int ledNumber) {
+  *ledsAddress &= ~(convertLedNumberToBit(ledNumber));
+}
+```
+
+이제 다시 테스트를 수행하면 통과하는 것을 확인할 수 있습니다. 
+```
+[==========] Running 6 test(s).
+CMocka setup
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[       OK ] TurnOffAnyLed
+[ RUN      ] AllOn
+[       OK ] AllOn
+CMocka teardown
+[==========] 6 test(s) run.
+[  PASSED  ] 6 test(s).
+```
