@@ -261,3 +261,112 @@ CMocka teardown
 [==========] 6 test(s) run.
 [  PASSED  ] 6 test(s).
 ```
+
+다음으로 소프트웨어에서 LED의 ON/OFF 상태를 읽을 수 있는지에 대한 테스트를 추가하려 합니다. 
+하드웨어에서 값을 읽지 않았다는 것을 확인하기 위해 아래와 같은 테스트를 추가합니다. 
+새로 추가하는 테스트에서 virtualLeds를 0xffff로 먼저 설정하면 드라이버가 LED의 현재 상태를 하드웨어로 부터 읽어오지 않는다는 것을 확인할 수 있습니다. 
+```c
+void LedMemoryIsNotReadable (void ** state) {
+  virtualLeds = 0xffff;
+  LedDriver_TurnOn(8);
+  assert_int_equal(0x80, virtualLeds);
+}
+```
+
+```
+[==========] Running 7 test(s).
+CMocka setup
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[       OK ] TurnOffAnyLed
+[ RUN      ] AllOn
+[       OK ] AllOn
+[ RUN      ] LedMemoryIsNotReadable
+[  ERROR   ] --- 0x80 != 0xffff
+[   LINE   ] --- led_driver_test.c:62: error: Failure!
+[  FAILED  ] LedMemoryIsNotReadable
+CMocka teardown
+[==========] 7 test(s) run.
+[  PASSED  ] 6 test(s).
+[  FAILED  ] 1 test(s), listed below:
+[  FAILED  ] LedMemoryIsNotReadable
+
+ 1 FAILED TEST(S)
+```
+
+테스트가 실패하는것을 보았을 때 LED의 현재 상태를 하드웨어로 부터 읽어오지 않는다는 것을 확인할 수 있습니다. 
+
+테스트를 통과시키기 위해, LED의 상태 를 ledsImage라는 파일 범위 비공개 변수에 기록하도록 합니다. 
+LedDriver_Create()에서 이 변수를 초기화합니다. 
+
+```c
+uint16_t * ledsAddress;
+static uint16_t ledsImage;
+
+void LedDriver_Create(uint16_t * address) {
+  ledsAddress = address;
+  ledsImage = ALL_LEDS_OFF;
+  *ledsAddress = ledsImage;
+}
+```
+
+LedDriver_TurnOn(), LedDriver_TurnOff(), LedDriver_TurnAllOn() 함수에서 현 재 LED 상태를 알기 위해 ledsImage 변수를 이용합니다.
+
+```c
+void LedDriver_TurnOn(int ledNumber){
+  ledsImage |= convertLedNumberToBit(ledNumber);
+  *ledsAddress = ledsImage;
+}
+
+void LedDriver_TurnOff(int ledNumber) {
+  ledsImage &= ~(convertLedNumberToBit(ledNumber));
+  *ledsAddress = ledsImage;
+}
+
+void LedDriver_TurnAllOn(void) {
+  ledsImage = ALL_LEDS_ON;
+  *ledsAddress = ledsImage;
+}
+```
+
+이제 모든 테스트가 통과하는 것을 확인하였습니다. 
+
+```
+[==========] Running 7 test(s).
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[       OK ] TurnOffAnyLed
+[ RUN      ] AllOn
+[       OK ] AllOn
+[ RUN      ] LedMemoryIsNotReadable
+[       OK ] LedMemoryIsNotReadable
+[==========] 7 test(s) run.
+[  PASSED  ] 7 test(s).
+```
+
+이후 코드 여러 곳에 중복된 `*ledsAddress = ledsImage;` 를 추출하여 도움 함수로 만들 고 향후 코드를 읽는 사람들이 코드를 쉽게 이해하도록 변경해줍니다. 
+
+```c
+static void updateHardware(void) {
+  *ledsAddress = ledsImage;
+}
+
+void LedDriver_TurnAllOn(void) {
+  ledsImage = ALL_LEDS_ON;
+  updateHardware();
+}
+```
