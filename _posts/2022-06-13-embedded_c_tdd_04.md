@@ -370,3 +370,237 @@ void LedDriver_TurnAllOn(void) {
   updateHardware();
 }
 ```
+
+## 경계 조건 테스트 
+
+다음 테스트는 LED 번호의 정상값 범위를 상한값과 하한값으로 확인합니다. 
+이 테스트는 상세 요구사항 역할을 합니다. 
+
+```c
+void UpperAndLowerBounds (void** state) {
+  LedDriver_TurnOn(1);
+  LedDriver_TurnOn(16);
+  assert_int_equal(0x80, virtualLeds);
+}
+```
+
+위의 테스트는 LED의 유효 범위 내의 값을 제어하기 때문에 테스트 수행시 통과하게 됩니다. 
+
+```
+[==========] Running 8 test(s).
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[       OK ] TurnOffAnyLed
+[ RUN      ] AllOn
+[       OK ] AllOn
+[ RUN      ] LedMemoryIsNotReadable
+[       OK ] LedMemoryIsNotReadable
+[ RUN      ] UpperAndLowerBounds
+[       OK ] UpperAndLowerBounds
+[==========] 8 test(s) run.
+[  PASSED  ] 8 test(s).
+```
+
+LED 범위가 정상 범위를 벗어나면 어떤 동작을 해야될까요?
+
+1. 드라이버가 인접한 메모리 값을 쓴다?
+2. 잘못된 값이므로 무시한다?
+
+2번이 더 좋은 방법으로 판단됩니다. 
+
+우선은 경계를 벗어나는 값이 입력되었을 때 어떤 결과가 나오는지 확인해봅니다. 
+
+```c
+void OutOfBoundsChangesNothing (void** state) {
+  LedDriver_TurnOn(-1);
+  LedDriver_TurnOn(0);
+  LedDriver_TurnOn(1);
+  LedDriver_TurnOn(2);
+  LedDriver_TurnOn(17);
+  LedDriver_TurnOn(33);
+  LedDriver_TurnOn(3141);
+  assert_int_equal(0, virtualLeds);
+}
+```
+
+위의 테스트를 추가하고 테스트를 수행해보겠습니다. 
+
+```
+[==========] Running 9 test(s).
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[       OK ] TurnOffAnyLed
+[ RUN      ] AllOn
+[       OK ] AllOn
+[ RUN      ] LedMemoryIsNotReadable
+[       OK ] LedMemoryIsNotReadable
+[ RUN      ] UpperAndLowerBounds
+[       OK ] UpperAndLowerBounds
+[ RUN      ] OutOfBoundsChangesNothing
+[  ERROR   ] --- 0 != 0x3
+[   LINE   ] --- led_driver_test.c:76: error: Failure!
+[  FAILED  ] OutOfBoundsChangesNothing
+[==========] 9 test(s) run.
+[  PASSED  ] 8 test(s).
+[  FAILED  ] 1 test(s), listed below:
+[  FAILED  ] OutOfBoundsChangesNothing
+
+ 1 FAILED TEST(S)
+```
+
+유효범위 외의 값은 무시된 듯 해보입니다. 
+(서적에서는 시프트 연산이 범위를 벗어나는 경우 로테이트 되었음)
+
+하지만 경계조건을 처리하지 않은 코드를 테스트하다보면 테스트가 실행되다가 크래시가 발생하는 경우가 있습니다. 
+스택상의 배열의 경계를 벗어나 스택이 깨질 수도 있습니다. 
+우리가 작성한 테스트에서는 이러한 손상이 발생하지는 않았지만, 경계처리는 꼭 해주어야 합니다. 
+
+아래와 같이 LedDriver_TurnOn()와 LedDriver_TurnOff()에 보호절을 추가합니다. 
+
+```c
+void LedDriver_TurnOn(int ledNumber){
+  if (ledNumber <= 0 || ledNumber > 16)
+    return;
+
+  ledsImage |= convertLedNumberToBit(ledNumber);
+  updateHardware();
+}
+
+void LedDriver_TurnOff(int ledNumber) {
+  if (ledNumber <= 0 || ledNumber > 16)
+    return;
+
+  ledsImage &= ~(convertLedNumberToBit(ledNumber));
+  updateHardware();
+}
+```
+
+이후 테스트의 결과값을 수정하여 테스트가 통과하도록 해줍니다. 
+
+```
+[==========] Running 9 test(s).
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[       OK ] TurnOffAnyLed
+[ RUN      ] AllOn
+[       OK ] AllOn
+[ RUN      ] LedMemoryIsNotReadable
+[       OK ] LedMemoryIsNotReadable
+[ RUN      ] UpperAndLowerBounds
+[       OK ] UpperAndLowerBounds
+[ RUN      ] OutOfBoundsChangesNothing
+[       OK ] OutOfBoundsChangesNothing
+[==========] 9 test(s) run.
+[  PASSED  ] 9 test(s).
+```
+
+이 수정에서 실수한 부분이 있습니다. 
+LedDriver_TurnOff 에 대한 테스트를 작성하지 않고 수정을 먼저 진행했습니다. 
+
+물론 테스트된 코드를 복사하였으므로 안전하다고 생각할 수 있지만, 이는 조심해야 합니다. 
+
+이제 빠진 LedDriver_TurnOff 에 대해서 경계를 벗어날때에 대한 테스트를 추가해줍니다. 
+
+```c
+void OutOfBoundsTurnOffDoesNoHarm (void** state) {
+  LedDriver_TurnOff(-1);
+  LedDriver_TurnOff(0);
+  LedDriver_TurnOff(17);
+  LedDriver_TurnOff(3141);
+  assert_int_equal(0xffff, virtualLeds);
+}
+```
+
+이제 테스트를 실행해보겠습니다. 
+
+```
+[==========] Running 10 test(s).
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[       OK ] TurnOffAnyLed
+[ RUN      ] AllOn
+[       OK ] AllOn
+[ RUN      ] LedMemoryIsNotReadable
+[       OK ] LedMemoryIsNotReadable
+[ RUN      ] UpperAndLowerBounds
+[       OK ] UpperAndLowerBounds
+[ RUN      ] OutOfBoundsChangesNothing
+[       OK ] OutOfBoundsChangesNothing
+[ RUN      ] OutOfBoundsTurnOffDoesNoHarm
+[       OK ] OutOfBoundsTurnOffDoesNoHarm
+[==========] 10 test(s) run.
+[  PASSED  ] 10 test(s).
+```
+
+예상과 다르게 테스트가 성공했습니다. 
+테스트에 성공한 이유는 시작시 모든 LED가 켜져있기 때문입니다. 
+따라서 테스트 시작시에 모든 LED를 켜고 시작해야 합니다. 
+
+아래와 같이 테스트를 수정하고 다시 진행해보겠습니다. 
+
+```c
+void OutOfBoundsTurnOffDoesNoHarm (void** state) {
+  LedDriver_TurnAllOn();
+  LedDriver_TurnOff(-1);
+  LedDriver_TurnOff(0);
+  LedDriver_TurnOff(17);
+  LedDriver_TurnOff(3141);
+  assert_int_equal(0xffff, virtualLeds);
+}
+```
+
+```
+[==========] Running 10 test(s).
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[       OK ] TurnOffAnyLed
+[ RUN      ] AllOn
+[       OK ] AllOn
+[ RUN      ] LedMemoryIsNotReadable
+[       OK ] LedMemoryIsNotReadable
+[ RUN      ] UpperAndLowerBounds
+[       OK ] UpperAndLowerBounds
+[ RUN      ] OutOfBoundsChangesNothing
+[       OK ] OutOfBoundsChangesNothing
+[ RUN      ] OutOfBoundsTurnOffDoesNoHarm
+[       OK ] OutOfBoundsTurnOffDoesNoHarm
+[==========] 10 test(s) run.
+[  PASSED  ] 10 test(s).
+```
+
+테스트가 통과하는 것을 확인하였습니다. 
