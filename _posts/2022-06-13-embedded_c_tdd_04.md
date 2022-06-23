@@ -604,3 +604,152 @@ void OutOfBoundsTurnOffDoesNoHarm (void** state) {
 ```
 
 테스트가 통과하는 것을 확인하였습니다. 
+
+이제 드라이버의 오류에 대해서 알람을 주는 기능을 추가해야 합니다. 
+
+`RuntimeError.h` 헤더 파일에 아래의 코드를 추가합니다. 
+
+```c
+void RuntimeError(const char * message, int parameter, const char * file, int line);
+
+#define RUNTIME_ERROR(description, parameter)\
+ RuntimeError(description, parameter, __FILE__, __LINE__)
+```
+
+RuntimeError는 이벤트 로그에 오류 메시지를 추가합니다. 
+테스트 중 에는 RuntimeError()를 스텁으로 만들어서 마지막으로 발생한 오류를 저장했다가 확인할 수 있게 합니다. 
+`RuntimeErrorStub.h` 생성 후 아래와 같이 작성해줍니다. 
+
+```c
+void RuntimeErrorStub_Reset(void); 
+const char * RuntimeErrorStub_GetLastError(void); 
+int RuntimeErrorStub_GetLastParameter(void);
+void RuntimeError(const char * m, int p, const char * f, int l);
+```
+
+스텁의 구현은 아래와 같습니다. 
+
+```
+#include "RuntimeErrorStub.h"
+
+static const char * message = "No Error";
+static int parameter = -1;
+static const char * file = 0;
+static int line = -1;
+
+void RuntimeErrorStub_Reset(void) {
+  message = "No Error";
+  parameter = -1;
+}
+
+const char * RuntimeErrorStub_GetLastError(void) {
+  return message;
+}
+
+void RuntimeError(const char * m, int p, const char * f, int l) {
+  message = m;
+  parameter = p;
+  file = f;
+  line = l;
+}
+int RuntimeErrorStub_GetLastParameter(void) {
+  return parameter;
+}
+```
+
+RuntimeError()의 스텁 버전은 오류 정보를 저장하기만 합니다. 
+
+테스트 중에는 RuntimeError()의 스텁 버전이 링크됩니다. 
+이로써 테스트 케이스가 경계를 벗어나는 경우에 RuntimeError()가 호출되는지 여부를 확인할 수 있습니다. 
+
+아래의 테스트를 추가해줍니다. 
+
+```c
+void OutOfBoundsProducesRuntimeError (void** state) {
+  LedDriver_TurnOn(-1);
+  assert_string_equal("LED Driver: out-of-bounds LED", RuntimeErrorStub_GetLastError());
+  assert_int_equal(-1, RuntimeErrorStub_GetLastParameter());
+}
+```
+
+이제 테스트를 수행해줍니다. 
+
+```
+[==========] Running 11 test(s).
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[       OK ] TurnOffAnyLed
+[ RUN      ] AllOn
+[       OK ] AllOn
+[ RUN      ] LedMemoryIsNotReadable
+[       OK ] LedMemoryIsNotReadable
+[ RUN      ] UpperAndLowerBounds
+[       OK ] UpperAndLowerBounds
+[ RUN      ] OutOfBoundsChangesNothing
+[       OK ] OutOfBoundsChangesNothing
+[ RUN      ] OutOfBoundsTurnOffDoesNoHarm
+[       OK ] OutOfBoundsTurnOffDoesNoHarm
+[ RUN      ] OutOfBoundsProducesRuntimeError
+[  ERROR   ] --- "LED Driver: out-of-bounds LED" != "No Error"
+[   LINE   ] --- led_driver_test.c:92: error: Failure!
+[  FAILED  ] OutOfBoundsProducesRuntimeError
+[==========] 11 test(s) run.
+[  PASSED  ] 10 test(s).
+[  FAILED  ] 1 test(s), listed below:
+[  FAILED  ] OutOfBoundsProducesRuntimeError
+
+ 1 FAILED TEST(S)
+```
+
+이제 RUNTIME_ERROR( ) 호출을 추가해 테스트가 통과하도록 해줍니다. 
+
+```c
+void LedDriver_TurnOn(int ledNumber){
+  if (ledNumber <= 0 || ledNumber > 16){
+	RUNTIME_ERROR("LED Driver: out-of-bounds LED", -1);
+    return;
+  }
+
+  ledsImage |= convertLedNumberToBit(ledNumber);
+  updateHardware();
+}
+```
+
+테스트를 실행해줍니다. 
+
+```
+[==========] Running 11 test(s).
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[       OK ] TurnOffAnyLed
+[ RUN      ] AllOn
+[       OK ] AllOn
+[ RUN      ] LedMemoryIsNotReadable
+[       OK ] LedMemoryIsNotReadable
+[ RUN      ] UpperAndLowerBounds
+[       OK ] UpperAndLowerBounds
+[ RUN      ] OutOfBoundsChangesNothing
+[       OK ] OutOfBoundsChangesNothing
+[ RUN      ] OutOfBoundsTurnOffDoesNoHarm
+[       OK ] OutOfBoundsTurnOffDoesNoHarm
+[ RUN      ] OutOfBoundsProducesRuntimeError
+[       OK ] OutOfBoundsProducesRuntimeError
+[==========] 11 test(s) run.
+[  PASSED  ] 11 test(s).
+```
+
+의도대로 통과하는 것을 확인하였습니다.
