@@ -753,3 +753,85 @@ void LedDriver_TurnOn(int ledNumber){
 ```
 
 의도대로 통과하는 것을 확인하였습니다.
+
+# 코드를 깔끔하게 유지하기 - 자주 리팩터링 하기
+
+예제코드를 작성하면서 일부 작은 문제들을 제거하기 위해 리팩터링을 했습니다. 
+리팩터링을 할 것이 보이게 된다면 바로 진행하여 더 큰 문제가 자라날 기회를 없애는 것이 좋습니다. 
+단, 리팩터링은 모든 테스트가 통화하는 경우에만 진행하여야 합니다. 
+
+지금은 중복 코드를 추출해서 도움함수로 만들고, 매직 넘버 대신 상수 정의를 도입해서 두가지의 냄새를 제거해보려 합니다. 
+
+## 잘라내기 대신 복사하기
+
+새로운 함수를 추출할 때, 중복코드 잘라내기(cut) 대신 복사하기(copy)를 사용해야 합니다. 
+새로 만들 함수에 뼈대만 추가하고 복사한 코드를 함수에 넣습니다. 
+새 함수에 인자나 반환값이 필요하면 이를 추가한 후 컴파일을 합니다. 
+
+테스트가 통과하면 중복 코드가 사용되고 있는 다른곳들도 새로 만든 도움함수로 치환합니다. 
+
+새 도움함수가 적용되고 테스트가 모두 통과한 다음 매직 넘버를 상수로 치환합니다. 
+
+```c
+enum {FIRST_LED = 1, LAST_LED = 16};
+static BOOL IsLedOutOfBounds(int ledNumber) {
+  return (ledNumber < FIRST_LED) || (ledNumber > LAST_LED);
+}
+```
+
+`IsLedOutOfBounds` 함수는 외부에서 호출할 필요가 없으므로 헤더에 추가하지 않고 static으로 선언합니다. 
+리팩터링된 `LedDriver_TurnOn` 과 `LedDriver_TurnOff`는 아래와 같다.
+
+```c
+void LedDriver_TurnOn(int ledNumber){
+  if (IsLedOutOfBounds(ledNumber)) {
+    RUNTIME_ERROR("LED Driver: out-of-bounds LED", -1);
+    return;
+  }
+
+  ledsImage |= convertLedNumberToBit(ledNumber);
+  updateHardware();
+}
+
+void LedDriver_TurnOff(int ledNumber) {
+  if (IsLedOutOfBounds(ledNumber)) {
+    RUNTIME_ERROR("LED Driver: out-of-bounds LED", -1);
+    return;
+  }
+
+  ledsImage &= ~(convertLedNumberToBit(ledNumber));
+  updateHardware();
+}
+```
+
+비트 조작 코드는 아래와 같이 함수를 추출해주겠습니다. 
+
+```c
+static void setLedImageBit(int ledNumber) {
+  ledsImage |= convertLedNumberToBit(ledNumber);
+}
+
+static void clearLedImageBit(int ledNumber) {
+  ledsImage &= ~convertLedNumberToBit(ledNumber);
+}
+
+void LedDriver_TurnOn(int ledNumber){
+  if (IsLedOutOfBounds(ledNumber)) {
+    RUNTIME_ERROR("LED Driver: out-of-bounds LED", -1);
+    return;
+  }
+
+  setLedImageBit(ledNumber);
+  updateHardware();
+}
+
+void LedDriver_TurnOff(int ledNumber) {
+  if (IsLedOutOfBounds(ledNumber)) {
+    RUNTIME_ERROR("LED Driver: out-of-bounds LED", -1);
+    return;
+  }
+
+  clearLedImageBit(ledNumber);
+  updateHardware();
+}
+```
