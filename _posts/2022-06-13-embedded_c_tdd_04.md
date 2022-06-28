@@ -835,3 +835,79 @@ void LedDriver_TurnOff(int ledNumber) {
   updateHardware();
 }
 ```
+
+## 한번에 하나씩 문제 해결하기 
+
+작은 단계를 밟아가는 것은 여러분이 한 번에 하나씩 문제를 해결하는 데 집중하 도록 도와줍니다. 
+ 사람은 한 번에 하나의 문제만 해결할 때 일을 더 잘 할 수 있습니다. 
+
+리팩터링 결과로 이전에 동작하던 테스트가 실패하면 디버깅을 하지 말라 합니다. 
+되돌리기(undo) 한 다음 여러분이 작업한 내용을 꼼꼼하게 살펴 보기를 바랍니다. 
+문제가 정말 명확하다면 바로 고쳐보는 것도 좋지만, 다시 녹색 상태로 돌아가려면 되돌리기를 얼마나 해야 하는지 의식하고 있어야 합니다. 
+만약 한두 군데 고쳐 봐서 테스트가 통과하지 않는다면 스스로의 구멍을 파고 있는 상황이 됩니다.
+ 파는 것을 멈추고 되돌려서 다시 생각하는 것이 좋습니다. 
+
+# 완료될 때 까지 반복하기 
+
+드라이버의 핵심 기능은 갖춰졌습니다. 
+이제 뼈대에 살을 붙일때 까지 테스트와 제품 코드를 계속 추가할 수 있습니다. 
+
+이제 LED 상태를 가져오는 기능을 추가하겠습니다. 
+먼저 테스트부터 추가해줍니다. 
+
+```c
+void IsOn(void** state) {
+  assert_int_equal(0, (LedDriver_IsOn(11)));
+  LedDriver_TurnOn(11);
+  assert_int_equal(1, (LedDriver_IsOn(11)));
+}
+```
+
+컴파일 실패하는 것을 확인하고 `IsOn` 함수를 헤더에 추가해줍니다. 
+컴파일 성공하는것을 확인해고 이제 함수를 구현합니다. 
+
+```c
+bool LedDriver_IsOn(int ledNumber) {
+  return false;
+}
+```
+
+이 처럼 하드코딩된 코드를 추가하면 테스트에 실패하는 것을 확인할 수 있습니다. 
+
+이제 테스트가 통과하도록 코드를 수정해줍니다. 
+
+```c
+bool LedDriver_IsOn(int ledNumber) {
+  return ledsImage & (convertLedNumberToBit(ledNumber));
+}
+```
+
+```
+[==========] Running 12 test(s).
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[       OK ] TurnOffAnyLed
+[ RUN      ] AllOn
+[       OK ] AllOn
+[ RUN      ] LedMemoryIsNotReadable
+[       OK ] LedMemoryIsNotReadable
+[ RUN      ] UpperAndLowerBounds
+[       OK ] UpperAndLowerBounds
+[ RUN      ] OutOfBoundsChangesNothing
+[       OK ] OutOfBoundsChangesNothing
+[ RUN      ] OutOfBoundsTurnOffDoesNoHarm
+[       OK ] OutOfBoundsTurnOffDoesNoHarm
+[ RUN      ] OutOfBoundsProducesRuntimeError
+[       OK ] OutOfBoundsProducesRuntimeError
+[ RUN      ] IsOn
+[       OK ] IsOn
+[==========] 12 test(s) run.
+[  PASSED  ] 12 test(s).
+```
