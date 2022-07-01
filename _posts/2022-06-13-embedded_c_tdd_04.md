@@ -911,3 +911,203 @@ bool LedDriver_IsOn(int ledNumber) {
 [==========] 12 test(s) run.
 [  PASSED  ] 12 test(s).
 ```
+
+LED 제어 함수들처럼 LedDriver_IsOn()에서도 유효하지 않은 LED 번호가 들어 오는 경우를 처리해야 합니다. 
+다만 사양을 결정해야 합니다. 
+
+* 유효하지 않은 LED는 On 상태로 보아야 하나, 
+* 아니면 Off 상태로 보아야 하나? 
+* 또는 On도 Off도 아니어야 하나? 
+
+우선은 범위를 벗어난 LED를 off 상태로 보겠습니다. 
+아래의 테스트를 추가합니다. 
+
+```c
+void OutOfBoundsLedsAreAlwaysOff(void**state) {
+  assert_int_equal(0, LedDriver_IsOn(0));
+  assert_int_equal(0, LedDriver_IsOn(17));
+}
+```
+
+보호절을 추가하지 않았는데도 테스트가 통과하게 됩니다. 
+하지만 이는 장치마다 다를 수 있기 떄문에 보호절은 추가해야 합니다. 
+
+먼저 `IsOn` 함수를 하드코딩하여 `true`를 반환하도록 합니다. 
+
+```
+bool LedDriver_IsOn(int ledNumber) {
+  return true;
+  //return ledsImage & (convertLedNumberToBit(ledNumber));
+}
+```
+
+```
+[==========] Running 13 test(s).
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[       OK ] TurnOffAnyLed
+[ RUN      ] AllOn
+[       OK ] AllOn
+[ RUN      ] LedMemoryIsNotReadable
+[       OK ] LedMemoryIsNotReadable
+[ RUN      ] UpperAndLowerBounds
+[       OK ] UpperAndLowerBounds
+[ RUN      ] OutOfBoundsChangesNothing
+[       OK ] OutOfBoundsChangesNothing
+[ RUN      ] OutOfBoundsTurnOffDoesNoHarm
+[       OK ] OutOfBoundsTurnOffDoesNoHarm
+[ RUN      ] OutOfBoundsProducesRuntimeError
+[       OK ] OutOfBoundsProducesRuntimeError
+[ RUN      ] IsOn
+[  ERROR   ] --- 0x1 == 0x1
+[   LINE   ] --- led_driver_test.c:97: error: Failure!
+[  FAILED  ] IsOn
+[ RUN      ] OutOfBoundsLedsAreAlwaysOff
+[  ERROR   ] --- 0 != 0x1
+[   LINE   ] --- led_driver_test.c:103: error: Failure!
+[  FAILED  ] OutOfBoundsLedsAreAlwaysOff
+[==========] 13 test(s) run.
+[  PASSED  ] 11 test(s).
+[  FAILED  ] 2 test(s), listed below:
+[  FAILED  ] IsOn
+[  FAILED  ] OutOfBoundsLedsAreAlwaysOff
+
+ 2 FAILED TEST(S)
+
+```
+
+테스트가 실패하는 것을 확인하였습니다. 
+
+이제 올바른 코드를 추가하여 테스트가 통과하도록 합니다. 
+
+
+```c
+bool LedDriver_IsOn(int ledNumber) {
+  if (IsLedOutOfBounds(ledNumber))  return false;
+  
+  return ledsImage & (convertLedNumberToBit(ledNumber));
+}
+```
+
+이제 테스트가 모두 통과하는것을 확인할 수 있습니다. 
+
+이제 LED가 꺼져있는지 확인하는 기능을 추가하겠습니다. 
+
+```c
+void IsOff (void** state) {
+  assert_int_equal(1, LedDriver_IsOff(12));
+  LedDriver_TurnOn(12);
+  assert_int_equal(0, LedDriver_IsOff(12));
+}
+```
+
+```c
+bool LedDriver_IsOff(int ledNumber) {
+  return !LedDriver_IsOn(ledNumber);
+}
+```
+
+이 역시 테스트 추가 후 기능 구현을 해줍니다. 
+LedDriver_IsOff()를 마무리 짓기 위해 경계를 벗어난 LED 번호들은 항상 Off 상태라는 것만 확실히 해두면 됩니다. 
+
+`OutOfBoundsLedsAreAlwaysOff` 함수에서 `LedDriver_IsOff` 함수도 테스트할 수 있도록 수정해줍니다. 
+
+```c
+void OutOfBoundsLedsAreAlwaysOff (void** state) {
+	assert_int_equal(1, LedDriver_IsOff(0));
+	assert_int_equal(1, LedDriver_IsOff(17));
+	assert_int_equal(0, LedDriver_IsOn(0));
+	assert_int_equal(0, LedDriver_IsOn(17));
+}
+```
+
+이제 여러 LED 를 끄는것과 LED를 모두 끄는 테스트를 추가해줍니다. 
+
+```c
+void TurnOffMultipleLeds (void** state) {
+  LedDriver_TurnAllOn();
+  LedDriver_TurnOff(9);
+  LedDriver_TurnOff(8);
+  assert_int_equal((~0x180)&0xffff, virtualLeds);
+}
+```
+
+마지막으로 LED를 모두 끄는 함수를 추가하겠습니다. 
+
+먼저 테스트부터 추가하겠습니다. 
+
+```c
+void AllOff (void** staate) {
+  LedDriver_TurnAllOn();
+  LedDriver_TurnAllOff();
+  assert_int_equal(0, virtualLeds);
+}
+```
+
+함수의 원형만 추가하여 테스트에 실패하는 것을 확인한 후에 함수를 작성해줍니다. 
+
+```c
+void LedDriver_TurnAllOff(void) {
+  ledsImage = ALL_LEDS_OFF;
+  updateHardware();
+}
+```
+
+이제 모든 테스트가 성공하는 것을 확인합니다. 
+
+```
+[==========] Running 16 test(s).
+[ RUN      ] LedsOffAfterCreate
+[       OK ] LedsOffAfterCreate
+[ RUN      ] TurnOnLedOne
+[       OK ] TurnOnLedOne
+[ RUN      ] TurnOnLedOff
+[       OK ] TurnOnLedOff
+[ RUN      ] TurnOnMultipleLeds
+[       OK ] TurnOnMultipleLeds
+[ RUN      ] TurnOffAnyLed
+[       OK ] TurnOffAnyLed
+[ RUN      ] AllOn
+[       OK ] AllOn
+[ RUN      ] LedMemoryIsNotReadable
+[       OK ] LedMemoryIsNotReadable
+[ RUN      ] UpperAndLowerBounds
+[       OK ] UpperAndLowerBounds
+[ RUN      ] OutOfBoundsChangesNothing
+[       OK ] OutOfBoundsChangesNothing
+[ RUN      ] OutOfBoundsTurnOffDoesNoHarm
+[       OK ] OutOfBoundsTurnOffDoesNoHarm
+[ RUN      ] OutOfBoundsProducesRuntimeError
+[       OK ] OutOfBoundsProducesRuntimeError
+[ RUN      ] IsOn
+[       OK ] IsOn
+[ RUN      ] OutOfBoundsLedsAreAlwaysOff
+[       OK ] OutOfBoundsLedsAreAlwaysOff
+[ RUN      ] IsOff
+[       OK ] IsOff
+[ RUN      ] TurnOffMultipleLeds
+[       OK ] TurnOffMultipleLeds
+[ RUN      ] AllOff
+[       OK ] AllOff
+[==========] 16 test(s) run.
+[  PASSED  ] 16 test(s).
+```
+
+# 정리 
+
+지금까지 예제를 통해 TDD 를 실습하였습니다. 
+
+추가한 테스트를 모두 포함하면 아래와 같이 테스트 목록에 대한 테스트를 모두 수행하였을 것입니다. 
+
+[그림]
+
+TDD를 처음할때는 낯설것으로 생각됩니다. 
+TDD는 코드를 작성하기 전에 테스트가 있어야 한다는 규칙을 내세웁니다. 
+만약 TDD에 대한 경험이 늘어난다면 TDD로 부터 얻게되는 피드백 그 자체가 보상이 될 것입니다. 
