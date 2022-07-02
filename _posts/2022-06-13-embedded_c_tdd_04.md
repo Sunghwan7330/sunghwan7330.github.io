@@ -1106,7 +1106,7 @@ void LedDriver_TurnAllOff(void) {
 
 추가한 테스트를 모두 포함하면 아래와 같이 테스트 목록에 대한 테스트를 모두 수행하였을 것입니다. 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/176998026-0b953284-455a-4f5e-a73d-a576982903eb.png)
 
 TDD를 처음할때는 낯설것으로 생각됩니다. 
 TDD는 코드를 작성하기 전에 테스트가 있어야 한다는 규칙을 내세웁니다. 
