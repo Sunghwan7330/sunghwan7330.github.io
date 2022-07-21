@@ -89,20 +89,20 @@ last_modified_at: 2022-07-07
 
 ## 테스트 vs TDD
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/180205881-8eff1643-bbb3-4986-98b2-c57408e6f31a.png)
 
 * 테스트는 기존의 기능을 검증하는 용도 
 *  TDD는 구현의 요구사항을 명세하기 위해 테스트를 사용함 
 
 ## TDD vs BDD
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/180205901-2eb19fdf-a488-4846-a9d3-c1048ad86e7d.png)
 
 * BDD 는 행위를 기반으로 테스트를 작성해 나가는 방식
 
 ## TDD vs BDD vs ATDD
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/180205936-a0776ad5-aba5-4ea7-9c23-b6072ecd36e8.png)
 
 * ATDD 는 요구사항의 명세를 인수테스트로 명세함
 
@@ -113,7 +113,7 @@ last_modified_at: 2022-07-07
 
 ## ATDD 프로세스 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/180205956-9da61a38-215f-43ab-b7e1-850bde735696.png)
 
 * TDD에 비해 복잡한 프로세스를 가짐
 * 본 강의에서는 개발 관련된 내용만 다룸 
@@ -153,7 +153,7 @@ then
 * 실제 요청/응답하는 환경과 유사하게 테스트 환경을 구성
 
 * 테스트 예시
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/180205995-cdce80f3-5438-43b0-b8c9-1822f9b939bf.png)
 
 ### 기능 구현 
 
@@ -223,7 +223,7 @@ then
 
 ### 인수 테스트 예시 
 
-[그림 56p]
+![image](https://user-images.githubusercontent.com/35713051/180206033-37f526cd-e1bd-47c6-8c45-487228754219.png)
 
 ## 테스트 초기화 
 
@@ -241,7 +241,7 @@ then
 
 * 테스트 객체를 이용하여 직접 호출 후 초기화 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/180206072-8c6bda81-50b2-4ae5-be25-6083fd114913.png)
 
 ## 중복 처리 & 가독성 개선 필요 
 
@@ -308,11 +308,12 @@ then
 * 먼저 인수 테스트를 작성하여 기존에 구현된 기능을 보호하기
 
 ### 인수 테스트 작성 가이드 작성
-[그림]
+
+![image](https://user-images.githubusercontent.com/35713051/180206143-65f0da5f-5846-44ad-a7fa-b6a68a1a38ae.png)
 
 ### 지속적인 피드백 
 
-[그림] 
+![image](https://user-images.githubusercontent.com/35713051/180206169-f5c9ce68-b4c9-4032-8f38-6cd3f63aeab6.png)
 
 ## 기획 & QA와 함께하는 ATDD
 
