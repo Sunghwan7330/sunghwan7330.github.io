@@ -31,6 +31,9 @@ docs:
       - title: "임베디드 C를 위한 TDD"
         url: categories/embedded_c_tdd
         category: "embedded_c_tdd"
+      - title: "리팩터링 2판"
+        url: categories/refactoring_2
+        category: "refactoring_2"
 
   - title: Algorithm
     children:
