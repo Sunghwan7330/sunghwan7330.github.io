@@ -35,15 +35,16 @@ DRDoS는 Distributed Reflection Denial of Service 의 약자로 분산 반사 �
 DDoS 의 경우 일반적으로 대량의 공격 PC 를 이용하여 대상자에게 서비스 거부 공격을 수행합니다. 
 공격을 하는 PC가 대상자를 향해 직접 트래픽을 전송하게 됩니다 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/189895259-571b3061-ed3f-4304-8dc7-075c2b29a777.png)
 
 대상자에게 많은 트래픽을 전송하기 위해 많은 공격 PC를 필요로 합니다. 
+일반적으로는 봇넷, 좀비PC를 이용하여 공격을 수행합니다. 
 
 ## DRDoS
 
 DRDoS는 외부의 정상적인 서버(반사체)를 이용하여 공격을 수행합니다. 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/189895672-c9d18213-3f62-4568-9239-aa4a0036e06e.png)
 
 DRDoS의 공격은 실제 서비스되고 있는 서버를 이용하기 때문에 공격의 추적이 어렵습니다. 
 
@@ -58,7 +59,7 @@ DNS 서버는 인터넷 주소를 IP로 변환해주는 역할을 하게됩니�
 
 예를 들어 인터넷 브라우저 주소창에 인터넷 주소를 입력하게 되면 DNS 를 통해 IP 주소로 바꿔주게 됩니다. 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/189895893-91b2fae9-e5cd-467e-8c0a-7830049ca6f4.png)
 
 ## IP spoofing
 
@@ -67,7 +68,7 @@ IP spoofing 은 IP를 속이는 공격방법입니다.
 우리가 인터넷을 사용할 때 일반적으로는 IP 기반의 통신을 하게 됩니다. 
 이때 주고받는 네트워크 패킷에는 IP header를 포함하고 있습니다. 
 
-[그림 : IP header 구조]
+![image](https://user-images.githubusercontent.com/35713051/189896295-db2c2a2e-eaf2-4494-8921-dceceeedfc91.png)
 
 위에 보이는 이미지가 IPv4 헤더의 구조입니다. 
 여기서 Source IP는 보내는 대상의 IP 가 입력되고, Destination IP는 받는 대상의 IP가 입력됩니다. 
@@ -88,7 +89,7 @@ DNS 서버는 응답을 변경된 IP로 전달하게 됩니다.
 여러 DNS 서버에 IP spoofing 을 사용하여 요청을 보내게 된다면, DNS 서버를 이용한 DoS 공격이 가능해집니다. 
 이떄 응답을 보내는 DNS 서버를 반사체라고 이해하시면 됩니다. 
 
-[그림 : DRDoS 공격]
+![image](https://user-images.githubusercontent.com/35713051/189896216-6ed4d40e-ac85-4c80-89a5-414b8393686e.png)
 
 
 # DRDoS 증폭 공격
@@ -106,7 +107,7 @@ DRDoS 증폭공격에 주로 사용되는 프로토콜은 DNS, NTP, CLDAP, SNMP 
 
 아래는 각 프로토콜별로 요청에 대하여 응답이 얼마나 많이 증폭되는지에 대한 비율을 나타냅니다. 
 
-[그림 : 프로토톨별 증폭 비율]
+![image](https://user-images.githubusercontent.com/35713051/189896387-5d34d17c-3b0f-438a-ac34-85045e4610d0.png)
 
 # DRDoS 방어 기법
 
