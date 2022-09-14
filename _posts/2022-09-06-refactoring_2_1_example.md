@@ -146,3 +146,64 @@ def amountFor(aPerformance, play): # 값이 바뀌지 않는 변수는 파라메
 
 * thisAmount 변수를 reslut 로 변경
 * perf를 aPerformance 로 변경
+
+## play 변수 제거 
+
+다음으로는 play 변수를 제거하려 합니다. 
+playFor 함수를 생성해줍니다. 해당 함수는 `aPerformance` 를 입력받아 해당 play를 반환하는 함수입니다. 
+
+```python 
+def playFor(aPerformance):
+    plays = {
+    "hamlet": {"name": "Hamlet", "type": "tragedy"},
+    "as-like": {"name": "As You Like It", "type": "comedy"},
+    "othello": {"name": "Othello", "type": "tragedy"}
+    }
+    return plays[aPerformance['playID']]
+```
+위 함수가 있다면 statement와 amonutFor 에서는 play가 필요없습니다. 
+따라서 해당 함수에서 play를 playFor 함수로 변경해줍니다. 
+
+```python 
+def amountFor(aPerformance): # 값이 바뀌지 않는 변수는 파라메타로 전달
+    result = 0  # 명확한 이름으로 변경
+ 
+    type = playFor(aPerformance)['type']
+    if type == 'tragedy': #비극
+        result = 40000
+        if aPerformance['audience'] > 30:
+            result += 1000 * (aPerformance['audience'] - 30)
+    elif type == "comedy": #비극
+        result = 30000
+        if aPerformance['audience'] > 20:
+            result += 10000 + 500 * (aPerformance['audience'] - 20)
+        result += 300 * aPerformance['audience']
+    else:
+        return -1
+   
+    return result  # 함수 안에서 값이 바뀌는 변수 반환
+ 
+ 
+def statement(invoice):
+    totalAmount = 0
+    volumeCredits = 0
+    result = '청구 내역 (고객명: {})\n'.format(invoice['customer'])
+    creditFormat = ',.2f'
+    for perf in invoice['performances']:
+        thisAmount = amountFor(perf)
+ 
+        # 포인트를 적립한다.
+        volumeCredits += max(perf['audience'] - 30, 0)
+ 
+        # 희극 관객 5명마다 추가 포인트를 제공한다.
+        if "comedy" == playFor(perf)['type']:
+            volumeCredits += perf['audience'] // 5
+        # 청구 내역을 출력한다.
+        result += ' {}: ${} ({}석)\n'.format(playFor(perf)['name'], format(thisAmount//100, creditFormat), perf['audience'])
+        totalAmount += thisAmount
+ 
+    result += '총액: ${}\n'.format(format(totalAmount//100, creditFormat))
+    result += '적립 포인트: {}점\n'.format(volumeCredits)
+    return result
+
+```
