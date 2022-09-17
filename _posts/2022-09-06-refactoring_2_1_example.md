@@ -207,3 +207,28 @@ def statement(invoice):
     return result
 
 ```
+
+## 적립 포인트 계산 코드 추출하기 
+
+```python
+def volumeCreditsFor(perf):
+    result = 0
+ 
+    result += max(perf['audience'] - 30, 0)
+    # 희극 관객 5명마다 추가 포인트를 제공한다.
+    if "comedy" == playFor(perf)['type']:
+        result += perf['audience'] // 5
+ 
+    return result
+```
+
+포인트 계산하는 부분을 함수로 추출해줍니다. 
+
+## format 함수로 추출하기 
+
+```pytthon
+def mFormat(n):
+    return format(n, ',.2f')
+```
+
+금액을 출력하는 부분에 사용된는 format 를 함수로 추출해줍니다.
