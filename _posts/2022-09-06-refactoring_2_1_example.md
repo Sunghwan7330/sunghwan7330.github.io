@@ -232,3 +232,32 @@ def mFormat(n):
 ```
 
 금액을 출력하는 부분에 사용된는 format 를 함수로 추출해줍니다.
+
+## statement 함수에서 volumeCredits 제거하기 
+
+```python
+def volumeCreditsFor(perf):
+    result = 0
+ 
+    result += max(perf['audience'] - 30, 0)
+    # 희극 관객 5명마다 추가 포인트를 제공한다.
+    if "comedy" == playFor(perf)['type']:
+        result += perf['audience'] // 5
+ 
+    return result
+```
+
+총 포인트를 계산하는 함수를 따로 추출해줍니다.
+
+## totalAmount 함수 추출 
+
+```pyhon
+def totalAmount(invoice):
+    result = 0
+    for perf in invoice['performances']:
+        result += amountFor(perf)
+ 
+    return result
+```
+
+totalAmount 부분도 함수로 추출해줍니다. 
