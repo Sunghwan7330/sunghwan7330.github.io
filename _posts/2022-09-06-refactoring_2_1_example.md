@@ -261,3 +261,113 @@ def totalAmount(invoice):
 ```
 
 totalAmount 부분도 함수로 추출해줍니다. 
+
+# 지금까지의 전체 코드
+
+```pyhon 
+# 리팩터링 2판 1장 예시 7
+# totalAmount 함수 분리
+# amountFor 인라이닝하기
+ 
+def playFor(aPerformance):
+    plays = {
+    "hamlet": {"name": "Hamlet", "type": "tragedy"},
+    "as-like": {"name": "As You Like It", "type": "comedy"},
+    "othello": {"name": "Othello", "type": "tragedy"}
+    }
+    return plays[aPerformance['playID']]
+ 
+def mFormat(n):
+    return format(n, ',.2f')
+ 
+def amountFor(aPerformance): # 값이 바뀌지 않는 변수는 파라메타로 전달
+    result = 0  # 명확한 이름으로 변경
+ 
+    type = playFor(aPerformance)['type']
+    if type == 'tragedy': #비극
+        result = 40000
+        if aPerformance['audience'] > 30:
+            result += 1000 * (aPerformance['audience'] - 30)
+    elif type == "comedy": #희극
+        result = 30000
+        if aPerformance['audience'] > 20:
+            result += 10000 + 500 * (aPerformance['audience'] - 20)
+        result += 300 * aPerformance['audience']
+    else:
+        return -1
+   
+    return result  # 함수 안에서 값이 바뀌는 변수 반환
+ 
+ 
+def volumeCreditsFor(perf):
+    result = 0
+ 
+    result += max(perf['audience'] - 30, 0)
+    # 희극 관객 5명마다 추가 포인트를 제공한다.
+    if "comedy" == playFor(perf)['type']:
+        result += perf['audience'] // 5
+ 
+    return result
+ 
+ 
+def toalVolumCrdits(invoice):
+    result = 0
+ 
+    for perf in invoice['performances']:
+        result += volumeCreditsFor(perf)
+ 
+    return result
+ 
+ 
+def getTotalAmount(invoice):
+    result = 0
+    for perf in invoice['performances']:
+        result += amountFor(perf)
+ 
+    return result
+ 
+def statement(invoice):
+   
+    result = '청구 내역 (고객명: {})\n'.format(invoice['customer'])
+    for perf in invoice['performances']:    
+        # 청구 내역을 출력한다.
+        result += ' {}: ${} ({}석)\n'.format(playFor(perf)['name'], mFormat(amountFor(perf)//100), perf['audience'])
+    totalAmount = getTotalAmount(invoice)
+    volumeCredits = toalVolumCrdits(invoice)
+    result += '총액: ${}\n'.format(mFormat(totalAmount//100))
+    result += '적립 포인트: {}점\n'.format(volumeCredits)
+    return result
+ 
+def main():
+    invoice = {
+        "customer": "BigCo",
+        "performances": [
+            {
+                "playID": "hamlet",
+                "audience": 55
+            },
+            {
+                "playID": "as-like",
+                "audience": 35
+            },
+            {
+                "playID": "othello",
+                "audience": 40
+            }
+        ]
+    }
+ 
+    print(statement(invoice))
+    return
+ 
+if __name__ == '__main__':
+    main()
+ 
+```
+
+# 마무리 
+
+현재까지의 리팩터링으로 처음보다 훨씬 보기좋게 변하였습니다. 
+
+참고한 서적에서는 위 상태에 조금 더 리펙터링을 진행합니다. 
+좀 더 보고싶으신 분들은 나중에 서점에서 한번 확인해보시길 바랍니다. :) 
