@@ -70,3 +70,43 @@ def printOwing(invoice):
 5. 원본 함수에서 추출한 코드 부분을 새로 만든 함수를 호출하는 문장으로 바꿈 
 6. 테스트 진행 
 7. 이와 같은 코드가 또 있는지 확인하고 함수를 추철할지 검토 
+
+# 함수 인라인하기 
+
+* 리팩터링 전 
+
+```python
+def getRating(driver):
+    return moreThenFiveLateDeliveries(driver) ? 2 : 1
+
+
+def moreThenFiveLateDeliveries(driver):
+    return driver.numberOfLateDeliveries > 5
+```
+
+* 리팩터링 후 
+```python
+def getRating(driver):
+    return (driver.numberOfLateDeliveries > 5) ? 2 : 1
+
+
+def moreThenFiveLateDeliveries(driver):
+    return driver.numberOfLateDeliveries > 5
+```
+
+## 배경 
+
+해당 서적에서는 목적이 분명히 드러나는 이름의 짤막한 함수를 이용하기를 권합니다. 
+그래야 코드가 명료해지고 이해하기 쉬워지기 때문입니다. 
+
+리팩터링 과정에서 잘못 추출된 함수들을 다시 인라인해줍니다. 
+잘못 추출된 함수들을 원래 함수로 합친다음 필요하면 원하는 형태로 다시 추출하는 것입니다. 
+
+## 절차 
+
+1. 다형 메서드인지 확인
+  * 서브 클래스에서 오버라이드하는 메서드는 인라인하면 안됨 
+2. 인라인할 함수를 호출하는 곳으로 모두 찾음 
+3. 각 호출문을 함수 본문으로 교체 
+4. 하나씩 교체할 때마다 테스트함 
+5. 함수 정의를 삭제 
