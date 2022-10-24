@@ -131,3 +131,208 @@ TDD, 리팩터링은 꾸준한 운동과 같다고 합니다.
 * TDD의 핵심은 리팩터링임
 
 
+* 테스트 코드 작성 
+  * 원래는 테스트도 하나씩 추가하고 구현해야 함 (강의 편의상 한번에 진행)
+  
+```java
+public class StringCalculatorTest {
+    @Test
+	public void null_또는_빈값() {
+	    assertThat(StringCalculator.splitAndSum(null)).isEqualTo(0);
+		assertThat(StringCalculator.splitAndSum("")).isEqualTo(0);
+	}
+	
+	@Test
+	public void 값_하나() {
+	    assertThat(StringCalculator.splitAndSum("1")).isEqualTo(1);
+	}
+	
+	@Test
+	public void 쉼표_구분자() {
+	    assertThat(StringCalculator.splitAndSum("1,2")).isEqualTo(3);
+	}
+	
+	@Test
+	public void 쉼표_콜론_구분자() {
+	    assertThat(StringCalculator.splitAndSum("1,2:3")).isEqualTo(6);
+	}
+}
+```
+
+
+
+#### 메소드 분리 리팩터링 
+
+* 리팩터링 할 것들 
+  *  else 제거, 인덴트 줄이기 등등...
+
+* TDD 가 처음에는 막막하고 답답할 수 있지만, 꾸준한 연습을 통해 코드를 보는 눈을 기르는 것이 중요함 
+
+* 테스트 코드를 건들이지 않고 위 함수에 대해서만 리팩터링 진행 
+
+```java
+public class StringCalculator {
+    public static int splitAddSum (String text) {
+	    int result = 0;
+		if (text == null || text.isEmpty()) {
+		     result = 0;
+		}
+		else {
+		    String[] values = text.split(",|:");
+			for (String value : values) {
+			    result += Integer.ParseInt(value);
+			}
+		}
+		return result;
+	}
+}
+```
+
+* 메서드 분리를 통한 인덴트 줄이기 
+
+```java
+public class StringCalculator {
+    public static int splitAddSum (String text) {
+	    int result = 0;
+		if (text == null || text.isEmpty()) {
+		     result = 0;
+		}
+		else {
+		    String[] values = text.split(",|:");
+			result = sum(values);
+		}
+		return result;
+	}
+	
+	private static int sum(String[] vaules) {
+		int result = 0;
+	    for (String value : values) {
+	        result += Integer.ParseInt(value);
+	    }
+		return result;
+	}
+}
+```
+
+* else 예약어 제거하기 
+
+```java
+public class StringCalculator {
+    public static int splitAddSum (String text) {
+	    int result = 0;
+		if (text == null || text.isEmpty()) {
+		     return 0;
+		}
+		
+		String[] values = text.split(",|:");
+		return sum(values);
+	}
+	
+	private static int sum(String[] vaules) {
+		int result = 0;
+	    for (String value : values) {
+	        result += Integer.ParseInt(value);
+	    }
+		return result;
+	}
+}
+```
+
+* 메서드가 한 가지 일만 하도록 구현하기 
+  * sum 함수가 string을 int로 변경과 덧셈 역할을 하고 있음
+  * 이 역할을 각각의 메서드로 분리
+  * 반복문을 두번 돌지만 값이 크지 않다면 성능적인 영향은 적음 
+  * 메서드를 분리함으로써 메서드의 재사용성이 증가함
+  
+```java
+public class StringCalculator {
+    public static int splitAddSum (String text) {
+	    int result = 0;
+		if (text == null || text.isEmpty()) {
+		     return 0;
+		}
+		
+		String[] values = text.split(",|:");
+		return sum(toInts(values));
+	}
+	
+    private static int[] toInts(Strings[] values) {
+	    int[] numbers = new Int[values.length];
+		for (int i=0; i<values.length; i++) {
+		    numbers[i] = Integer.parseInt(values[i]);
+		}
+		return numbers;
+	}
+	
+	private static int sum(String[] numbers) {
+		int result = 0;
+	    for (int number : numbers) {
+	        result += number;
+	    }
+		return result;
+	}
+}
+```
+
+* 로컬 변수가 필요 없다면 합치기 
+
+```java
+public class StringCalculator {
+    public static int splitAddSum (String text) {
+	    int result = 0;
+		if (text == null || text.isEmpty()) {
+		     return 0;
+		}
+		
+		return sum(toInts(text.split(",|:")));
+	}
+	
+    private static int[] toInts(Strings[] values) {
+	    [...]
+	}
+	
+	private static int sum(String[] numbers) {
+		[...]
+}
+```
+
+* compose method 패턴 적용 
+  * 어떤 메서드의 내부 로직이 한 눈에 이해하기 어렵다면, 그 로직을 의도가 잘 드러나며 동등한 수준의 작업을 하는 여러 단계로 나눔
+
+```java
+public class StringCalculator {
+    public static int splitAddSum (String text) {
+	    if (isBlank(text) 
+		    return 0;
+		
+		return sum(toInts(split()));
+	}
+	
+	private static boolean isBlank (String text) {
+	    return (text == null || text.isEmpty())
+	}
+	
+	private static String[] split(String text) {
+	    return text.split(",|:")
+	}
+	
+    private static int[] toInts(Strings[] values) {
+	    [...]
+	}
+	
+	private static int sum(String[] numbers) {
+		[...]
+}
+```
+
+* splitAddSum 함수를 처음 읽는 사람의 경우 어떤 코드가 더 읽기 좋을지 생각해볼 것
+
+#### 리팩토링 연습 - 클래스 분리
+
+
+
+# 2. TDD 리팩터링 적용 - 개인 
+
+# 3. 리팩터링 적용 - 개인(주니어) -> 팀
+
+# 4. TDD 리팩터링 적용 - 내가 리더 
