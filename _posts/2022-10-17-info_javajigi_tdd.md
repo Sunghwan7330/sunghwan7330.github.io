@@ -137,25 +137,25 @@ TDD, 리팩터링은 꾸준한 운동과 같다고 합니다.
 ```java
 public class StringCalculatorTest {
     @Test
-	public void null_또는_빈값() {
-	    assertThat(StringCalculator.splitAndSum(null)).isEqualTo(0);
-		assertThat(StringCalculator.splitAndSum("")).isEqualTo(0);
-	}
-	
-	@Test
-	public void 값_하나() {
-	    assertThat(StringCalculator.splitAndSum("1")).isEqualTo(1);
-	}
-	
-	@Test
-	public void 쉼표_구분자() {
-	    assertThat(StringCalculator.splitAndSum("1,2")).isEqualTo(3);
-	}
-	
-	@Test
-	public void 쉼표_콜론_구분자() {
-	    assertThat(StringCalculator.splitAndSum("1,2:3")).isEqualTo(6);
-	}
+    public void null_또는_빈값() {
+        assertThat(StringCalculator.splitAndSum(null)).isEqualTo(0);
+        assertThat(StringCalculator.splitAndSum("")).isEqualTo(0);
+    }
+
+    @Test
+    public void 값_하나() {
+        assertThat(StringCalculator.splitAndSum("1")).isEqualTo(1);
+    }
+
+    @Test
+    public void 쉼표_구분자() {
+        assertThat(StringCalculator.splitAndSum("1,2")).isEqualTo(3);
+    }
+
+    @Test
+    public void 쉼표_콜론_구분자() {
+        assertThat(StringCalculator.splitAndSum("1,2:3")).isEqualTo(6);
+    }
 }
 ```
 
@@ -173,18 +173,18 @@ public class StringCalculatorTest {
 ```java
 public class StringCalculator {
     public static int splitAddSum (String text) {
-	    int result = 0;
-		if (text == null || text.isEmpty()) {
-		     result = 0;
-		}
-		else {
-		    String[] values = text.split(",|:");
-			for (String value : values) {
-			    result += Integer.ParseInt(value);
-			}
-		}
-		return result;
-	}
+        int result = 0;
+        if (text == null || text.isEmpty()) {
+            result = 0;
+        }
+        else {
+            String[] values = text.split(",|:");
+            for (String value : values) {
+            result += Integer.ParseInt(value);
+            }
+        }
+        return result;
+    }
 }
 ```
 
@@ -193,24 +193,24 @@ public class StringCalculator {
 ```java
 public class StringCalculator {
     public static int splitAddSum (String text) {
-	    int result = 0;
-		if (text == null || text.isEmpty()) {
-		     result = 0;
-		}
-		else {
-		    String[] values = text.split(",|:");
-			result = sum(values);
-		}
-		return result;
-	}
-	
-	private static int sum(String[] vaules) {
-		int result = 0;
-	    for (String value : values) {
-	        result += Integer.ParseInt(value);
-	    }
-		return result;
-	}
+        int result = 0;
+        if (text == null || text.isEmpty()) {
+            result = 0;
+        }
+        else {
+            String[] values = text.split(",|:");
+            result = sum(values);
+        }
+        return result;
+    }
+
+    private static int sum(String[] vaules) {
+        int result = 0;
+        for (String value : values) {
+            result += Integer.ParseInt(value);
+        }
+        return result;
+    }
 }
 ```
 
@@ -219,22 +219,22 @@ public class StringCalculator {
 ```java
 public class StringCalculator {
     public static int splitAddSum (String text) {
-	    int result = 0;
-		if (text == null || text.isEmpty()) {
-		     return 0;
-		}
-		
-		String[] values = text.split(",|:");
-		return sum(values);
-	}
-	
-	private static int sum(String[] vaules) {
-		int result = 0;
-	    for (String value : values) {
-	        result += Integer.ParseInt(value);
-	    }
-		return result;
-	}
+        int result = 0;
+        if (text == null || text.isEmpty()) {
+            return 0;
+        }
+
+        String[] values = text.split(",|:");
+        return sum(values);
+    }
+
+    private static int sum(String[] vaules) {
+        int result = 0;
+        for (String value : values) {
+            result += Integer.ParseInt(value);
+        }
+        return result;
+    }
 }
 ```
 
@@ -247,30 +247,30 @@ public class StringCalculator {
 ```java
 public class StringCalculator {
     public static int splitAddSum (String text) {
-	    int result = 0;
-		if (text == null || text.isEmpty()) {
-		     return 0;
-		}
-		
-		String[] values = text.split(",|:");
-		return sum(toInts(values));
-	}
-	
+        int result = 0;
+        if (text == null || text.isEmpty()) {
+            return 0;
+        }
+
+        String[] values = text.split(",|:");
+        return sum(toInts(values));
+    }
+
     private static int[] toInts(Strings[] values) {
-	    int[] numbers = new Int[values.length];
-		for (int i=0; i<values.length; i++) {
-		    numbers[i] = Integer.parseInt(values[i]);
-		}
-		return numbers;
-	}
-	
-	private static int sum(String[] numbers) {
-		int result = 0;
-	    for (int number : numbers) {
-	        result += number;
-	    }
-		return result;
-	}
+        int[] numbers = new Int[values.length];
+        for (int i=0; i<values.length; i++) {
+            numbers[i] = Integer.parseInt(values[i]);
+        }
+        return numbers;
+    }
+
+    private static int sum(String[] numbers) {
+        int result = 0;
+        for (int number : numbers) {
+            result += number;
+        }
+        return result;
+    }
 }
 ```
 
@@ -279,20 +279,21 @@ public class StringCalculator {
 ```java
 public class StringCalculator {
     public static int splitAddSum (String text) {
-	    int result = 0;
-		if (text == null || text.isEmpty()) {
-		     return 0;
-		}
-		
-		return sum(toInts(text.split(",|:")));
-	}
-	
+        int result = 0;
+        if (text == null || text.isEmpty()) {
+            return 0;
+        }
+
+        return sum(toInts(text.split(",|:")));
+    }
+
     private static int[] toInts(Strings[] values) {
-	    [...]
-	}
+        [...]
+    }
 	
-	private static int sum(String[] numbers) {
-		[...]
+    private static int sum(String[] numbers) {
+        [...]
+    }
 }
 ```
 
@@ -302,26 +303,27 @@ public class StringCalculator {
 ```java
 public class StringCalculator {
     public static int splitAddSum (String text) {
-	    if (isBlank(text) 
-		    return 0;
+        if (isBlank(text) 
+            return 0;
 		
-		return sum(toInts(split()));
-	}
+        return sum(toInts(split()));
+    }
+
+    private static boolean isBlank (String text) {
+        return (text == null || text.isEmpty())
+    }
 	
-	private static boolean isBlank (String text) {
-	    return (text == null || text.isEmpty())
-	}
-	
-	private static String[] split(String text) {
-	    return text.split(",|:")
-	}
+    private static String[] split(String text) {
+        return text.split(",|:")
+    }
 	
     private static int[] toInts(Strings[] values) {
-	    [...]
-	}
-	
-	private static int sum(String[] numbers) {
-		[...]
+        [...]
+    }
+    
+    private static int sum(String[] numbers) {
+        [...]
+    }
 }
 ```
 
@@ -329,7 +331,153 @@ public class StringCalculator {
 
 #### 리팩토링 연습 - 클래스 분리
 
+* 문자열 덧셈 계산기의 요구사항 추가 
+  * 숫자 이외의 값 또는 음수를 전달하는 경우  RuntimeEeption 예외를 throw 한다.
+  
+| 입력 | 출력 | 
+| --- | --- |
+| null 또는 “” | 0 |
+| “1” | 1 |
+| “1, 2” | 3 |
+| “1,2:3” | 6 |
+| "-1,2:3" | RuntimeEeption |
 
+
+* 요구사항 추가에 따른 테스트 추가 
+
+```java
+public class StringCalculatorTest {
+    @Test
+    public void null_또는_빈값() { ... }
+	
+    @Test
+    public void 값_하나() { ... }
+	
+    @Test
+    public void 쉼표_구분자() { ... }
+	
+    @Test
+    public void 쉼표_콜론_구분자() { ... }
+	
+    @Test(expected = RuntimeException.Class)
+    public void 음수값() {
+        StringCalculator.splitAndSum("-1,2:3");
+    }
+}
+```
+
+* toInt 함수 추가 및 예외처리 추가 
+
+```java
+public class StringCalculator {
+    public static int splitAddSum (String text) {
+        if (isBlank(text) 
+            return 0;
+		
+        return sum(toInts(split()));
+    }
+
+    private static boolean isBlank (String text) { [...] }
+	
+    private static String[] split(String text) { [...] }
+	
+    private static int[] toInts(Strings[] values) {
+        int[] numbers = new Int[values.length];
+        for (int i=0; i<values.length; i++) {
+            numbers[i] = toInt(values[i])
+        }
+        return numbers;
+    }
+	
+	private static int toInt(String value) {
+        int number = Integer.parseInt(value);
+        if (number < 0) {
+            throw new RuntimeException();
+        }
+        return number;
+    }
+    
+    private static int sum(String[] numbers) { [...] }
+}
+```
+
+* 원시값과 문자열 포장을 위한 클래스 분리 
+  * 양수만 입력받을 수 있는 클래스로 분리함
+```java
+public class Positive {
+    private int number;
+
+    private Positive(String value) {
+        int number = Integer.parseInt(value);
+        if (number < 0) {
+            throw new RuntimeException();
+        }
+        this.number = number;
+    }
+	
+	public Positive add(Positive other) {
+        return new Positive(this.number + other.number);
+    }
+
+    public int getNumber() {
+        return number;
+    }
+}
+```
+
+```java
+public class StringCalculator {
+    public static int splitAddSum (String text) {
+        if (isBlank(text) 
+            return 0;
+		
+        return sum(toInts(split()));
+    }
+
+    private static boolean isBlank (String text) { [...] }
+	
+    private static String[] split(String text) { [...] }
+
+    private static Positive[] toPositives(String[] value) {
+        Positive[] numbers = new Positive[values.length];
+        for (int i=0; i<values.length; i++) {
+            number[i] = new Positive(values[i]);
+        }
+        return numbers;
+    }
+    
+    private static int sum(String[] numbers) {
+        Positive result = new Positive(0);
+        for (Positive number : numbers) {
+            result = result.add(number);
+        }
+        return result.getNumber();
+    }
+}
+```
+
+* 클래스 분리 연습을 위해 활용할 수 있는 원칙 
+  * 일급 콜렉션을 쓴다 
+  * 3개 이상의 인스턴스 변수를 가진 클래스를 쓰지 않는다. 
+
+* 일급 콜렉션 예시 
+  * Set 콜렉션 하나만 인스턴스로 가지는 클래스로 분리 
+  * 해당 콜랙션을 사용하는 메서드를 클래스 안으로 유입함 
+```java
+import java.util.Set;
+
+public class Lotto {
+    private static final int LOTTO_SIZE = 6;
+    private final Set<LottoNumber> lotto;
+	
+    private Lotto(Set<LottoNumber> lotto) {
+        if (lotto.size() != LOTTO_SIZE) {
+            throw new IllegalArgumentException();
+        }
+        this.lotto = lotto;
+    }
+}
+```
 
 # 2. TDD 리팩터링 적용 - 개인 
 
