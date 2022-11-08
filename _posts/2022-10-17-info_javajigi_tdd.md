@@ -32,7 +32,7 @@ TDD 리팩터링은 멋져보이지만 생각만큼 연습하기 어려운 점�
 
 TDD를 포함하여 무언가에 노력하기 위한 서적으로 아래의 서적을 추천하셨습니다. 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/200556576-d45facc6-0fc7-4192-af75-30586ba07cec.png)
 
 위의 책에 소개된 의식적인 연습의 7가지 원칙은 아래와 같습니다. 
 
@@ -78,7 +78,7 @@ TDD를 포함하여 무언가에 노력하기 위한 서적으로 아래의 서�
 
 이와 같은 훈련을 하였을 때 코드는 더욱 간결해지고 가독성이 좋아집니다. 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/200556743-e733d21e-fbd0-4d36-ad88-74f544f6d558.png)
 
 # 2. 의식적인 연습으로 TDD, 리팩토링 적용 - 개인 
 
@@ -96,7 +96,7 @@ TDD, 리팩터링은 꾸준한 운동과 같다고 합니다.
 * 자바 String 클래스의 다양한 메소드 사용법
 * 자바 ArrayList 에 데이터를 추가, 수정, 삭제하는 방법 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/200556869-e73fd41f-0185-4008-a10c-74190473cc14.png)
 
 연습의 효과는 다음과 같습니다. 
 
@@ -124,7 +124,7 @@ TDD, 리팩터링은 꾸준한 운동과 같다고 합니다.
 
 * TDD 사이클
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/200556937-ca0d1b92-bea9-4af1-83a8-5badcb4776df.png)
 
 * `실패하는 테스트 생성 -> 테스트 통과하는 코드 작성 -> 코드 리팩터링 -> 실패하는 테스트 작성 -> …..`
 * `실패하는 테스트 생성 -> 테스트 통과하는 코드 작성`  만 반복하는 것은 TDD가 아님
@@ -518,7 +518,7 @@ public class Lotto {
   
 ## 구체적인 연습 목표 찾기 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/200557120-8c79f9e4-a4b3-4fbc-8a7c-f695d036507b.png)
 
 위의 서적에 작성돤 객체지향 생활체조 원칙은 아래와 같습니다. 
 
@@ -594,7 +594,7 @@ TDD를 팀에 전파하기 전에 아래의 대한 사항을 고려하는 것이
 선택한 practice가 개인, 팀 모두 익숙해 질 때 까지 한가지에 집중합니다. 
 선택한 practice 로 변화를 완료함으로써 작은 성공(small success)를 맛보면 성취감을 느낄 것입니다. 
 
-[그림]
+![image](https://user-images.githubusercontent.com/35713051/200557182-93e0fc0f-f2b1-440d-92ad-f625dc3e48c9.png)
 
 위와 같은 사이클을 반복하여 팀을 점차 발전시킬 수 있을 것입니다. 
 
