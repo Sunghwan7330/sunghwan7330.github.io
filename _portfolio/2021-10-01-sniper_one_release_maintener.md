@@ -2,7 +2,7 @@
 layout: single
 time: "2021.10 ~ Current"
 title: "차세대 IPS 차기버전 릴리즈 관리"
-skills: [C, Python, Encryption]
+skills: [C, Python, CI/CD]
 description: ""
 image: ""
 company: "WINS"
@@ -18,7 +18,7 @@ sidebar:
 
 ## 개발 기간
 
-* 2021.10 ~ Current
+* 2021.10 ~ 2022.06
 
 ## 기술
 
