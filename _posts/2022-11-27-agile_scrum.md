@@ -29,7 +29,8 @@ last_modified_at: 2022-11-27
 
 스크럼의 전체적인 흐름은 아래 그림과 같습니다. 
 
-[그림]
+![스크럼_그림](https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Scrum_process.svg/2560px-Scrum_process.svg.png)
+
 
 위 그림에 각 단계에 대해서 하나씩 살펴보도록 하겠습니다. 
 
