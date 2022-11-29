@@ -3,7 +3,7 @@ title: "스크럼에 대하여"
 excerpt: "애자일하게 일하기 위한 방법인 스크럼에 대해 알아보려 합니다. "
 
 categories:
-  - 'infomation'
+  - 'agile'
 tags:
   - agile
   - scurm

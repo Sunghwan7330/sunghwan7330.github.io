@@ -52,6 +52,9 @@ docs:
       - title: "Blog dev"
         url: /categories/blog
         category: "blog"
+      - title: "애자일"
+        url: /categories/agile
+        category: "agile"
       - title: "정보공유"
         url: /categories/infomation
         category: "infomation"
