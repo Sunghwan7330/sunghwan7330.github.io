@@ -110,3 +110,38 @@ def moreThenFiveLateDeliveries(driver):
 3. 각 호출문을 함수 본문으로 교체 
 4. 하나씩 교체할 때마다 테스트함 
 5. 함수 정의를 삭제 
+
+
+# 변수 추출하기 
+
+* 리팩터링 전 
+
+```python
+return order.quantity * order.itemPrice - max(0, order.quantity-500) * order.itemPrice * 0.05 + min(order.quantity * order.itemPrice * 0.1, 100)
+```
+
+* 리팩터링 후 
+
+```python
+basePrice = order.quantity * order.itemPrice 
+quantityDiscount = max(0, order.quantity-500) * order.itemPrice * 0.05
+shipping = min(order.quantity * order.itemPrice * 0.1, 100)
+return basePrice - quantityDiscount  + shipping 
+```
+
+## 배경 
+
+표현식이 너무 복잡하면 이해하기가 어렵습니다. 
+이럴때는 지역변수를 활용하여 표현식을 쪼개면 관리하기 더 편하게 됩니다. 
+복잡한 로직을 구성하는 단계마다 이름을 붙여 코드의 목적을 더 명확하게 드러낼 수 있습니다. 
+
+또한 이렇게 추가된 변수들은 디버깅 과정에서 도움이 됩니다. 
+breaking point를 지정할 수 있기 때문입니다. 
+
+## 절차 
+
+1. 추출하려는 표현식에 부작용이 없는지 확인 
+2. 불변 변수를 하나 선언하고 이름을 붙일 표현식의 복제본을 대입함
+3. 원본 표현식을 새로 만든 변수로 교체 
+4. 테스트
+5. 표현식을 여러 곳에서 사용한다면 각각을 새로 만든 변수로 교체함 
