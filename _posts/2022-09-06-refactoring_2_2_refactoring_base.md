@@ -231,3 +231,49 @@ public를 private로 변경하고 캡슐화하여 가시 범위를 제한하는 
 3. 변수를 직접 참조하던 부분을 모두 적절한 캡슐화 함수 호출로 바꾼다.
 4. 변수의 접근 범위를 제한한다. 
 5. 테스트한다. 
+
+# 매개변수 객체 만들기 
+
+* 리팩터링 전 
+
+```python 
+
+def amountInvoiced(startDate, endDate) :
+    return
+
+def amountInvoiced(startDate, endDate) :
+    return
+
+def amountInvoiced(startDate, endDate) :
+    return
+```
+
+* 리팩터링 후 
+
+```python
+def amountInvoiced(aDateRange) :
+    return
+
+def amountInvoiced(aDateRange) :
+    return
+
+def amountInvoiced(aDateRange) :
+    return
+```
+
+## 배경 
+
+데이터 항목 여러개가 이 함수 저 함수에 함께 사용되는 경우를 종종 보게됩니다. 
+이런 경우에 데이터 구조 하나로 모아주는 것이 보기 좋습니다. 
+데이터 뭉치를 데이터 구조로 묶으면 데이터 사이의 관계가 명확해진다는 이점이 있습니다. 
+
+## 절차 
+
+1. 적당한 데이터 구조가 아직 없다면 새로 만든다
+2. 테스트한다. 
+3. `함수 선언 바꾸기` 로 새 데이터 구조를 매개변수로 추가한다. 
+4. 테스트한다. 
+5. 함수 호출 시 새로운 인스턴스를 넘기도록 수정한다. 
+6. 기존 매개변수를 사용하던 코드를 새 데이터 구조의 원소를 사용하도록 바꾼다.
+7. 다 바꿨다면 기존 매개변수를 제거하고 테스트한다. 
+
