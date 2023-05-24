@@ -1,6 +1,6 @@
 ---
 layout: single
-time: "2022.07 ~ Current"
+time: "2022.07 ~ 2022.10"
 title: "Anti DDoS 제품 인증 대응"
 skills: [C, Python, Encryption]
 description: ""
@@ -18,7 +18,7 @@ sidebar:
 
 ## 개발 기간
 
-* 2022.07 ~ Current
+* 2022.07 ~ 2022.10
 
 ## 기술
 

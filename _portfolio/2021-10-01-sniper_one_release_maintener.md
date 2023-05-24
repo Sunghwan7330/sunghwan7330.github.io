@@ -1,6 +1,6 @@
 ---
 layout: single
-time: "2021.10 ~ Current"
+time: "2021.10 ~ 2022.06"
 title: "차세대 IPS 차기버전 릴리즈 관리"
 skills: [C, Python, CI/CD]
 description: ""

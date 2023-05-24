@@ -1,7 +1,7 @@
 ---
 layout: single
-time: "2020.04 ~ Current"
-title: "[ONE] 차세대 IPS 기능 개발"
+time: "2020.04 ~ 2022.04"
+title: "[ONE V3.1] 차세대 IPS 기능 개발"
 skills: [C, Python, ninja-build]
 description: ""
 image: ""
@@ -14,11 +14,11 @@ sidebar:
 
 ## 개요
 
-* (주)윈스 Sniper ONE 기능개발 (ONE V3.1 ~ )
+* (주)윈스 Sniper ONE 기능개발 (ONE V3.1.0 ~ V3.1.3)
 
 ## 개발 기간
 
-* 2020.04 ~ Current
+* 2020.04 ~ 2022.04
 
 ## 기술
 

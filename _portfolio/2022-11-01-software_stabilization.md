@@ -1,6 +1,6 @@
 ---
 layout: single
-time: "2022.07 ~ Current"
+time: "2022.07 ~ 2023.03"
 title: "IPS 안정화 버전 개발"
 skills: [C, Python, RobotFramework]
 description: ""
@@ -18,7 +18,7 @@ sidebar:
 
 ## 개발 기간
 
-* 2022.07 ~ Current
+* 2022.11 ~ 2023.03
 
 ## 기술
 
