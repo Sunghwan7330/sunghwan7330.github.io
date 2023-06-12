@@ -62,7 +62,7 @@ class Orgnization:
 4. 원래 레코드 대신 새로 정의한 한 클래스 타입의 객체를 반환하는 함수들을 새로 만든다.
 5. 레코드를 반환하는 예전 함수를 사용하는 코드를 4.에서 만든 새 함수를 사용하도록 바꾼다.
 6. 클래스에서 원본 데이터를 반환하는 접근자와 원본 레코드를 반환하는 함수들을 제거한다. 
-7. 7. 테스트한다. 
+7. 테스트한다. 
 
 # 컬렉션 캡슐화하기 
 
@@ -106,3 +106,51 @@ class Person :
 5. 컬렉션 getter를 수정해서 원본 내용을 수정할 수 없는 읽기 전용 프락시나 복제본을 반환하게 한다. 
 6. 테스트한다. 
 
+# 클래스 추출하기 
+
+* 리팩터링 전 
+
+```python 
+class Person:
+    getOfficeAreaCode(self):
+        return self.__officeAreaCode
+
+    getOfficeNumber(self):
+        return self.__officeNumber
+```
+
+
+* 리팩터링 후 
+
+```python 
+class Person:
+    getOfficeAreaCode(self):
+        return self.__telphoneNumber.getAreaCode()
+
+    getOfficeNumber(self):
+        return self.__telphoneNumber.getNumber()
+
+class TelephoneNumber():
+    getAreaCode(self):
+        return self.__areaCode
+
+    getNumber(self):
+        return self.__number
+        
+```
+
+## 배경
+
+메서드와 데이터가 너무 많은 클래스는 이해하기 쉽지 않으니 잘 살펴보고 적절히 분리하는것이 좋습니다. 
+만약 일부 데이터와 메서드를 따로 묶을 수 있다면 분리하는것이 좋습니다. 
+제거해도 다른 필드나 메서드들이 논리적으로 문제가 없다면 분리할 수 있다는 뜻이 됩니다. 
+
+## 절차 
+
+1. 클래스의 역할을 분리할 방법을 정한다 
+2. 분리될 역할을 담당할 클래스를 새로 만든다 
+3. 원래 클래스의 생성자에서 새로운 클래스의 인스턴스를 생성하여 필드에 저장해둔다. 
+4. 분리될 역할에 필요한 필드들을 새 클래스로 옮긴다 
+5. 매서드들도 새 클래스로 옮긴다
+6. 양쪽 클래스의 인터페이스를 살펴보면서 불필요한 메서드를 제거하고, 이름도 새로운 환경에 맞게 바꾼다 
+7. 새 클래스를 외부로 노출할지 결정한다 
