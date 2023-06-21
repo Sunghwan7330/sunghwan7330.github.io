@@ -154,3 +154,48 @@ class TelephoneNumber():
 5. 매서드들도 새 클래스로 옮긴다
 6. 양쪽 클래스의 인터페이스를 살펴보면서 불필요한 메서드를 제거하고, 이름도 새로운 환경에 맞게 바꾼다 
 7. 새 클래스를 외부로 노출할지 결정한다 
+
+# 클래스 인라인하기 
+
+* 리팩터링 전 
+
+```python 
+class Person:
+    getOfficeAreaCode(self):
+        return self.__telphoneNumber.getAreaCode()
+
+    getOfficeNumber(self):
+        return self.__telphoneNumber.getNumber()
+
+class TelephoneNumber():
+    getAreaCode(self):
+        return self.__areaCode
+
+    getNumber(self):
+        return self.__number    
+```
+
+
+* 리팩터링 후 
+
+```python 
+class Person:
+    getOfficeAreaCode(self):
+        return self.__officeAreaCode
+
+    getOfficeNumber(self):
+        return self.__officeNumber
+
+```
+
+## 배경 
+
+클래스 인라인하기는 클래스 추출하기를 거꾸로 돌리는 리팩터링입니다. 
+더 이상 제 역할을 못해서 그대로 두면 안되는 클래스를 인라인 하는게 좋습니다. 
+역할을 옮기는 리팩터링을 하고 난 뒤 특정 클래스에 남는 역할이 거의 없을 때 이러한 현상이 자주 생기는데, 이때 클래스를 인라인하는게 보기 좋습니다. 
+
+## 절차 
+
+1. 소스 클래스의 각 public 메서드에 대응하는 메서드들을 타깃 클래스에 생성한다. 이 메서드들은 단 순히 작업을 소스 클래스로 위임해야 한다. 
+2. 소스 클래스의 메서드를 사용하는 코드를 모두 타깃 클래스의 위임 메서드를 사용하도록 바꾼다. 
+3. 소스 클래스의 메서드와 필드를 모두 타깃 클래스로 옮긴다.
