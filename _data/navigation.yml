@@ -34,6 +34,9 @@ docs:
       - title: "리팩터링 2판"
         url: categories/refactoring_2
         category: "refactoring_2"
+      - title: "클린코드"
+        url: categories/cleancode
+        category: "cleancode"
 
   - title: Algorithm
     children:
