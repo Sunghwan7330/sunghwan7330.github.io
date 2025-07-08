@@ -58,6 +58,9 @@ docs:
       - title: "애자일"
         url: /categories/agile
         category: "agile"
+      - title: "FastAPI"
+        url: /categories/fast_api
+        category: "fast_api"
       - title: "정보공유"
         url: /categories/infomation
         category: "infomation"
