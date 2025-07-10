@@ -89,12 +89,14 @@ def read_item(item_id: int, q: Union[str, None] = None):
 ```
 
 * uvicorn 을 이용하여 서버 실행
+  
 ``` bash
 $ uvicorn main:app --reload
 
 ```
 
 * 동작 확인
+  
 ```bash
 $ curl http://127.0.0.1:8000
 {"Hello":"World"}
