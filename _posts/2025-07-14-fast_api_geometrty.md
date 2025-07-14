@@ -36,6 +36,7 @@ last_modified_at: 2025-07-13
 - `ST_Within(g1, g2)`: g1이 g2 내부에 있는지 여부
 - `ST_Intersects(g1, g2)`: 두 지오메트리가 겹치는지 여부
 
+
 # Python Shapely 라이브러리
 
 ## 개요
@@ -76,7 +77,6 @@ CREATE TABLE places (
 ```
 
 * FastAPI 예시 코드
-
 ```python
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
