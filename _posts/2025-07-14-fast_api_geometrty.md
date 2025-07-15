@@ -66,7 +66,8 @@ last_modified_at: 2025-07-13
 * 예시는 main 부분만 작성하였으며 전체 코드는 아래의 저장소에서 확인
   * https://github.com/Sunghwan7330/my_study/tree/master/python/fastapi/geometory_test
 
-* DB 스키마 
+* DB 스키마
+
 ```
 CREATE TABLE places (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -77,6 +78,7 @@ CREATE TABLE places (
 ```
 
 * FastAPI 예시 코드
+
 ```python
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
