@@ -52,6 +52,9 @@ last_modified_at: 2025-07-20
 * `Open Authorization` 의 약자
 * 사용자가 패스워드를 제공하지 않고 제 3자의 어플리케이션이 사용자의 자원에 접근할 수 있게 해주는 `인증 및 권한 위임 프로토콜`
 
+  <img width="433" height="406" alt="image" src="https://github.com/user-attachments/assets/914c4ccc-5d3e-400b-b58c-f3ecd1c6affa" />
+
+
 ### OAuth 의 주요 개념
 
 | 개념                               | 설명                                |
@@ -66,6 +69,8 @@ last_modified_at: 2025-07-20
 ### OAuth 권한 부여 코드 승인 방식
 
 * OAuth 에서 가장 기본이 되는 방식
+
+<img width="1554" height="954" alt="image" src="https://github.com/user-attachments/assets/927a30b5-f19b-494b-97fb-f936f7d2941e" />
 
 1. 리소스 접근 요청
     * 사용자가 클라이언트를 통해 리소스에 접근 시도
@@ -90,7 +95,9 @@ last_modified_at: 2025-07-20
 
 * 자격 증명을 안전하게 저장하기 힘든 클라이언트에서 사용
 * `Access token`이 uri를 통해 바로 전달되기 때문에 만료 기간을 짧게 설정해야 함
-  
+
+<img width="1538" height="944" alt="image" src="https://github.com/user-attachments/assets/df787193-0103-4c47-b458-380f3989631c" />
+
 1. 리소스 접근 요청
     * 사용자가 클라이언트를 통해 리소스에 접근 시도
 2. 인증 요청
@@ -211,4 +218,8 @@ HMACSHA256(
 * 감사 추적 및 로그 관리
   * 누가, 언제, 어떤 요청을 하였는지 기록하여 필요시 확인
     * 로그는 보안사고 추적에 핵심
- 
+
+# FastAPI 구현 예시 
+
+* 아래의 저장소에서 예제 코드 확인
+  * https://github.com/Sunghwan7330/my_study/tree/master/python/fastapi/jwt_test
