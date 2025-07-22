@@ -131,7 +131,6 @@ last_modified_at: 2025-07-20
 ```
 
 * 페이로드 : 사용자 정보, 역할, 만료시간 등을 명시
-
 ```
 {
   "sub": "1234567890",
@@ -142,7 +141,6 @@ last_modified_at: 2025-07-20
 ```
 
 * 서명 : Header + Payload 를 base64로 인코딩 후 비밀키로 서명
-
 ```
 HMACSHA256(
   base64UrlEncode(header) + "." + base64UrlEncode(payload),
