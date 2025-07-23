@@ -70,7 +70,8 @@ last_modified_at: 2025-07-20
 
 * OAuth 에서 가장 기본이 되는 방식
 
-<img width="1554" height="954" alt="image" src="https://github.com/user-attachments/assets/927a30b5-f19b-494b-97fb-f936f7d2941e" />
+<img width="1131" height="626" alt="image" src="https://github.com/user-attachments/assets/77824327-b4b8-465c-9536-46de0964bffc" />
+
 
 1. 리소스 접근 요청
     * 사용자가 클라이언트를 통해 리소스에 접근 시도
