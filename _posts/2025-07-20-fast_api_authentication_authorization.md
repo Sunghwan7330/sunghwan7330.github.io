@@ -70,8 +70,7 @@ last_modified_at: 2025-07-20
 
 * OAuth 에서 가장 기본이 되는 방식
 
-<img width="1131" height="626" alt="image" src="https://github.com/user-attachments/assets/77824327-b4b8-465c-9536-46de0964bffc" />
-
+<img width="1538" height="944" alt="image" src="https://github.com/user-attachments/assets/df787193-0103-4c47-b458-380f3989631c" />
 
 1. 리소스 접근 요청
     * 사용자가 클라이언트를 통해 리소스에 접근 시도
@@ -97,7 +96,7 @@ last_modified_at: 2025-07-20
 * 자격 증명을 안전하게 저장하기 힘든 클라이언트에서 사용
 * `Access token`이 uri를 통해 바로 전달되기 때문에 만료 기간을 짧게 설정해야 함
 
-<img width="1538" height="944" alt="image" src="https://github.com/user-attachments/assets/df787193-0103-4c47-b458-380f3989631c" />
+<img width="1131" height="626" alt="image" src="https://github.com/user-attachments/assets/77824327-b4b8-465c-9536-46de0964bffc" />
 
 1. 리소스 접근 요청
     * 사용자가 클라이언트를 통해 리소스에 접근 시도
