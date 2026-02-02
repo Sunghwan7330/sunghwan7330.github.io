@@ -22,7 +22,7 @@ sidebar:
 
 | Time | Company | Description |
 | :---: | :-----: | :-----: |
-| 2023.10 ~ current | Hyundai AutoEver | Traffic Center Server Developer | 
+| 2023.10 ~ current | HyundaiAutoEver | Traffic Center Server Developer | 
 | 2018.04 ~ 2023.10 | WINS | IPS Developer | 
 | 2015.03 ~ 2015.11 | Gigalane | Android Application Developer | 
 
